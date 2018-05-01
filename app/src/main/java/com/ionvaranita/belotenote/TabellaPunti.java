@@ -196,8 +196,9 @@ public class TabellaPunti extends AppCompatActivity {
         if (popupWindowInserimentoPunti!=null&&popupWindowInserimentoPunti.isShowing()) {
             popupWindowInserimentoPunti.dismiss();
         }
-        Intent intent = new Intent(this, Pagina4Jucatori.class);
+        Intent intent = new Intent(this, MenuJocuri.class);
         intent.putExtra(MainActivityButtonChooser.BUTONUL_APASAT, MainActivityButtonChooser.PATRU_JUCATORI_IN_ECHIPA);
+        intent.putExtra(ConstantiGlobal.ACTION_CODE,actionCode);
         startActivity(intent);
     }
 }

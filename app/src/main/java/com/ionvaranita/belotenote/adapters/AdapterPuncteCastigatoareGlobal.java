@@ -1,5 +1,6 @@
 package com.ionvaranita.belotenote.adapters;
 
+import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,45 +8,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
+import android.widget.Switch;
 
 import com.ionvaranita.belotenote.R;
-import com.ionvaranita.belotenote.entity.PuncteCastigatoare4JucatoriInEchipaBean;
+import com.ionvaranita.belotenote.borders.BorderedEditText;
 import com.ionvaranita.belotenote.entity.PuncteCastigatoareGlobalBean;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Created by ionvaranita on 02/04/18.
  */
 
 public class AdapterPuncteCastigatoareGlobal extends RecyclerView.Adapter<AdapterPuncteCastigatoareGlobal.ViewHolder> {
+    private BorderedEditText inserimentoPuncteCastigatoare;
     private RadioButton lastCheckedPuncteCastigatoare = null;
-
-    Set<RadioButton> multimeaRadioButton = new HashSet<>();
-
-    public RadioButton getPuncteCastigatoareChecked() {
-        return puncteCastigatoareChecked;
-    }
-
-    public void setPuncteCastigatoareChecked(RadioButton puncteCastigatoareChecked) {
-        this.puncteCastigatoareChecked = puncteCastigatoareChecked;
-    }
-
-    private  RadioButton puncteCastigatoareChecked = null;
-    // ... view holder defined above...
-
-    // Store a member variable for the contacts
+    private Switch switchButton;
 
     private List<PuncteCastigatoareGlobalBean> puncteCastigatoareGlobalBeans;
     // Store the context for easy access
     private Context mContext;
 
     // Pass in the contact array into the constructor
-    public AdapterPuncteCastigatoareGlobal(Context context, List<PuncteCastigatoareGlobalBean> puncteCastigatoareGlobalBeans) {
+    public AdapterPuncteCastigatoareGlobal(Context context, Switch switchButton, List<PuncteCastigatoareGlobalBean> puncteCastigatoareGlobalBeans) {
+        this.switchButton = switchButton;
         this.puncteCastigatoareGlobalBeans = puncteCastigatoareGlobalBeans;
         mContext = context;
     }
@@ -69,14 +57,6 @@ public class AdapterPuncteCastigatoareGlobal extends RecyclerView.Adapter<Adapte
         return viewHolder;
     }
 
-    public Set<RadioButton> getMultimeaRadioButton() {
-        return multimeaRadioButton;
-    }
-
-    public void setMultimeaRadioButton(Set<RadioButton> multimeaRadioButton) {
-        this.multimeaRadioButton = multimeaRadioButton;
-    }
-
     @Override
     public void onBindViewHolder(AdapterPuncteCastigatoareGlobal.ViewHolder viewHolder, int position) {
         // Get the data model based on position
@@ -84,32 +64,48 @@ public class AdapterPuncteCastigatoareGlobal extends RecyclerView.Adapter<Adapte
 //            TextView turul=viewHolder.turul;
 
 //            turul.setText(integerToString(patruJucatoriInEchipa.getTurnul()));
-       final  RadioButton puncteCastigatoare2 = viewHolder.puncteCastigatoare;
+        final RadioButton puncteCastigatoare2 = viewHolder.puncteCastigatoare;
 
-       if(puncteCastigatoareGlobalBean!=null){
+        if (puncteCastigatoareGlobalBean != null) {
             puncteCastigatoare2.setText(puncteCastigatoareGlobalBean.getPuncteCastigatoare().toString());
         }
 
 
-        puncteCastigatoare2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+        puncteCastigatoare2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton group,boolean b) {
-                if (lastCheckedPuncteCastigatoare
+            public void onCheckedChanged(CompoundButton group, boolean isChecked) {
+                if (isChecked) {
+                    if (lastCheckedPuncteCastigatoare
+                            != null) {
+                        lastCheckedPuncteCastigatoare.setChecked(false);
+                    }
 
-                        != null) {
-                    lastCheckedPuncteCastigatoare.setChecked(false);
+                    switchButton.setChecked(false);
                 }
-                puncteCastigatoareChecked = puncteCastigatoare2;
-                //store the clicked radiobutton
                 lastCheckedPuncteCastigatoare = puncteCastigatoare2;
             }
+
         });
 
-        multimeaRadioButton.add(puncteCastigatoare2);
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (lastCheckedPuncteCastigatoare != null) {
+                        lastCheckedPuncteCastigatoare.setChecked(false);
+                        lastCheckedPuncteCastigatoare = null;
+                        inserimentoPuncteCastigatoare.setVisibility(View.VISIBLE);
+                        inserimentoPuncteCastigatoare.callOnClick();
 
+                    }
 
-
+                } else {
+                    inserimentoPuncteCastigatoare.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
+
 
     public static String integerToString(Integer integer) {
 
@@ -135,5 +131,19 @@ public class AdapterPuncteCastigatoareGlobal extends RecyclerView.Adapter<Adapte
             //puncteCastigatoare = (RadioButton) itemView.findViewById(R.id.radio_button_puncte_castigatoare_4_jucatori_in_echipa);
 
         }
+    }
+    public BorderedEditText getInserimentoPuncteCastigatoare() {
+        return inserimentoPuncteCastigatoare;
+    }
+
+    public void setInserimentoPuncteCastigatoare(BorderedEditText inserimentoPuncteCastigatoare) {
+        this.inserimentoPuncteCastigatoare = inserimentoPuncteCastigatoare;
+    }
+    public RadioButton getLastCheckedPuncteCastigatoare() {
+        return lastCheckedPuncteCastigatoare;
+    }
+
+    public void setLastCheckedPuncteCastigatoare(RadioButton lastCheckedPuncteCastigatoare) {
+        this.lastCheckedPuncteCastigatoare = lastCheckedPuncteCastigatoare;
     }
 }

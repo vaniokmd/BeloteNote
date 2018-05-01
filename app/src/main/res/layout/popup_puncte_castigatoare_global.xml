@@ -81,7 +81,7 @@
                 android:text="@string/introduc_manual_puncte_castigatoare" />
 
             <Switch
-                android:id="@+id/toggle_button_active_puncte_castigatoare_global"
+                android:id="@+id/switch_button_active_puncte_castigatoare_global"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
