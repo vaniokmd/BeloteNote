@@ -1,0 +1,138 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_green_dark"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_of_16"
+    tools:context=".Pagina4Jucatori">
+
+    <TableLayout
+        android:padding="@dimen/padding_of_16"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@drawable/row"
+        android:gravity="center">
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_of_16"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/individual"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@mipmap/ic_sageata_down" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/buton_4_jucatori_individual"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_of_16"
+                android:layout_marginLeft="@dimen/padding_of_16"
+                android:layout_marginRight="@dimen/padding_of_16"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="@android:color/white"
+                android:gravity="bottom"
+                android:onClick="apasaButonulInEchipa"
+                android:padding="4dp"
+                android:paddingBottom="@dimen/padding_of_16"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_4_jucatori_individual"
+                android:text="@string/in_echipa" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/in_echipa"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@mipmap/ic_sageata_down" />
+
+
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/buton_4_jucatori_in_echipa"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_of_16"
+                android:layout_marginLeft="@dimen/padding_of_16"
+                android:layout_marginRight="@dimen/padding_of_16"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="@android:color/white"
+                android:gravity="bottom"
+                android:onClick="apasaButonulInEchipa"
+                android:padding="4dp"
+                android:paddingBottom="@dimen/padding_of_16"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_4_jucatori_in_echipa"
+                android:text="@string/in_echipa" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
+

@@ -1,0 +1,14 @@
+<resources>
+    <dimen name="larghezza_cella">92dp</dimen>
+    <dimen name="padding_of_16">16dp</dimen>
+    <dimen name="footer_text_size">28sp</dimen>
+    <dimen name="text_size_row">20sp</dimen>
+    <dimen name="scor_dimensione">24sp</dimen>
+    <dimen name="informatii_buton">20sp</dimen>
+    <dimen name="spazio_tra_celle">8dp</dimen>
+    <dimen name="text_size_26">20sp</dimen>
+    <dimen name="paddinf_top_recycler_view">8dp</dimen>
+    <dimen name="padding_bottom_recycler_view">8dp</dimen>
+    <dimen name="padding_inserimento">24dp</dimen>
+    <dimen name="margine_tra_tasti">1dp</dimen>
+</resources>

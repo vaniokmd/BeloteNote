@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_green_dark"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="@dimen/padding_of_16"
+    tools:context=".MainActivity">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/row"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TableRow
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_of_16"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/doi_jucatori"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_of_16"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="@android:color/white"
+                android:gravity="bottom"
+                android:onClick="apasaButonul4Jucatori"
+                android:padding="4dp"
+                android:paddingBottom="@dimen/padding_of_16"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_2_jucatori"
+                android:textAlignment="center"
+                android:visibility="visible" />
+        </TableRow>
+
+
+        <TableRow
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_of_16"
+            android:gravity="center">
+
+            <ImageButton
+                android:layout_weight="1"
+                android:id="@+id/trei_jucatori"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_of_16"
+                android:adjustViewBounds="true"
+                android:background="@android:color/white"
+                android:gravity="bottom"
+                android:onClick="apasaButonul4Jucatori"
+                android:padding="4dp"
+                android:paddingBottom="@dimen/padding_of_16"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_new_3_jucatori"
+                android:textAlignment="center"
+                android:visibility="visible" />
+
+        </TableRow>
+
+
+        <TableRow
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_of_16"
+            android:gravity="center">
+
+            <ImageButton
+                android:layout_weight="1"
+                android:id="@+id/patruJucatori"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_of_16"
+                android:adjustViewBounds="true"
+                android:background="@android:color/white"
+                android:gravity="bottom"
+                android:onClick="apasaButonul4Jucatori"
+                android:padding="4dp"
+                android:paddingBottom="@dimen/padding_of_16"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_4_jucatori_in_linie"
+                android:textAlignment="center"
+                android:visibility="visible" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

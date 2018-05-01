@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_green_dark"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_of_16"
+    tools:context=".MainActivity">
+
+    <TableRow
+        android:id="@+id/landscape_main_activity_table_row"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/padding_of_16"
+            android:id="@+id/fragment_container1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <!--<fragment
+            andridJocd:ididJoc@+id/main_activity_fragment"
+            android:name="com.ionvaranita.belotenote.MainActivityFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+-->
+        <!--<fragment
+            andridJocd:ididJoc@+id/fragment_welcome_pagina_patru_jucatori"
+            android:name="com.ionvaranita.belotenote.FragmentWelcome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/padding_of_16"
+            android:layout_weight="1" />-->
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/padding_of_16"
+            android:id="@+id/fragment_container2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/padding_of_16"
+            android:id="@+id/fragment_container3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+<!--        <fragment
+            andridJocd:ididJoc@+id/fragment_pagina_patru_jucatori"
+            android:name="com.ionvaranita.belotenote.FragmentPagina4Jucatori"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/padding_of_16"
+            android:layout_weight="1" />
+
+        <fragment
+            andridJocd:ididJoc@+id/fragment_menu_partide_4_jucatori_in_echipa"
+            android:name="com.ionvaranita.belotenote.FragmentMenuPartide4JucatoriInEchipa"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/padding_of_16"
+            android:layout_weight="1" />-->
+    </TableRow>
+
+</LinearLayout>

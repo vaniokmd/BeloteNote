@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    style="@style/Widget.AppCompat.Button"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_of_16">
+    <TableRow
+        android:id="@+id/table_row_items_partide_patru_jucatori_in_echipa"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <TextView
+            android:id="@+id/item_nume_partida_patru_jucatori_in_echipa"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textAlignment="center" />
+        <TextView
+            android:id="@+id/item_data_partida_patru_jucatori_in_echipa"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAlignment="center" />
+    </TableRow>
+</LinearLayout>

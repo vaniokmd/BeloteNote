@@ -1,0 +1,119 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ionvaranita.belotenote.fragments.FragmentTabella4JucatoriInEchipa">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="@drawable/row"
+        android:gravity="center"
+        android:padding="@dimen/spazio_tra_celle"
+        android:textAlignment="center">
+
+        <TextView
+            android:id="@+id/scor_noi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="@dimen/scor_dimensione"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/nume_partida_patru_jucatori_in_echipa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="@dimen/footer_text_size" />
+
+        <TextView
+            android:id="@+id/scor_voi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="@dimen/scor_dimensione"
+            android:textStyle="bold" />
+
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/campi_stampa_table_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="@drawable/row"
+        android:gravity="center"
+        android:padding="@dimen/spazio_tra_celle">
+
+        <TextView
+            android:id="@+id/turul_patru_jucatori_in_echipa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/turno"
+            android:textAlignment="center"
+            android:textSize="@dimen/footer_text_size" />
+
+        <TextView
+
+            android:id="@+id/noi_patru_jucatori_in_echipa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/noi"
+            android:textAlignment="center"
+            android:textSize="@dimen/footer_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/voi_patru_jucatori_in_echipa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/voi"
+            android:textAlignment="center"
+            android:textSize="@dimen/footer_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/jocul_patru_jucatori_in_echipa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/joaca"
+            android:textAlignment="center"
+            android:textSize="@dimen/footer_text_size" />
+    </TableRow>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_items_tabella_4_jucatori_in_echipa"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingBottom="@dimen/padding_bottom_recycler_view"
+        android:paddingTop="@dimen/paddinf_top_recycler_view"
+        android:scrollbars="vertical" />
+
+    <Button
+        android:id="@+id/inserisci_button_patru_jucatori_in_echipa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="@drawable/button_shape"
+        android:text="Inserisci" />
+
+</LinearLayout>

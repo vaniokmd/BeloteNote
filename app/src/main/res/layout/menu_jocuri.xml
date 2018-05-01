@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_green_dark"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/padding_of_16"
+    android:paddingLeft="@dimen/padding_of_16"
+    android:paddingRight="@dimen/padding_of_16"
+    android:paddingTop="@dimen/padding_of_16">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/row"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_inserimento">
+
+        <ImageButton
+            android:id="@+id/button"
+            style="@style/AppTheme.Button.Inserisci"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="inserisciJocNou"
+            android:padding="@dimen/padding_inserimento"
+            android:scaleType="center"
+            android:src="@drawable/ic_action_name" />
+    </TableRow>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lista_jocuri_recycleview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/padding_of_16"
+        android:layout_weight="4"
+        android:background="@drawable/row"
+        android:paddingTop="@dimen/padding_of_16" />
+</LinearLayout>
