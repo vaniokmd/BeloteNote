@@ -33,9 +33,26 @@ public class AdapterPuncteCastigatoareGlobal extends RecyclerView.Adapter<Adapte
 
     // Pass in the contact array into the constructor
     public AdapterPuncteCastigatoareGlobal(Context context, Switch switchButton, List<PuncteCastigatoareGlobalBean> puncteCastigatoareGlobalBeans) {
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (lastCheckedPuncteCastigatoare != null) {
+                        lastCheckedPuncteCastigatoare.setChecked(false);
+                        lastCheckedPuncteCastigatoare = null;
+                    }
+                    inserimentoPuncteCastigatoare.setVisibility(View.VISIBLE);
+                    inserimentoPuncteCastigatoare.callOnClick();
+
+                } else {
+                    inserimentoPuncteCastigatoare.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
         this.switchButton = switchButton;
         this.puncteCastigatoareGlobalBeans = puncteCastigatoareGlobalBeans;
         mContext = context;
+
     }
 
     // Easy access to the context object in the recyclerview
@@ -87,25 +104,7 @@ public class AdapterPuncteCastigatoareGlobal extends RecyclerView.Adapter<Adapte
 
         });
 
-        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (lastCheckedPuncteCastigatoare != null) {
-                        lastCheckedPuncteCastigatoare.setChecked(false);
-                        lastCheckedPuncteCastigatoare = null;
-                        inserimentoPuncteCastigatoare.setVisibility(View.VISIBLE);
-                        inserimentoPuncteCastigatoare.callOnClick();
-
-                    }
-
-                } else {
-                    inserimentoPuncteCastigatoare.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
     }
-
 
     public static String integerToString(Integer integer) {
 

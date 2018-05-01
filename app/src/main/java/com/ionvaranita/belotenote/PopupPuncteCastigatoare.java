@@ -124,6 +124,8 @@ public class PopupPuncteCastigatoare {
         puncteCastigatoareGlobalList = db.puncteCastigatoareGlobalDao().selectAllPuncteCastigatoareGlobalOrderByData();
 
         adapterPuncteCastigatoareGlobal = new AdapterPuncteCastigatoareGlobal(contesto, switchButton, puncteCastigatoareGlobalList);
+        puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
+        adapterPuncteCastigatoareGlobal.setInserimentoPuncteCastigatoare(puncteCastigatoareGlobalInserimanto);
 
         recyclerViewPuncteCastigatoareGlobal.setAdapter(adapterPuncteCastigatoareGlobal);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(contesto);
@@ -157,8 +159,7 @@ public class PopupPuncteCastigatoare {
     }
 
     private void setMostraONascondiInputPuncteCastigatoare() {
-        puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
-        adapterPuncteCastigatoareGlobal.setInserimentoPuncteCastigatoare(puncteCastigatoareGlobalInserimanto);
+
     }
 
     public void showPopup() {
