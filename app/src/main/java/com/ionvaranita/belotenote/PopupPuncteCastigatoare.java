@@ -2,14 +2,12 @@ package com.ionvaranita.belotenote;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -54,16 +52,15 @@ public class PopupPuncteCastigatoare {
     private final Context contesto;
     private Button okButtonPopup;
     private Button cancelButtonPopup;
-    private EditText puncteCastigatoareGlobalInserimanto;
+    private BorderedEditText puncteCastigatoareGlobalInserimanto;
     private View popupViewPuncteCastigatoare;
     private RecyclerView recyclerViewPuncteCastigatoareGlobal;
     private AdapterPuncteCastigatoareGlobal adapterPuncteCastigatoareGlobal;
-    private Switch activeFieldPuncteCastigatoare;
+    private Switch switchButton;
     private LayoutInflater layoutInflater;
     private Integer idPartida;
     private Integer idGioco;
     private TableRow nomeGiocoFooterTableRow;
-    private BorderedEditText puncteCastigatoareInserimento;
 
     public PopupPuncteCastigatoare(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup, Integer idGioco, Integer idPartida) {
         this(parametersPuncteCastigatoarePopup);
@@ -82,6 +79,8 @@ public class PopupPuncteCastigatoare {
         layoutInflater = ((LayoutInflater) contesto.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         popupViewPuncteCastigatoare = layoutInflater.inflate(R.layout.popup_puncte_castigatoare_global, null);
 
+        switchButton = popupViewPuncteCastigatoare.findViewById(R.id.switch_button_active_puncte_castigatoare_global);
+
         nomeGiocoFooterTableRow = popupViewPuncteCastigatoare.findViewById(R.id.nome_gioco_global_table_row);
 
         if (isNomeGiocoMostrabile) {
@@ -91,18 +90,16 @@ public class PopupPuncteCastigatoare {
             nomeGiocoFooterTableRow.setVisibility(View.INVISIBLE);
         }
 
-        puncteCastigatoareInserimento = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
-
         itemsMenuRecyclerView = (RecyclerView) mainWindow.findViewById(R.id.lista_jocuri_recycleview);
-
 
         db = AppDatabase.getPersistentDatabase(contesto);
 
         popolaRecyclerViewPuncteCastigatoareGlobal();
 
+        setMostraONascondiInputPuncteCastigatoare();
+
         setCancelAndOkButton();
 
-        setMostraONascondiInputPuncteCastigatoare();
 
 
         if (actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA) {
@@ -126,11 +123,12 @@ public class PopupPuncteCastigatoare {
 
         puncteCastigatoareGlobalList = db.puncteCastigatoareGlobalDao().selectAllPuncteCastigatoareGlobalOrderByData();
 
-        adapterPuncteCastigatoareGlobal = new AdapterPuncteCastigatoareGlobal(contesto, puncteCastigatoareGlobalList);
+        adapterPuncteCastigatoareGlobal = new AdapterPuncteCastigatoareGlobal(contesto, switchButton, puncteCastigatoareGlobalList);
 
         recyclerViewPuncteCastigatoareGlobal.setAdapter(adapterPuncteCastigatoareGlobal);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(contesto);
         recyclerViewPuncteCastigatoareGlobal.setLayoutManager(linearLayoutManager);
+        recyclerViewPuncteCastigatoareGlobal.requestFocus();
 
         popupWindow = new PopupWindow(popupViewPuncteCastigatoare,
                 itemsMenuRecyclerView.getWidth(), itemsMenuRecyclerView.getHeight());
@@ -160,39 +158,7 @@ public class PopupPuncteCastigatoare {
 
     private void setMostraONascondiInputPuncteCastigatoare() {
         puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
-        activeFieldPuncteCastigatoare = popupViewPuncteCastigatoare.findViewById(R.id.toggle_button_active_puncte_castigatoare_global);
-
-        activeFieldPuncteCastigatoare.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    puncteCastigatoareGlobalInserimanto.setVisibility(View.VISIBLE);
-                    puncteCastigatoareGlobalInserimanto.requestFocus();
-                    if (adapterPuncteCastigatoareGlobal.getPuncteCastigatoareChecked() != null)
-                        adapterPuncteCastigatoareGlobal.getPuncteCastigatoareChecked().setChecked(false);
-                    // The toggle is enabled
-                } else {
-                    puncteCastigatoareGlobalInserimanto.setVisibility(View.INVISIBLE);
-                    InputMethodManager imm = (InputMethodManager) contesto.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(buttonView.getWindowToken(), 0);
-                    recyclerViewPuncteCastigatoareGlobal.requestFocus();
-                }
-            }
-        });
-
-        Set<RadioButton> multimeaRadioButton = adapterPuncteCastigatoareGlobal.getMultimeaRadioButton();
-
-
-        Iterator iterator = multimeaRadioButton.iterator();
-        while (iterator.hasNext()) {
-            ((RadioButton) iterator.next()).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    activeFieldPuncteCastigatoare.setChecked(false);
-                }
-            });
-        }
-
-
+        adapterPuncteCastigatoareGlobal.setInserimentoPuncteCastigatoare(puncteCastigatoareGlobalInserimanto);
     }
 
     public void showPopup() {
@@ -247,8 +213,8 @@ public class PopupPuncteCastigatoare {
         if (puncteCastigatoareGlobalInserimanto.getText() != null && IntegerUtils.isInteger(puncteCastigatoareGlobalInserimanto.getText().toString())) {
             puncteCastigatoare = Integer.parseInt(puncteCastigatoareGlobalInserimanto.getText().toString());
             return true;
-        } else if (adapterPuncteCastigatoareGlobal.getPuncteCastigatoareChecked() != null && adapterPuncteCastigatoareGlobal.getPuncteCastigatoareChecked().isChecked()) {
-            puncteCastigatoare = Integer.parseInt(adapterPuncteCastigatoareGlobal.getPuncteCastigatoareChecked().getText().toString());
+        } else if (adapterPuncteCastigatoareGlobal.getLastCheckedPuncteCastigatoare() != null && adapterPuncteCastigatoareGlobal.getLastCheckedPuncteCastigatoare().isChecked()) {
+            puncteCastigatoare = Integer.parseInt(adapterPuncteCastigatoareGlobal.getLastCheckedPuncteCastigatoare().getText().toString());
             return true;
         }
         return false;
@@ -263,17 +229,6 @@ public class PopupPuncteCastigatoare {
         contesto.startActivity(intent);
 
 
-    }
-
-    private static RadioButton cercaRadioButtonByPuncteCastigatoare(Set<RadioButton> puncteCastigatoareGlobalBeansRadioButton, Integer valoreDaCercare) {
-        for (RadioButton radioButton :
-                puncteCastigatoareGlobalBeansRadioButton) {
-            if (Integer.parseInt(radioButton.getText().toString()) == valoreDaCercare) {
-                return radioButton;
-            }
-
-        }
-        return null;
     }
 
 }
