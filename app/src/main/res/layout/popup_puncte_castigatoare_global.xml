@@ -1,21 +1,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/row"
     android:gravity="center"
     android:orientation="vertical">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center">
 
         <TableRow
+
             android:id="@+id/nome_gioco_global_table_row"
+            android:layout_margin="@dimen/padding_of_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="center"
             android:gravity="center">
 
             <!--<EditText
@@ -34,66 +31,59 @@
         </TableRow>
 
         <TableRow
+            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_of_16"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:paddingTop="@dimen/padding_of_16"
+            android:layout_margin="@dimen/padding_of_16">
 
             <TextView
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:text="@string/puncte_castigatoare_precedente"
                 android:textColor="@android:color/black"
                 android:textStyle="bold|italic" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_puncte_castigatoare_global"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_weight="1"
-                android:fadeScrollbars="true"
-                android:paddingBottom="@dimen/padding_bottom_recycler_view"
-                android:scrollbars="vertical" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding_of_16"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/introduc_manual_puncte_castigatoare" />
-
-            <Switch
-                android:id="@+id/switch_button_active_puncte_castigatoare_global"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Spinner
+                android:id="@+id/spinner_puncte_castigatoare_precedente"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center" />
+                android:textAlignment="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
 
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
+    <TableRow
+        android:paddingTop="@dimen/padding_of_16"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_of_16">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:paddingTop="@dimen/padding_of_16"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:text="@string/introduc_manual_puncte_castigatoare"
+            android:textColor="@android:color/black"
+            android:textStyle="bold|italic" />
+
+        <Switch
+            android:id="@+id/switch_button_active_puncte_castigatoare_global"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center" />
+
+    </TableRow>
+
+        <TableRow
+            android:paddingTop="@dimen/padding_of_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_of_16"
             android:gravity="center">
 
             <com.ionvaranita.belotenote.borders.BorderedEditText
@@ -110,16 +100,18 @@
         </TableRow>
 
         <TableRow
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:layout_margin="@dimen/padding_of_16"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/cancel_button_puncte_castigatoare_global_popup"
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_of_16"
+                android:padding="@dimen/padding_of_16"
                 android:layout_weight="1"
                 android:text="@string/cancel" />
 
@@ -128,12 +120,11 @@
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_of_16"
+                android:padding="@dimen/padding_of_16"
                 android:layout_weight="1"
                 android:text="@string/ok" />
 
         </TableRow>
-    </TableLayout>
 
 
 </LinearLayout>

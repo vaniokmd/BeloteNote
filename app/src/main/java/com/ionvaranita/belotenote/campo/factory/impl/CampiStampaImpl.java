@@ -67,7 +67,7 @@ public class CampiStampaImpl implements CampiStampaFactory {
     private void configuraCampo(TextView campo) {
         TableRow.LayoutParams layoutParams = GlobalLayoutParams.layoutParamsCampiInserimento();
         campo.setLayoutParams(layoutParams);
-
+        campo.setMaxLines(1);
         if (Build.VERSION.SDK_INT > 17) campo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         campo.setGravity(Gravity.CENTER);
     }
