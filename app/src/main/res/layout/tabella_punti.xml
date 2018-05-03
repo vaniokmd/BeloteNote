@@ -129,6 +129,7 @@
         <Button
             android:id="@+id/inserisci_button_patru_jucatori_in_echipa"
             style="@style/AppTheme.Button.Inserisci"
+            android:background="@drawable/text_button_shape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

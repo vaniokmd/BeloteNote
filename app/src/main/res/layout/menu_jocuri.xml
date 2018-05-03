@@ -19,6 +19,7 @@
 
         <ImageButton
             android:id="@+id/button"
+            android:background="@drawable/text_button_shape"
             style="@style/AppTheme.Button.Inserisci"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

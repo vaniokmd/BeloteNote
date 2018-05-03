@@ -67,8 +67,6 @@ public class PopupPuncteCastigatoare {
 
     private AdapterSpinner adapterSpinner;
 
-    private TextView errorAlertNomeGiocoPuncteCastigatoare;
-
     public PopupPuncteCastigatoare(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup, Integer idGioco, Integer idPartida) {
         this(parametersPuncteCastigatoarePopup);
         this.idGioco = idGioco;
@@ -230,7 +228,6 @@ public class PopupPuncteCastigatoare {
     }
 
     private boolean verificaIntegrita() {
-        errorAlertNomeGiocoPuncteCastigatoare = popupViewPuncteCastigatoare.findViewById(R.id.error_alert_nome_gioco_puncte_castigatoare);
 
 
         return verificaCampiFooter() && verificaPuncteCastigatoare();
