@@ -37,6 +37,9 @@
     <string name="alaltaieri">the day before yesterday</string>
     <string name="introduce_puncte">Insert points</string>
     <string name="puncte">Points</string>
+    <string name="error_game_name">the game name field must contain at least one character</string>
+    <string name="error_puncte_castigatoare">invalid winner points number</string>
+    <string name="error">error</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

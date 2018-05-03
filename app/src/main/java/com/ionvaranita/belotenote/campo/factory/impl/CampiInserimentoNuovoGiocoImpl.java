@@ -50,7 +50,8 @@ public class CampiInserimentoNuovoGiocoImpl implements CampiInsermientoNuovoGioc
         InputFilter[] filters = new InputFilter[1];
         filters[0] = new InputFilter.LengthFilter(LengthOfCharacters.INSERIMENTO_NOME_GIOCO_MAX_LENGTH); //Filter to 10 characters
         campo.setFilters(filters);
-        campo.setMaxLines(1);
+        campo.setSingleLine();
+
         campo.setImeOptions(EditorInfo.IME_ACTION_DONE);
         if (Build.VERSION.SDK_INT > 17) campo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         campo.setGravity(Gravity.CENTER);

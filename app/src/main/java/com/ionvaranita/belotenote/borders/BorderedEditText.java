@@ -6,8 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.ionvaranita.belotenote.R;
 
 /**
  * Created by ionvaranita on 25/10/17.
@@ -73,5 +77,9 @@ public class BorderedEditText extends EditText {
     public void setBorders(Border[] borders) {
         this.borders = borders;
         init();
+    }
+    public void showError() {
+        Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
+        this.startAnimation(shake);
     }
 }

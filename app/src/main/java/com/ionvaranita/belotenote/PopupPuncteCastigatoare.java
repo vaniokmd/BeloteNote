@@ -1,7 +1,10 @@
 package com.ionvaranita.belotenote;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,6 +19,7 @@ import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.ionvaranita.belotenote.adapters.AdapterSpinner;
 import com.ionvaranita.belotenote.borders.BorderedEditText;
@@ -62,6 +66,8 @@ public class PopupPuncteCastigatoare {
     private Spinner spinnerPuncteCastigatoarePrecedente;
 
     private AdapterSpinner adapterSpinner;
+
+    private TextView errorAlertNomeGiocoPuncteCastigatoare;
 
     public PopupPuncteCastigatoare(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup, Integer idGioco, Integer idPartida) {
         this(parametersPuncteCastigatoarePopup);
@@ -159,13 +165,6 @@ public class PopupPuncteCastigatoare {
 
     private void setMostraONascondiInputPuncteCastigatoare() {
         puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
-        puncteCastigatoareGlobalInserimanto.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                Log.d(event.toString()+"event action",""+event.getAction());
-                return false;
-            }
-        });
 
         spinnerPuncteCastigatoarePrecedente.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -231,16 +230,23 @@ public class PopupPuncteCastigatoare {
     }
 
     private boolean verificaIntegrita() {
+        errorAlertNomeGiocoPuncteCastigatoare = popupViewPuncteCastigatoare.findViewById(R.id.error_alert_nome_gioco_puncte_castigatoare);
+
+
         return verificaCampiFooter() && verificaPuncteCastigatoare();
     }
 
     private boolean verificaCampiFooter() {
+        String errore = contesto.getResources().getString(R.string.error_game_name);
         List<BorderedEditText> listaCampi = new ArrayList<>(mappaCampi.values());
         for (BorderedEditText campo : listaCampi) {
-            if (campo.getText() == null) {
+            if (campo.getText() == null||(campo.getText()!=null&&campo.getText().toString().length()<1)) {
+                campo.setError(errore);
+                campo.showError();
                 return false;
             }
         }
+
         return true;
     }
 
@@ -257,7 +263,12 @@ public class PopupPuncteCastigatoare {
             puncteCastigatoare = puncteCastigatoareGlobalBean.getPuncteCastigatoare();
             return true;
         }
-        return false;
+
+        String errore = contesto.getResources().getString(R.string.error_puncte_castigatoare);
+        puncteCastigatoareGlobalInserimanto.setError(errore);
+        puncteCastigatoareGlobalInserimanto.showError();
+
+                return false;
     }
 
 

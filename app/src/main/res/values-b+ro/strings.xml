@@ -4,9 +4,9 @@
     <string name="vrei_sa_continui_cu_o_partida_noua">Vrei sa continui cu o partidã nouã?</string>
     <string name="nu">nu</string>
     <string name="da">da</string>
-    <string name="introdu_nume_partida">introdu nume joc</string>
+    <string name="introdu_nume_partida">introduce nume joc</string>
     <string name="introduc_manual_puncte_castigatoare">introduc manual puncte câstigãtoare</string>
-    <string name="puncte_castigatoare_precedente">puncte câșigatoare precedente:</string>
+    <string name="puncte_castigatoare_precedente">puncte câșigatoare:</string>
     <string name="cancel">Anuleazã</string>
     <string name="ok">Ok</string>
     <string name="app_name">Belote Note</string>
@@ -37,6 +37,7 @@
     <string name="alaltaieri">Alaltăieri</string>
     <string name="introduce_puncte">Introduce puncte</string>
     <string name="puncte">Puncte</string>
+    <string name="error">eroare</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
