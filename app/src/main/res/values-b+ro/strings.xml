@@ -1,0 +1,44 @@
+<resources>
+    <string name="a_castigat">A câștigat</string>
+    <string name="cu_punctajul">cu punctajul</string>
+    <string name="vrei_sa_continui_cu_o_partida_noua">Vrei sa continui cu o partidã nouã?</string>
+    <string name="nu">nu</string>
+    <string name="da">da</string>
+    <string name="introdu_nume_partida">introduce nume joc</string>
+    <string name="introduc_manual_puncte_castigatoare">introduc manual puncte câstigãtoare</string>
+    <string name="puncte_castigatoare_precedente">puncte câșigatoare:</string>
+    <string name="cancel">Anuleazã</string>
+    <string name="ok">Ok</string>
+    <string name="app_name">Belote Note</string>
+    <string name="doi_jucator">2 Jucatori</string>
+    <string name="trei_jucatori">3 Jucatori</string>
+    <string name="patru_jucatori">4 Jucatori</string>
+    <string name="individual">Individual</string>
+    <string name="in_echipa">In echipa</string>
+    <string name="puncte_joaca">puncte joaca</string>
+    <string name="puncte_noi">puncte noi</string>
+    <string name="puncte_voi">puncte voi</string>
+    <string name="turno">Turul</string>
+    <string name="joaca">Joaca</string>
+    <string name="noi">Noi</string>
+    <string name="voi">Voi</string>
+    <string name="patru_jucatori_in_eechipa_label">4 jucatori in echipa</string>
+    <string name="note">Note:</string>
+    <string name="note_introduce">Introduce</string>
+    <string name="note_pentru_a_activa_calculatorul">pentru a activa calculatorul</string>
+    <string name="minim">Minim</string>
+    <string name="maxim">Maxim</string>
+    <string name="nu_este_egal_cu">nu este egal cu</string>
+    <string name="del">del</string>
+    <string name="meno_10">-10</string>
+    <string name="done">done</string>
+    <string name="astazi">Astăzi</string>
+    <string name="ieri">Ieri</string>
+    <string name="alaltaieri">Alaltăieri</string>
+    <string name="introduce_puncte">Introduce puncte</string>
+    <string name="puncte">Puncte</string>
+    <string name="error">eroare</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

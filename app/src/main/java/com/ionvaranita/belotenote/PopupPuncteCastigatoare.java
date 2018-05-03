@@ -1,22 +1,27 @@
 package com.ionvaranita.belotenote;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.widget.LinearLayoutManager;
+import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TableRow;
+import android.widget.TextView;
 
-import com.ionvaranita.belotenote.adapters.AdapterPuncteCastigatoareGlobal;
+import com.ionvaranita.belotenote.adapters.AdapterSpinner;
 import com.ionvaranita.belotenote.borders.BorderedEditText;
 import com.ionvaranita.belotenote.business.BusinessInserimentoNuovoGioco4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.campo.factory.impl.CampiInserimentoNuovoGiocoImpl;
@@ -30,10 +35,8 @@ import com.ionvaranita.belotenote.popup.ParametersPuncteCastigatoarePopup;
 import com.ionvaranita.belotenote.utils.IntegerUtils;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by ionvaranita on 12/04/18.
@@ -53,14 +56,18 @@ public class PopupPuncteCastigatoare {
     private Button okButtonPopup;
     private Button cancelButtonPopup;
     private BorderedEditText puncteCastigatoareGlobalInserimanto;
-    private View popupViewPuncteCastigatoare;
-    private RecyclerView recyclerViewPuncteCastigatoareGlobal;
-    private AdapterPuncteCastigatoareGlobal adapterPuncteCastigatoareGlobal;
+    private View popupViewPuncteCastigatoare;;
     private Switch switchButton;
     private LayoutInflater layoutInflater;
     private Integer idPartida;
     private Integer idGioco;
     private TableRow nomeGiocoFooterTableRow;
+
+    private Spinner spinnerPuncteCastigatoarePrecedente;
+
+    private AdapterSpinner adapterSpinner;
+
+    private TextView errorAlertNomeGiocoPuncteCastigatoare;
 
     public PopupPuncteCastigatoare(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup, Integer idGioco, Integer idPartida) {
         this(parametersPuncteCastigatoarePopup);
@@ -78,6 +85,10 @@ public class PopupPuncteCastigatoare {
 
         layoutInflater = ((LayoutInflater) contesto.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         popupViewPuncteCastigatoare = layoutInflater.inflate(R.layout.popup_puncte_castigatoare_global, null);
+
+        spinnerPuncteCastigatoarePrecedente = popupViewPuncteCastigatoare.findViewById(R.id.spinner_puncte_castigatoare_precedente);
+
+
 
         switchButton = popupViewPuncteCastigatoare.findViewById(R.id.switch_button_active_puncte_castigatoare_global);
 
@@ -119,18 +130,12 @@ public class PopupPuncteCastigatoare {
     }
 
     private void popolaRecyclerViewPuncteCastigatoareGlobal() {
-        recyclerViewPuncteCastigatoareGlobal = popupViewPuncteCastigatoare.findViewById(R.id.recycler_view_puncte_castigatoare_global);
 
         puncteCastigatoareGlobalList = db.puncteCastigatoareGlobalDao().selectAllPuncteCastigatoareGlobalOrderByData();
 
-        adapterPuncteCastigatoareGlobal = new AdapterPuncteCastigatoareGlobal(contesto, switchButton, puncteCastigatoareGlobalList);
-        puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
-        adapterPuncteCastigatoareGlobal.setInserimentoPuncteCastigatoare(puncteCastigatoareGlobalInserimanto);
+        adapterSpinner = new AdapterSpinner(contesto,R.layout.item_spinner_puncte_castigatoare,puncteCastigatoareGlobalList);
 
-        recyclerViewPuncteCastigatoareGlobal.setAdapter(adapterPuncteCastigatoareGlobal);
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(contesto);
-        recyclerViewPuncteCastigatoareGlobal.setLayoutManager(linearLayoutManager);
-        recyclerViewPuncteCastigatoareGlobal.requestFocus();
+        spinnerPuncteCastigatoarePrecedente.setAdapter(adapterSpinner);
 
         popupWindow = new PopupWindow(popupViewPuncteCastigatoare,
                 itemsMenuRecyclerView.getWidth(), itemsMenuRecyclerView.getHeight());
@@ -159,9 +164,35 @@ public class PopupPuncteCastigatoare {
     }
 
     private void setMostraONascondiInputPuncteCastigatoare() {
+        puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
 
+        spinnerPuncteCastigatoarePrecedente.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                switchButton.setChecked(false);
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapter) {  }
+        });
+
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    puncteCastigatoareGlobalInserimanto.setVisibility(View.VISIBLE);
+                    puncteCastigatoareGlobalInserimanto.requestFocus();
+                    puncteCastigatoareGlobalInserimanto.callOnClick();
+                    spinnerPuncteCastigatoarePrecedente.setEnabled(false);
+                }
+                else{
+                    puncteCastigatoareGlobalInserimanto.setVisibility(View.INVISIBLE);
+                    spinnerPuncteCastigatoarePrecedente.setEnabled(true);
+                }
+            }
+        });
     }
-
     public void showPopup() {
 
         popupWindow.setFocusable(true);
@@ -186,9 +217,12 @@ public class PopupPuncteCastigatoare {
                 BusinessInserimentoNuovoGioco4GiocatoriInSquadra businessInserimentoNuovoGioco4GiocatoriInSquadra = new BusinessInserimentoNuovoGioco4GiocatoriInSquadra();
 
                 businessInserimentoNuovoGioco4GiocatoriInSquadra.inserisciPrimaVoltaNelDatabase(infoGiocoNuovo4GiocatoriInSquadra);
+
                 idGioco = businessInserimentoNuovoGioco4GiocatoriInSquadra.getIdGioco();
+
+                vaiNellaTabellaPunti();
             }
-            vaiNellaTabellaPunti();
+
 
         }
 
@@ -196,16 +230,23 @@ public class PopupPuncteCastigatoare {
     }
 
     private boolean verificaIntegrita() {
+        errorAlertNomeGiocoPuncteCastigatoare = popupViewPuncteCastigatoare.findViewById(R.id.error_alert_nome_gioco_puncte_castigatoare);
+
+
         return verificaCampiFooter() && verificaPuncteCastigatoare();
     }
 
     private boolean verificaCampiFooter() {
+        String errore = contesto.getResources().getString(R.string.error_game_name);
         List<BorderedEditText> listaCampi = new ArrayList<>(mappaCampi.values());
         for (BorderedEditText campo : listaCampi) {
-            if (campo.getText() == null) {
+            if (campo.getText() == null||(campo.getText()!=null&&campo.getText().toString().length()<1)) {
+                campo.setError(errore);
+                campo.showError();
                 return false;
             }
         }
+
         return true;
     }
 
@@ -214,11 +255,20 @@ public class PopupPuncteCastigatoare {
         if (puncteCastigatoareGlobalInserimanto.getText() != null && IntegerUtils.isInteger(puncteCastigatoareGlobalInserimanto.getText().toString())) {
             puncteCastigatoare = Integer.parseInt(puncteCastigatoareGlobalInserimanto.getText().toString());
             return true;
-        } else if (adapterPuncteCastigatoareGlobal.getLastCheckedPuncteCastigatoare() != null && adapterPuncteCastigatoareGlobal.getLastCheckedPuncteCastigatoare().isChecked()) {
-            puncteCastigatoare = Integer.parseInt(adapterPuncteCastigatoareGlobal.getLastCheckedPuncteCastigatoare().getText().toString());
+        }
+        if(spinnerPuncteCastigatoarePrecedente.isEnabled()){
+
+            PuncteCastigatoareGlobalBean puncteCastigatoareGlobalBean = (PuncteCastigatoareGlobalBean)spinnerPuncteCastigatoarePrecedente.getSelectedItem();
+
+            puncteCastigatoare = puncteCastigatoareGlobalBean.getPuncteCastigatoare();
             return true;
         }
-        return false;
+
+        String errore = contesto.getResources().getString(R.string.error_puncte_castigatoare);
+        puncteCastigatoareGlobalInserimanto.setError(errore);
+        puncteCastigatoareGlobalInserimanto.showError();
+
+                return false;
     }
 
 

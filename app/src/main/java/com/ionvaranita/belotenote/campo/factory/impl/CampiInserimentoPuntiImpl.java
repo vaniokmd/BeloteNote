@@ -5,6 +5,7 @@ import android.os.Build;
 import android.text.InputFilter;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TableRow;
 
 import com.ionvaranita.belotenote.borders.BorderedEditText;
@@ -62,6 +63,7 @@ public class CampiInserimentoPuntiImpl implements CampiInserimentoPuntiFactory {
         InputFilter[] filters = new InputFilter[1];
         filters[0] = new InputFilter.LengthFilter(LengthOfCharacters.INSERIMENTO_PUNTI_MAX_LENGHT); //Filter to 10 characters
         campo.setFilters(filters);
+        campo.setMaxLines(1);
         if (Build.VERSION.SDK_INT > 17) campo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         campo.setGravity(Gravity.CENTER);
     }
