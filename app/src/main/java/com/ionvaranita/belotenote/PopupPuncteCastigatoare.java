@@ -3,7 +3,9 @@ package com.ionvaranita.belotenote;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -157,6 +159,14 @@ public class PopupPuncteCastigatoare {
 
     private void setMostraONascondiInputPuncteCastigatoare() {
         puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
+        puncteCastigatoareGlobalInserimanto.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.d(event.toString()+"event action",""+event.getAction());
+                return false;
+            }
+        });
+
         spinnerPuncteCastigatoarePrecedente.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view,
