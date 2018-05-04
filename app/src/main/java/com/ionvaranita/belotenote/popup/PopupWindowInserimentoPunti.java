@@ -192,7 +192,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
             entity.setPuntiGioco(puntiGioco);
             entity.setPuntiNoi(puntiNoi);
             entity.setPuntiVoi(puntiVoi);
-            BusinessInserimentoNuovoGioco4GiocatoriInSquadra businessInserimentoNuovoGioco4GiocatoriInSquadra = new BusinessInserimentoNuovoGioco4GiocatoriInSquadra();
+            BusinessInserimentoNuovoGioco4GiocatoriInSquadra businessInserimentoNuovoGioco4GiocatoriInSquadra = new BusinessInserimentoNuovoGioco4GiocatoriInSquadra(context);
             businessInserimentoNuovoGioco4GiocatoriInSquadra.setIdGioco(idGioco);
             businessInserimentoNuovoGioco4GiocatoriInSquadra.inserisciBeanNelDatabase(entity);
 

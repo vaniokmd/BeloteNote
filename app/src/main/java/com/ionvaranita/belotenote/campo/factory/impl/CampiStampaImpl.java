@@ -1,13 +1,14 @@
 package com.ionvaranita.belotenote.campo.factory.impl;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.ionvaranita.belotenote.R;
 import com.ionvaranita.belotenote.campo.factory.CampiStampaFactory;
 import com.ionvaranita.belotenote.constanti.IdsCampiStampa;
 import com.ionvaranita.belotenote.constanti.MappaIdCampoValoreTestoCampiStampa;
@@ -17,6 +18,8 @@ import com.ionvaranita.belotenote.utils.GlobalLayoutParams;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.ionvaranita.belotenote.constanti.ConstantiGlobal.DELTA_TEXT_SIZE_CAMPI_STAMPA;
 
 /**
  * Created by ionvaranita on 23/04/18.
@@ -68,6 +71,10 @@ public class CampiStampaImpl implements CampiStampaFactory {
         TableRow.LayoutParams layoutParams = GlobalLayoutParams.layoutParamsCampiInserimento();
         campo.setLayoutParams(layoutParams);
         campo.setMaxLines(1);
+        if(campo.getId()== IdsCampiStampa.ID_PUNTI_NOI_STAMPA)campo.setTextColor(context.getResources().getColor(R.color.color_noi));
+        if(campo.getId()==IdsCampiStampa.ID_PUNTI_VOI_STAMPA)campo.setTextColor(context.getResources().getColor(R.color.color_voi));
+        campo.setTextSize(campo.getTextSize()+ DELTA_TEXT_SIZE_CAMPI_STAMPA);
+        campo.setTypeface(Typeface.DEFAULT_BOLD);
         if (Build.VERSION.SDK_INT > 17) campo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         campo.setGravity(Gravity.CENTER);
     }

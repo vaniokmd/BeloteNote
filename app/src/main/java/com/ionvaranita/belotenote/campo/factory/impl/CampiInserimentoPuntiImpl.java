@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TableRow;
 
+import com.ionvaranita.belotenote.R;
 import com.ionvaranita.belotenote.borders.BorderedEditText;
 import com.ionvaranita.belotenote.campo.factory.CampiInserimentoPuntiFactory;
+import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
 import com.ionvaranita.belotenote.constanti.IdsCampiInserimento;
 import com.ionvaranita.belotenote.constanti.LengthOfCharacters;
 import com.ionvaranita.belotenote.utils.GlobalLayoutParams;

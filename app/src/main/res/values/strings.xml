@@ -4,7 +4,7 @@
     <string name="vrei_sa_continui_cu_o_partida_noua">You continue with a new match?</string>
     <string name="nu">yes</string>
     <string name="da">no</string>
-    <string name="introdu_nume_partida">insert game\'s name</string>
+    <string name="inserisc_nome_gioco">insert game\'s name</string>
     <string name="introduc_manual_puncte_castigatoare">insert manually winner points</string>
     <string name="puncte_castigatoare_precedente">winner points:</string>
     <string name="cancel">Cancel</string>
@@ -40,6 +40,7 @@
     <string name="error_game_name">the game name field must contain at least one character</string>
     <string name="error_puncte_castigatoare">invalid winner points number</string>
     <string name="error">error</string>
+    <string name="inserisci">insert</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

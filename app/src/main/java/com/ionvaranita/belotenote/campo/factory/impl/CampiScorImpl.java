@@ -8,7 +8,9 @@ import android.widget.EdgeEffect;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.ionvaranita.belotenote.R;
 import com.ionvaranita.belotenote.campo.factory.CampiScorFactory;
+import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
 import com.ionvaranita.belotenote.constanti.IdsCampiScor;
 import com.ionvaranita.belotenote.utils.GlobalLayoutParams;
 
@@ -66,6 +68,9 @@ public class CampiScorImpl implements CampiScorFactory {
         TableRow.LayoutParams layoutParams = GlobalLayoutParams.layoutParamsCampiInserimento();
         campo.setLayoutParams(layoutParams);
         campo.setMaxLines(1);
+        campo.setTextSize(campo.getTextSize()+ ConstantiGlobal.DELTA_TEXT_SIZE_CAMPI_SCOR);
+        if(campo.getId()==IdsCampiScor.ID_SCOR_NOI)campo.setTextColor(context.getResources().getColor(R.color.color_noi));
+        if(campo.getId()==IdsCampiScor.ID_SCOR_VOI)campo.setTextColor(context.getResources().getColor(R.color.color_voi));
         if (Build.VERSION.SDK_INT > 17) campo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         campo.setGravity(Gravity.CENTER);
     }

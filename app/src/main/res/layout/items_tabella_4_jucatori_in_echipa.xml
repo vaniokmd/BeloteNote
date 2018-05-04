@@ -10,7 +10,7 @@
     <TableRow
         android:id="@+id/items_patru_jucatori_in_echipa"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1">
 
         <!--<TextView
@@ -25,34 +25,32 @@
 
         <TextView
             android:id="@+id/item_noi"
-            android:layout_width="@dimen/larghezza_cella"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:textAlignment="center"
-            android:textColor="#000080"
-            android:textSize="@dimen/scor_dimensione"
+            android:textColor="@color/color_noi"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/item_joaca_patru_jucatori_in_echipa"
-            android:layout_width="@dimen/text_size_26"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:textAlignment="center"
             android:textStyle="bold"
-            android:textSize="@dimen/text_size_row" />
+            />
 
 
         <TextView
             android:id="@+id/item_voi"
-            android:layout_width="@dimen/larghezza_cella"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:textAlignment="center"
-            android:textColor="#006400"
-            android:textSize="@dimen/scor_dimensione"
+            android:textColor="@color/color_voi"
             android:textStyle="bold" />
 
 

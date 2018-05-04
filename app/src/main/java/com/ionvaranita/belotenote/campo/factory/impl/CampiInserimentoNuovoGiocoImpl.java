@@ -3,14 +3,15 @@ package com.ionvaranita.belotenote.campo.factory.impl;
 import android.content.Context;
 import android.os.Build;
 import android.text.InputFilter;
-import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TableRow;
 
+import com.ionvaranita.belotenote.R;
 import com.ionvaranita.belotenote.borders.BorderedEditText;
 import com.ionvaranita.belotenote.campo.factory.CampiInsermientoNuovoGiocoFactory;
+import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
 import com.ionvaranita.belotenote.constanti.IdsCampiInserimentoNuovoGioco;
 import com.ionvaranita.belotenote.constanti.LengthOfCharacters;
 import com.ionvaranita.belotenote.utils.GlobalLayoutParams;
@@ -48,7 +49,15 @@ public class CampiInserimentoNuovoGiocoImpl implements CampiInsermientoNuovoGioc
     private void configuraCampo(BorderedEditText campo) {
         campo.setLayoutParams(GlobalLayoutParams.layoutParamsCampiInserimento());
         InputFilter[] filters = new InputFilter[1];
-        filters[0] = new InputFilter.LengthFilter(LengthOfCharacters.INSERIMENTO_NOME_GIOCO_MAX_LENGTH); //Filter to 10 characters
+        if(campo.getId()== ConstantiGlobal.ID_NOME_GIOCO){
+            filters[0] = new InputFilter.LengthFilter(LengthOfCharacters.INSERIMENTO_NOME_GIOCO_MAX_LENGTH);
+            campo.setHint(R.string.inserisc_nome_gioco);
+        }
+        else{
+            filters[0] = new InputFilter.LengthFilter(LengthOfCharacters.INSERIMENTO_PUNTI_MAX_LENGHT);
+        }
+
+         //Filter to 10 characters
         campo.setFilters(filters);
         campo.setSingleLine();
 

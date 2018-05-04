@@ -17,16 +17,16 @@ import com.ionvaranita.belotenote.utils.IntegerUtils;
 
 public class BusinessInserimentoNuovoGioco4GiocatoriInSquadra {
     private Integer idGioco;
+    private Context context;
     private AppDatabase db;
 
-    public BusinessInserimentoNuovoGioco4GiocatoriInSquadra() {
+    public BusinessInserimentoNuovoGioco4GiocatoriInSquadra(Context context) {
+        this.context=context;
+        db = AppDatabase.getPersistentDatabase(context);
 
     }
 
     public void inserisciPrimaVoltaNelDatabase(InfoGiocoNuovo4GiocatoriInSquadra infoGiocoNuovo4GiocatoriInSquadra) {
-
-        Context context = infoGiocoNuovo4GiocatoriInSquadra.getContext();
-        db = AppDatabase.getPersistentDatabase(context);
         Gioco4GiocatoriInSquadra giocoBean = new Gioco4GiocatoriInSquadra();
 
         giocoBean.setNumeGioco(infoGiocoNuovo4GiocatoriInSquadra.getNomeGioco());
