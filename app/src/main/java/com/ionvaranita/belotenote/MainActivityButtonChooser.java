@@ -5,6 +5,7 @@ package com.ionvaranita.belotenote;
  */
 
 public class MainActivityButtonChooser {
+    public static final int NONE_2 =-2;
     public static final int NONE = -1;
     public static final String BUTONUL_APASAT = "Butonul Apasat Main Activity";
     public static final int DOI_JUCATORI = 2;

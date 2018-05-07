@@ -3,11 +3,17 @@ package com.ionvaranita.belotenote;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.ionvaranita.belotenote.fragments.EmptyFragment;
 import com.ionvaranita.belotenote.utils.DeviceUtils;
@@ -67,13 +73,43 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LOG.info("Activity onCreate");
-        setContentView(com.ionvaranita.belotenote.R.layout.activity_main);
+        butonulApasat = getIntent().getIntExtra(MainActivityButtonChooser.BUTONUL_APASAT, MainActivityButtonChooser.NONE);
+
         if (savedInstanceState != null) {
             butonulApasat = savedInstanceState.getInt(MainActivityButtonChooser.BUTONUL_APASAT, MainActivityButtonChooser.NONE);
-        } else {
-            butonulApasat = getIntent().getIntExtra(MainActivityButtonChooser.BUTONUL_APASAT, MainActivityButtonChooser.NONE);
-
         }
+
+        if (butonulApasat == MainActivityButtonChooser.NONE) {
+            setContentView(R.layout.startup_sponsorised_by);
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+            getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
+            TextView titoloActioBar =getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title);
+            titoloActioBar.setText(R.string.app_name);
+
+            new CountDownTimer(5000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    setContentView(com.ionvaranita.belotenote.R.layout.activity_main);
+                    getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+                    getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
+                    TextView titoloActioBar =getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title);
+                    titoloActioBar.setText(R.string.main_menu_title);
+                }
+            }.start();
+        } else if (butonulApasat != MainActivityButtonChooser.NONE) {
+            setContentView(com.ionvaranita.belotenote.R.layout.activity_main);
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
+            TextView titoloActioBar =getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title);
+            titoloActioBar.setText(R.string.main_menu_title);
+        }
+
 
         //  getActionBar().setDisplayHomeAsUpEnabled(true);
         emptyFragment = new EmptyFragment();
@@ -126,16 +162,16 @@ public class MainActivity extends AppCompatActivity {
                     vaiNelMenuPartide4JucatoriInEchipa();
                 }
             }
-            } else{
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-                if (butonulApasat == MainActivityButtonChooser.PATRU_JUCATORI) {
-                    vaiNellaPagina4Jucatori();
-                } else if (butonulApasat == MainActivityButtonChooser.PATRU_JUCATORI_IN_ECHIPA) {
-                    vaiNelMenuPartide4JucatoriInEchipa();
-                }
+            if (butonulApasat == MainActivityButtonChooser.PATRU_JUCATORI) {
+                vaiNellaPagina4Jucatori();
+            } else if (butonulApasat == MainActivityButtonChooser.PATRU_JUCATORI_IN_ECHIPA) {
+                vaiNelMenuPartide4JucatoriInEchipa();
             }
         }
+    }
 
     private void tabletLandscapePagina4Jucatori() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -187,6 +223,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     public void apasaButonul4JucatoriInEchipa(View view) {
@@ -293,6 +336,13 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
 
+    }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
     }
 
 }

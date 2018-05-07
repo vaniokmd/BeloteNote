@@ -3,11 +3,13 @@ package com.ionvaranita.belotenote;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 import com.ionvaranita.belotenote.adapters.AdapterJocuri4JucatoriInEchipa;
 import com.ionvaranita.belotenote.constanti.ActionCode;
@@ -43,6 +45,12 @@ public class MenuJocuri extends AppCompatActivity {
         this.setContentView(com.ionvaranita.belotenote.R.layout.menu_jocuri);
 
         isTablet = DeviceUtils.isTablet(this);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
+        TextView titoloActioBar =getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title);
+        titoloActioBar.setText(R.string.patru_jucatori_in_echipa);
 
         tabletLandscape = isTablet && this.getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE;
         if (isTablet) {

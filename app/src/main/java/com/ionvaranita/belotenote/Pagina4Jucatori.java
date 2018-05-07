@@ -3,8 +3,10 @@ package com.ionvaranita.belotenote;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.ionvaranita.belotenote.constanti.ActionCode;
 import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
@@ -27,6 +29,11 @@ public class Pagina4Jucatori extends AppCompatActivity {
         setContentView(R.layout.pagina_4_jucatori);
         isTablet = DeviceUtils.isTablet(this);
         tabletLandscape = isTablet && this.getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE;
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
+        TextView titoloActioBar =getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title);
+        titoloActioBar.setText(R.string.patru_jucatori);
 
         if (isTablet) {
             if (tabletLandscape) {
@@ -48,8 +55,11 @@ public class Pagina4Jucatori extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent vaiIndietro = new Intent(this, MainActivity.class);
-        if (tabletLandscape)
-            vaiIndietro.putExtra(MainActivityButtonChooser.BUTONUL_APASAT, MainActivityButtonChooser.PATRU_JUCATORI);
+
+        vaiIndietro.putExtra(MainActivityButtonChooser.BUTONUL_APASAT, MainActivityButtonChooser.NONE_2);
+        if (tabletLandscape)vaiIndietro.putExtra(MainActivityButtonChooser.BUTONUL_APASAT, MainActivityButtonChooser.PATRU_JUCATORI);
+
+
         startActivity(vaiIndietro);
     }
 }
