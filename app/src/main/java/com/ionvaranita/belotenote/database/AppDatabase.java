@@ -23,7 +23,7 @@ import com.ionvaranita.belotenote.entity.TurnManagement4GiocatoriInSquadra;
  * Created by ionvaranita on 20/11/17.
  */
 @Database(entities = {TurnManagement4GiocatoriInSquadra.class
-        ,Punti4GiocatoriInSquadraEntityBean.class, PuncteCastigatoareGlobalBean.class, Scor4JucatoriInEchipaEntityBean.class, PuncteCastigatoare4JucatoriInEchipaBean.class,Gioco4GiocatoriInSquadra.class}, version = 9)
+        ,Punti4GiocatoriInSquadraEntityBean.class, PuncteCastigatoareGlobalBean.class, Scor4JucatoriInEchipaEntityBean.class, PuncteCastigatoare4JucatoriInEchipaBean.class,Gioco4GiocatoriInSquadra.class}, version = 10)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "BeloteNoteDatabase";
 
@@ -65,7 +65,18 @@ public abstract class AppDatabase extends RoomDatabase {
 
             while (condizione){
                 try {
+                    Log.d(DATABASE_NAME,"First creation of database");
                     PERSISTENT_DATABASE = Room.databaseBuilder(context,AppDatabase.class,DATABASE_NAME).fallbackToDestructiveMigration().allowMainThreadQueries().build();
+
+                    PuncteCastigatoareGlobalBean puncteCastigatoareGlobalBean1 = new PuncteCastigatoareGlobalBean();
+                    PuncteCastigatoareGlobalBean puncteCastigatoareGlobalBean2 = new PuncteCastigatoareGlobalBean();
+
+                    puncteCastigatoareGlobalBean1.setPuncteCastigatoare(101);
+                    puncteCastigatoareGlobalBean2.setPuncteCastigatoare(51);
+
+
+                    PERSISTENT_DATABASE.puncteCastigatoareGlobalDao().insertPuncteCastigatoareGlobal(puncteCastigatoareGlobalBean1);
+                    PERSISTENT_DATABASE.puncteCastigatoareGlobalDao().insertPuncteCastigatoareGlobal(puncteCastigatoareGlobalBean2);
                     condizione = false;
                 }catch (Exception e){
                     Log.d("database error!",e.getMessage());
