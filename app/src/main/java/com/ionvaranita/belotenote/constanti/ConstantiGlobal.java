@@ -13,7 +13,7 @@ public class ConstantiGlobal {
 
     public static final int PUNTI_GIOCO_STAMPA = 101;
 
-    public static final int PUNTI_GIOCO_INSERIMENTO = 102;
+    public static final int ID_PUNTI_GIOCO_INSERIMENTO = 102;
 
     public static final String ACTION_CODE = "Codice azione";
 }

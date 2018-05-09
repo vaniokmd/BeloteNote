@@ -225,12 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
+
 
     public void apasaButonul4JucatoriInEchipa(View view) {
         LOG.info("apasaButonul4InEchipaJucatori");
@@ -336,6 +331,14 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+
+        menu.findItem(R.id.main_menu).setVisible(false);
+        return true;
     }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,

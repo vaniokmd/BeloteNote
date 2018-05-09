@@ -15,7 +15,7 @@ public class IdsCampiInserimento {
     public static List<Integer> getIdsInserimento4GiocatoriInSquadra(){
         List<Integer> listaIds = new ArrayList<>();
         listaIds.add(ID_PUNTI_NOI_INSERIMENTO);
-        listaIds.add(ConstantiGlobal.PUNTI_GIOCO_INSERIMENTO);
+        listaIds.add(ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO);
         listaIds.add(ID_PUNTI_VOI_INSERIMENTO);
         return listaIds;
 

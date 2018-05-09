@@ -2,6 +2,7 @@ package com.ionvaranita.belotenote.popup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.IntRange;
 import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.text.InputType;
@@ -28,7 +29,9 @@ import com.ionvaranita.belotenote.constanti.Turnul4GiocatoriInSquadraEnum;
 import com.ionvaranita.belotenote.database.AppDatabase;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 import com.ionvaranita.belotenote.utils.GlobalButtonOnClickListener;
+import com.ionvaranita.belotenote.utils.IntegerUtils;
 
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +83,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
     private void gestisci4JucatorioInEchipa(View view) {
 
         inizializzaICampi4JucatoriInEchipa();
-        final BorderedEditText inserimentoGioco = mappaCampiInseriti.get(ConstantiGlobal.PUNTI_GIOCO_INSERIMENTO);
+        final BorderedEditText inserimentoGioco = mappaCampiInseriti.get(ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO);
         inserimentoGioco.requestFocus();
         for (int i = 0; i < listaCampi.size(); i++) {
             final BorderedEditText campo = listaCampi.get(i);
@@ -107,7 +110,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                     }
                 }
             });
-            if (campo.getId() == ConstantiGlobal.PUNTI_GIOCO_INSERIMENTO) {
+            if (campo.getId() == ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO) {
                 campo.callOnClick();
             }
         }
@@ -161,6 +164,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                                 campo.setText(buttonKey.getText().toString());
                             } else {
                                 campo.setText(campo.getText().toString() + buttonKey.getText().toString());
+                                calcolaCampoRimasto();
                             }
                             campo.setSelection(campo.getText().toString().length());
 
@@ -172,6 +176,60 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
         }
 
     }
+    private void inizializzaCampoRimasto(BorderedEditText campo){
+
+    }
+    private BorderedEditText campoRimasto=null;
+
+    private void calcolaCampoRimasto(){
+        List<BorderedEditText> listaCampi = new ArrayList<>(mappaCampiInseriti.values());
+        Integer puntiGioco=null;
+        int sommaAltriCampi=0;
+        BorderedEditText campoRimasto=null;
+        int nrCampi=0;
+        for(int i = 0; i<listaCampi.size();i++){
+            BorderedEditText campo = listaCampi.get(i);
+            if(campo.getId()==ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO){
+                if(campo.getText()!=null){
+                    if(IntegerUtils.isInteger(campo.getText().toString())){
+                        puntiGioco = Integer.parseInt(campo.getText().toString());
+                        nrCampi++;
+                    }
+                }
+            }
+            else {
+                if(campo.getText()!=null){
+                    if(IntegerUtils.isInteger(campo.getText().toString())){
+                        int valoreCampo = Integer.parseInt(campo.getText().toString());
+                        if(valoreCampo==-10){
+                            valoreCampo=0;
+                        }
+                        sommaAltriCampi+=valoreCampo;
+                        nrCampi++;
+                    }
+                    else{
+                        campoRimasto = campo;
+                    }
+
+                }
+                else{
+                    campoRimasto = campo;
+                }
+            }
+        }
+        if(nrCampi==listaCampi.size()-1&&puntiGioco!=null){
+            this.campoRimasto=campoRimasto;
+        }
+        if(this.campoRimasto!=null){
+            if(this.campoRimasto.getText()!=null){
+                if(IntegerUtils.isInteger(this.campoRimasto.getText().toString())){
+                    sommaAltriCampi-=Integer.parseInt(this.campoRimasto.getText().toString());
+                }
+            }
+            this.campoRimasto.setText(Integer.toString(sommaAltriCampi));
+        }
+
+    }
 
     private void inserisciPuntiNelDatabase() {
         AppDatabase db = AppDatabase.getPersistentDatabase(context);
@@ -179,7 +237,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
         if(actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA){
             Punti4GiocatoriInSquadraEntityBean entity =db.tabellaPunti4GiocatoriInSquadraDao().getLastRecordPunti4GiocatoriInSquadraByIdGioco(idGioco);
 
-            String puntiGiocoString = mappaCampiInseriti.get(ConstantiGlobal.PUNTI_GIOCO_INSERIMENTO).getText().toString();
+            String puntiGiocoString = mappaCampiInseriti.get(ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO).getText().toString();
             Integer puntiGioco = Integer.parseInt(puntiGiocoString);
 
             String puntiNoiString = mappaCampiInseriti.get(IdsCampiInserimento.ID_PUNTI_NOI_INSERIMENTO).getText().toString();
@@ -201,13 +259,13 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
     }
 
     private boolean verificaIntegrita() {
-        BorderedEditText editTextPuncteJoaca = mappaCampiInseriti.get(ConstantiGlobal.PUNTI_GIOCO_INSERIMENTO);
+        BorderedEditText editTextPuncteJoaca = mappaCampiInseriti.get(ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO);
         String textPuncteJoaca = editTextPuncteJoaca.getText().toString();
         if (isInteger(textPuncteJoaca, editTextPuncteJoaca.getId())) {
             Integer puncteJoaca = Integer.parseInt(textPuncteJoaca);
             for (int i = 0; i < listaCampi.size(); i++) {
                 BorderedEditText campo = listaCampi.get(i);
-                if (campo.getId() != ConstantiGlobal.PUNTI_GIOCO_INSERIMENTO) {
+                if (campo.getId() != ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO) {
                     if (isInteger(campo.getText().toString(), campo.getId())) {
                         puncteJoaca -= Integer.parseInt(campo.getText().toString());
                     } else {

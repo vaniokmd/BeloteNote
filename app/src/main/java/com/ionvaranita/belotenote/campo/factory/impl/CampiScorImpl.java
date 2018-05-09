@@ -1,7 +1,9 @@
 package com.ionvaranita.belotenote.campo.factory.impl;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Build;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EdgeEffect;
@@ -68,7 +70,8 @@ public class CampiScorImpl implements CampiScorFactory {
         TableRow.LayoutParams layoutParams = GlobalLayoutParams.layoutParamsCampiInserimento();
         campo.setLayoutParams(layoutParams);
         campo.setMaxLines(1);
-        campo.setTextSize(campo.getTextSize()+ ConstantiGlobal.DELTA_TEXT_SIZE_CAMPI_SCOR);
+        campo.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+        campo.setTypeface(Typeface.DEFAULT_BOLD);
         if(campo.getId()==IdsCampiScor.ID_SCOR_NOI)campo.setTextColor(context.getResources().getColor(R.color.color_noi));
         if(campo.getId()==IdsCampiScor.ID_SCOR_VOI)campo.setTextColor(context.getResources().getColor(R.color.color_voi));
         if (Build.VERSION.SDK_INT > 17) campo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);

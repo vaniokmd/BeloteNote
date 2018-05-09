@@ -3,6 +3,7 @@ package com.ionvaranita.belotenote.campo.factory.impl;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TableRow;
@@ -70,10 +71,10 @@ public class CampiStampaImpl implements CampiStampaFactory {
     private void configuraCampo(TextView campo) {
         TableRow.LayoutParams layoutParams = GlobalLayoutParams.layoutParamsCampiInserimento();
         campo.setLayoutParams(layoutParams);
+        campo.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
         campo.setMaxLines(1);
         if(campo.getId()== IdsCampiStampa.ID_PUNTI_NOI_STAMPA)campo.setTextColor(context.getResources().getColor(R.color.color_noi));
         if(campo.getId()==IdsCampiStampa.ID_PUNTI_VOI_STAMPA)campo.setTextColor(context.getResources().getColor(R.color.color_voi));
-        campo.setTextSize(campo.getTextSize()+ DELTA_TEXT_SIZE_CAMPI_STAMPA);
         campo.setTypeface(Typeface.DEFAULT_BOLD);
         if (Build.VERSION.SDK_INT > 17) campo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         campo.setGravity(Gravity.CENTER);

@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     android:layoutDirection="ltr">
-    <item android:id="@+id/file"
+    <item android:id="@+id/main_menu"
         android:title="@string/main_menu_title" >
-        <!-- "file" submenu -->
-        <menu>
-            <item android:id="@+id/create_new"
-                android:title="titolo 1" />
-            <item android:id="@+id/open"
-                android:title="titolo 2" />
-        </menu>
     </item>
+    <item android:id="@+id/credits"
+        android:title="@string/credits"/>
+    <item android:id="@+id/about"
+        android:title="@string/about"/>
 </menu>

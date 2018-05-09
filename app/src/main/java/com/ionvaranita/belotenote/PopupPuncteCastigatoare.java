@@ -184,10 +184,13 @@ public class PopupPuncteCastigatoare {
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                TextView selectedView = (TextView)spinnerPuncteCastigatoarePrecedente.getSelectedView();
                 if (isChecked) {
                     puncteCastigatoareGlobalInserimanto.setVisibility(View.VISIBLE);
                     puncteCastigatoareGlobalInserimanto.requestFocus();
                     spinnerPuncteCastigatoarePrecedente.setEnabled(false);
+
+                    selectedView.setTextColor(Color.GRAY);
                     textViewWinnerPoints.setTextColor(Color.GRAY);
 
                 } else {
@@ -195,6 +198,7 @@ public class PopupPuncteCastigatoare {
                     spinnerPuncteCastigatoarePrecedente.setEnabled(true);
                     textViewWinnerPoints.setEnabled(true);
                     textViewWinnerPoints.setTextColor(Color.BLACK);
+                    selectedView.setTextColor(Color.BLACK);
 
                     InputMethodManager imm = (InputMethodManager)contesto.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(puncteCastigatoareGlobalInserimanto.getWindowToken(), 0);

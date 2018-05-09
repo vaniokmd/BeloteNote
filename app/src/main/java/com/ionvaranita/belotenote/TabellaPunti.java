@@ -7,11 +7,16 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.TableRow;
@@ -83,9 +88,16 @@ public class TabellaPunti extends AppCompatActivity {
         popupView = getLayoutInflater().inflate(R.layout.popup_window_inserisci_puncte_4_jucatori_in_echipa, null);
         idGioco = getIntent().getIntExtra(Turnul4GiocatoriInSquadraEnum.ID_JOC.getDescrizione(), -1);
 
+        if (actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA) {
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+            getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
+            TextView titoloActioBar =getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title);
+
         linearLayoutManager = new LinearLayoutManager(this);
 
-        if (actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA) {
+
+            titoloActioBar.setText(R.string.patru_jucatori_in_echipa);
             gestisci4GiocatoriInSquadra();
         }
 
@@ -200,5 +212,33 @@ public class TabellaPunti extends AppCompatActivity {
         intent.putExtra(MainActivityButtonChooser.BUTONUL_APASAT, MainActivityButtonChooser.PATRU_JUCATORI_IN_ECHIPA);
         intent.putExtra(ConstantiGlobal.ACTION_CODE,actionCode);
         startActivity(intent);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.main_menu:
+                Intent vaiIndietro = new Intent(this, MainActivity.class);
+                vaiIndietro.putExtra(MainActivityButtonChooser.BUTONUL_APASAT, MainActivityButtonChooser.NONE_2);
+                startActivity(vaiIndietro);
+                return true;
+            case R.id.about:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
