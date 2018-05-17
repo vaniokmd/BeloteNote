@@ -1,6 +1,7 @@
-package com.ionvaranita.belotenote;
+package com.ionvaranita.belotenote.popup;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -15,7 +16,10 @@ import android.widget.PopupWindow;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.ionvaranita.belotenote.constanti.CineACastigatEnum;
+import com.ionvaranita.belotenote.R;
+import com.ionvaranita.belotenote.TabellaPunti;
+import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
+import com.ionvaranita.belotenote.constanti.Turnul4GiocatoriInSquadraEnum;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 
 import static android.graphics.Typeface.BOLD;
@@ -30,7 +34,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
     private Integer idJoc;
     private Integer idPartida;
     private View popupViewCineACastigat;
-    private CineACastigatEnum cineACastigatEnum;
+    private String cineACastigatEnum;
     private Button da;
     private Button nu;
     private PopupWindow popupWindow;
@@ -43,7 +47,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
 
     private TextView testoACastigat;
 
-    public PopupVreiSaContinuiCuOPartidaNoua(Context context,View window,Integer actionCode,Integer idJoc,Integer idPartida,CineACastigatEnum cineACastigatEnum){
+    private PopupVreiSaContinuiCuOPartidaNoua(Context context,View window,Integer actionCode,Integer idJoc,Integer idPartida,String cineACastigatEnum){
         contesto = context;
         this.window=window;
         this.actionCode = actionCode;
@@ -63,6 +67,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
         da.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                vaiNellaTabellaPunti();
 
             }
         });
@@ -70,6 +75,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
         nu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 popupWindow.dismiss();
             }
         });
@@ -77,7 +83,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
 
     }
 
-    public PopupVreiSaContinuiCuOPartidaNoua(Context context, View window, Integer actionCode, Integer idJoc, Integer idPartida,CineACastigatEnum cineACastigatEnum,Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean){
+    public PopupVreiSaContinuiCuOPartidaNoua(Context context, View window, Integer actionCode, Integer idJoc, Integer idPartida,String cineACastigatEnum,Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean){
         this(context,window,actionCode,idJoc,idPartida,cineACastigatEnum);
 
         String testoCineACastigat = contesto.getResources().getString(R.string.a_castigat);
@@ -131,7 +137,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
 
 
 
-        if(cineACastigatEnum==CineACastigatEnum.NOI){
+        if(cineACastigatEnum.equals(testoNoi)){
             noiTexView.setTypeface(null, Typeface.BOLD_ITALIC);
             puncteNoiTextView.setTypeface(null, Typeface.BOLD_ITALIC);
 
@@ -148,7 +154,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
             testoACastigat.setText(spannableString);
 
         }
-        else if(cineACastigatEnum==CineACastigatEnum.VOI){
+        else if(cineACastigatEnum.equals(testoVoi)){
             puncteVoiTextView.setTypeface(null, Typeface.BOLD_ITALIC);
 
             voiTexView.setTypeface(null,Typeface.BOLD_ITALIC);
@@ -170,8 +176,15 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
         valoriRisultatoCineACastigat.addView(puncteVoiTextView);
     }
     public void showPopup(){
-        int[] location = new int[2];
+
         popupWindow.showAtLocation(window, Gravity.CENTER,0,0);
+    }
+
+    private void vaiNellaTabellaPunti(){
+        Intent intent = new Intent(contesto, TabellaPunti.class);
+        intent.putExtra(Turnul4GiocatoriInSquadraEnum.ID_JOC.getDescrizione(), idJoc);
+        intent.putExtra(ConstantiGlobal.ACTION_CODE, actionCode);
+        contesto.startActivity(intent);
     }
 
 }

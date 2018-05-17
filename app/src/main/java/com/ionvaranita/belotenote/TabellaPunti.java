@@ -28,6 +28,7 @@ import com.ionvaranita.belotenote.campo.factory.impl.CampiScorImpl;
 import com.ionvaranita.belotenote.campo.factory.impl.CampiStampaImpl;
 import com.ionvaranita.belotenote.constanti.ActionCode;
 import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
+import com.ionvaranita.belotenote.constanti.MainActivityButtonChooser;
 import com.ionvaranita.belotenote.constanti.Turnul4GiocatoriInSquadraEnum;
 import com.ionvaranita.belotenote.constanti.IdsCampiScor;
 import com.ionvaranita.belotenote.constanti.IdsCampiStampa;

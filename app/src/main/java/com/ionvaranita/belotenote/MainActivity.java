@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ionvaranita.belotenote.constanti.MainActivityButtonChooser;
 import com.ionvaranita.belotenote.fragments.EmptyFragment;
 import com.ionvaranita.belotenote.utils.DeviceUtils;
 

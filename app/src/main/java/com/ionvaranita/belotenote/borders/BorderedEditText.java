@@ -82,4 +82,9 @@ public class BorderedEditText extends EditText {
         Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
         this.startAnimation(shake);
     }
+
+    @Override
+    public String toString(){
+        return "campo id: "+this.getId();
+    }
 }
