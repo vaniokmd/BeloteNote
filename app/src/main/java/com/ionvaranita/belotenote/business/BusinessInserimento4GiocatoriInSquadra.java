@@ -3,6 +3,7 @@ package com.ionvaranita.belotenote.business;
 import android.content.Context;
 
 import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
+import com.ionvaranita.belotenote.constanti.IdsCampiStampa;
 import com.ionvaranita.belotenote.constanti.Turnul4GiocatoriInSquadraEnum;
 import com.ionvaranita.belotenote.database.AppDatabase;
 import com.ionvaranita.belotenote.entity.Gioco4GiocatoriInSquadra;
@@ -12,15 +13,21 @@ import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 import com.ionvaranita.belotenote.entity.Scor4JucatoriInEchipaEntityBean;
 import com.ionvaranita.belotenote.entity.TurnManagement4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.infogn.InfoGiocoNuovo4GiocatoriInSquadra;
+import com.ionvaranita.belotenote.utils.CineACastigatUtils;
+import com.ionvaranita.belotenote.utils.InfoCineACistigat;
 import com.ionvaranita.belotenote.utils.IntegerUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 
-public class BusinessInserimentoNuovoGioco4GiocatoriInSquadra {
+
+public class BusinessInserimento4GiocatoriInSquadra {
+    private String cineACistigat;
     private Integer idGioco;
     private Context context;
     private AppDatabase db;
 
-    public BusinessInserimentoNuovoGioco4GiocatoriInSquadra(Context context) {
+    public BusinessInserimento4GiocatoriInSquadra(Context context) {
         this.context=context;
         db = AppDatabase.getPersistentDatabase(context);
 
@@ -77,14 +84,42 @@ public class BusinessInserimentoNuovoGioco4GiocatoriInSquadra {
         Integer lastPuntiVoi = IntegerUtils.integerFix(lastBean.getPuntiVoi());
 
         bean.setIdGioco(idGioco);
-        bean.setPuntiNoi(lastPuntiNoi + bean.getPuntiNoi());
-        bean.setPuntiVoi(lastPuntiVoi + bean.getPuntiVoi());
+
+        int puntiNoiAggiornato = lastPuntiNoi + bean.getPuntiNoi();
+        int puntiVoiAggiornato = lastPuntiVoi + bean.getPuntiVoi();
+
+        bean.setPuntiNoi(puntiNoiAggiornato);
+        bean.setPuntiVoi(puntiVoiAggiornato);
+
         bean.setTurno(lastBean.getTurno() + 1);
         bean.setIdPartida(lastBean.getIdPartida());
-        //TODO Chi ha vinto
-
 
         db.tabellaPunti4GiocatoriInSquadraDao().inserisciPunti4GiocatoriInSquadra(bean);
+
+        Map<Integer, Integer> mappaIdCampoValore = new HashMap<>();
+
+        mappaIdCampoValore.put(IdsCampiStampa.ID_PUNTI_NOI_STAMPA, puntiNoiAggiornato);
+        mappaIdCampoValore.put(IdsCampiStampa.ID_PUNTI_VOI_STAMPA, puntiVoiAggiornato);
+
+        PuncteCastigatoare4JucatoriInEchipaBean puncteCastigatoare4JucatoriInEchipaBean = db.puncteCastigatoare4JucatoriInEchipaDao().selectPuncteCastigatoare4JucatoriInEchipaByIdJocAndIdPartida(idGioco, lastBean.getIdPartida());
+
+        cineACistigat=cineACistigat(puncteCastigatoare4JucatoriInEchipaBean.getPuncteCastigatoare(),mappaIdCampoValore);
+    }
+
+
+    private String cineACistigat(Integer puncteCastigatoare, Map<Integer,Integer> mappaIdCampoValore){
+            InfoCineACistigat infoCineACistigat =  new InfoCineACistigat(mappaIdCampoValore);
+            CineACastigatUtils cineACastigatUtils = new CineACastigatUtils(context,puncteCastigatoare);
+            return cineACastigatUtils.cineACistigat(infoCineACistigat);
+
+    }
+
+    public String getCineACistigat() {
+        return cineACistigat;
+    }
+
+    public void setCineACistigat(String cineACistigat) {
+        this.cineACistigat = cineACistigat;
     }
 
     public Integer getIdGioco() {

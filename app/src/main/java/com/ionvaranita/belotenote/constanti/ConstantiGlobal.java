@@ -16,4 +16,8 @@ public class ConstantiGlobal {
     public static final int ID_PUNTI_GIOCO_INSERIMENTO = 102;
 
     public static final String ACTION_CODE = "Codice azione";
+
+    public static final String CONTINUA = "continua";
+
+    public static final String CONTINUA_CON_AGGIUNTA_PUNTI = "ahhiungi_puncte_castigatoare";
 }

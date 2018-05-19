@@ -12,15 +12,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.TextView;
 
 import com.ionvaranita.belotenote.adapters.AdapterJocuri4JucatoriInEchipa;
 import com.ionvaranita.belotenote.constanti.ActionCode;
 import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
+import com.ionvaranita.belotenote.constanti.MainActivityButtonChooser;
 import com.ionvaranita.belotenote.database.AppDatabase;
 import com.ionvaranita.belotenote.entity.Gioco4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.popup.ParametersPuncteCastigatoarePopup;
+import com.ionvaranita.belotenote.popup.PopupPuncteCastigatoare;
 import com.ionvaranita.belotenote.utils.DeviceUtils;
 
 import java.util.List;

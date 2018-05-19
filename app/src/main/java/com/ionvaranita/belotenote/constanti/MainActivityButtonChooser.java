@@ -1,4 +1,4 @@
-package com.ionvaranita.belotenote;
+package com.ionvaranita.belotenote.constanti;
 
 /**
  * Created by ionvaranita on 20/01/2018.

@@ -2,7 +2,6 @@ package com.ionvaranita.belotenote.popup;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.IntRange;
 import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.text.InputType;
@@ -20,7 +19,7 @@ import com.ionvaranita.belotenote.KeyboardFragment;
 import com.ionvaranita.belotenote.R;
 import com.ionvaranita.belotenote.TabellaPunti;
 import com.ionvaranita.belotenote.borders.BorderedEditText;
-import com.ionvaranita.belotenote.business.BusinessInserimentoNuovoGioco4GiocatoriInSquadra;
+import com.ionvaranita.belotenote.business.BusinessInserimento4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.campo.factory.impl.CampiInserimentoPuntiImpl;
 import com.ionvaranita.belotenote.constanti.ActionCode;
 import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
@@ -29,9 +28,7 @@ import com.ionvaranita.belotenote.constanti.Turnul4GiocatoriInSquadraEnum;
 import com.ionvaranita.belotenote.database.AppDatabase;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 import com.ionvaranita.belotenote.utils.GlobalButtonOnClickListener;
-import com.ionvaranita.belotenote.utils.IntegerUtils;
 
-import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -158,13 +155,23 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                                 if (campo.getText().toString().length() > 0) {
                                     campo.setText(campo.getText().toString().substring(0, campo.getText().toString().length() - 1));
                                 }
+                                EsitoCampoRimasto esitoCampoRimasto = calcolaCampoRimasto();
+                                if(esitoCampoRimasto.isRimasto1Campo()){
+                                    Log.d(esitoCampoRimasto.getCampoRimasto().toString(),"e ultimo rimasto: "+esitoCampoRimasto.isRimasto1Campo()+" campo precedente is focused and empty"+esitoCampoRimasto.isCampoFocusedAndEmpty());
+                                    completaIlCampoRimasto(campo);
+                                }
+
+
 
                             } else if (valoreButton.equals(meno_10)) {
 
                                 campo.setText(buttonKey.getText().toString());
                             } else {
                                 campo.setText(campo.getText().toString() + buttonKey.getText().toString());
-                                calcolaCampoRimasto();
+                                EsitoCampoRimasto esitoCampoRimasto = calcolaCampoRimasto();
+                                if(esitoCampoRimasto.isRimasto1Campo()){
+                                    Log.d(esitoCampoRimasto.getCampoRimasto().toString(),"e ultimo rimasto: "+esitoCampoRimasto.isRimasto1Campo()+" campo precedente is focused and empty"+esitoCampoRimasto.isCampoFocusedAndEmpty());
+                                }
                             }
                             campo.setSelection(campo.getText().toString().length());
 
@@ -176,58 +183,66 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
         }
 
     }
+
+    private void completaIlCampoRimasto(BorderedEditText campo) {
+
+    }
+
     private void inizializzaCampoRimasto(BorderedEditText campo){
 
     }
     private BorderedEditText campoRimasto=null;
 
-    private void calcolaCampoRimasto(){
-        List<BorderedEditText> listaCampi = new ArrayList<>(mappaCampiInseriti.values());
-        Integer puntiGioco=null;
-        int sommaAltriCampi=0;
-        BorderedEditText campoRimasto=null;
-        int nrCampi=0;
-        for(int i = 0; i<listaCampi.size();i++){
-            BorderedEditText campo = listaCampi.get(i);
-            if(campo.getId()==ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO){
-                if(campo.getText()!=null){
-                    if(IntegerUtils.isInteger(campo.getText().toString())){
-                        puntiGioco = Integer.parseInt(campo.getText().toString());
-                        nrCampi++;
-                    }
-                }
-            }
-            else {
-                if(campo.getText()!=null){
-                    if(IntegerUtils.isInteger(campo.getText().toString())){
-                        int valoreCampo = Integer.parseInt(campo.getText().toString());
-                        if(valoreCampo==-10){
-                            valoreCampo=0;
-                        }
-                        sommaAltriCampi+=valoreCampo;
-                        nrCampi++;
-                    }
-                    else{
-                        campoRimasto = campo;
-                    }
 
+    private EsitoCampoRimasto calcolaCampoRimasto(){
+        EsitoCampoRimasto esitoCampoRimasto = new EsitoCampoRimasto();
+
+        List<BorderedEditText> listaCampi = new ArrayList<>(mappaCampiInseriti.values());
+
+
+        Integer puntiGioco = null;
+        int nrCampiCompletati = 0;
+        boolean campoIsFocusedAndEmpty=false;
+
+        Integer sommaAltriCampi = 0;
+
+        for(BorderedEditText campo:listaCampi){
+            if(campo.getId()==ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO){
+                if(!campo.getText().toString().isEmpty()){
+                    nrCampiCompletati++;
+                    puntiGioco = Integer.parseInt(campo.getText().toString());
+                }
+
+            }
+            else if(!campo.getText().toString().isEmpty()||campo.isFocused()){
+                if(campo.isFocused()&&campo.getText().toString().isEmpty()){
+                    campoIsFocusedAndEmpty=true;
+                    campo.setHint("");
+                    if(campoRimasto!=null){
+                        campoRimasto.setHint("");
+                    }
                 }
                 else{
-                    campoRimasto = campo;
+                    sommaAltriCampi+=Integer.parseInt(campo.getText().toString());
                 }
+                nrCampiCompletati++;
+            }
+            else{
+                campoRimasto=campo;
             }
         }
-        if(nrCampi==listaCampi.size()-1&&puntiGioco!=null){
-            this.campoRimasto=campoRimasto;
+
+        boolean isRimasto1Campo = (listaCampi.size()-nrCampiCompletati)==1&&puntiGioco!=null;
+        esitoCampoRimasto.setRimasto1Campo(isRimasto1Campo);
+        if(isRimasto1Campo){
+
+            esitoCampoRimasto.setCampoRimasto(campoRimasto);
+
+            esitoCampoRimasto.setCampoFocusedAndEmpty(campoIsFocusedAndEmpty);
+            if(!campoIsFocusedAndEmpty)campoRimasto.setHint(Integer.toString(puntiGioco-sommaAltriCampi));
+
         }
-        if(this.campoRimasto!=null){
-            if(this.campoRimasto.getText()!=null){
-                if(IntegerUtils.isInteger(this.campoRimasto.getText().toString())){
-                    sommaAltriCampi-=Integer.parseInt(this.campoRimasto.getText().toString());
-                }
-            }
-            this.campoRimasto.setText(Integer.toString(sommaAltriCampi));
-        }
+        return esitoCampoRimasto;
 
     }
 
@@ -250,9 +265,18 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
             entity.setPuntiGioco(puntiGioco);
             entity.setPuntiNoi(puntiNoi);
             entity.setPuntiVoi(puntiVoi);
-            BusinessInserimentoNuovoGioco4GiocatoriInSquadra businessInserimentoNuovoGioco4GiocatoriInSquadra = new BusinessInserimentoNuovoGioco4GiocatoriInSquadra(context);
-            businessInserimentoNuovoGioco4GiocatoriInSquadra.setIdGioco(idGioco);
-            businessInserimentoNuovoGioco4GiocatoriInSquadra.inserisciBeanNelDatabase(entity);
+            BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(context);
+            businessInserimento4GiocatoriInSquadra.setIdGioco(idGioco);
+            businessInserimento4GiocatoriInSquadra.inserisciBeanNelDatabase(entity);
+
+            String cineACistigat = businessInserimento4GiocatoriInSquadra.getCineACistigat();
+
+            if(!cineACistigat.equals(ConstantiGlobal.CONTINUA)){
+                PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(context,tableRow.getRootView(),actionCode,idGioco,entity.getIdPartida(),cineACistigat,entity);
+                this.dismiss();
+                popupVreiSaContinuiCuOPartidaNoua.showPopup();
+                return;
+            }
 
         }
         vaiNellaTabellaPunti();

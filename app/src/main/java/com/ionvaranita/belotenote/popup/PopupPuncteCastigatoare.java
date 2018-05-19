@@ -1,15 +1,10 @@
-package com.ionvaranita.belotenote;
+package com.ionvaranita.belotenote.popup;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -23,9 +18,11 @@ import android.widget.Switch;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.ionvaranita.belotenote.R;
+import com.ionvaranita.belotenote.TabellaPunti;
 import com.ionvaranita.belotenote.adapters.AdapterSpinner;
 import com.ionvaranita.belotenote.borders.BorderedEditText;
-import com.ionvaranita.belotenote.business.BusinessInserimentoNuovoGioco4GiocatoriInSquadra;
+import com.ionvaranita.belotenote.business.BusinessInserimento4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.campo.factory.impl.CampiInserimentoNuovoGiocoImpl;
 import com.ionvaranita.belotenote.constanti.ActionCode;
 import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
@@ -33,7 +30,6 @@ import com.ionvaranita.belotenote.constanti.Turnul4GiocatoriInSquadraEnum;
 import com.ionvaranita.belotenote.database.AppDatabase;
 import com.ionvaranita.belotenote.entity.PuncteCastigatoareGlobalBean;
 import com.ionvaranita.belotenote.infogn.InfoGiocoNuovo4GiocatoriInSquadra;
-import com.ionvaranita.belotenote.popup.ParametersPuncteCastigatoarePopup;
 import com.ionvaranita.belotenote.utils.IntegerUtils;
 
 import java.util.ArrayList;
@@ -230,11 +226,11 @@ public class PopupPuncteCastigatoare {
                 infoGiocoNuovo4GiocatoriInSquadra.setPuncteCastigatoare(puncteCastigatoare);
 
 
-                BusinessInserimentoNuovoGioco4GiocatoriInSquadra businessInserimentoNuovoGioco4GiocatoriInSquadra = new BusinessInserimentoNuovoGioco4GiocatoriInSquadra(contesto);
+                BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
 
-                businessInserimentoNuovoGioco4GiocatoriInSquadra.inserisciPrimaVoltaNelDatabase(infoGiocoNuovo4GiocatoriInSquadra);
+                businessInserimento4GiocatoriInSquadra.inserisciPrimaVoltaNelDatabase(infoGiocoNuovo4GiocatoriInSquadra);
 
-                idGioco = businessInserimentoNuovoGioco4GiocatoriInSquadra.getIdGioco();
+                idGioco = businessInserimento4GiocatoriInSquadra.getIdGioco();
 
                 vaiNellaTabellaPunti();
             }
