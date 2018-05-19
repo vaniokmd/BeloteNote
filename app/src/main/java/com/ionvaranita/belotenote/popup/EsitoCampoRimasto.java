@@ -4,18 +4,13 @@ import com.ionvaranita.belotenote.borders.BorderedEditText;
 
 
 public class EsitoCampoRimasto {
-    private boolean eRimasto1Campo;
-    private BorderedEditText campoRimasto;
-
-class EsitoCampoRimasto {
     private boolean rimasto1Campo;
     private BorderedEditText campoRimasto;
     private boolean campoFocusedAndEmpty;
+    private boolean eRimasto1Campo;
 
 
-
-
-    public EsitoCampoRimasto(){
+    public EsitoCampoRimasto() {
 
     }
 
@@ -23,7 +18,9 @@ class EsitoCampoRimasto {
     public EsitoCampoRimasto(boolean eRimasto1Campo, BorderedEditText campoRimasto) {
         this.eRimasto1Campo = eRimasto1Campo;
         this.campoRimasto = campoRimasto;
+        this.eRimasto1Campo = eRimasto1Campo;
     }
+
 
     public boolean iseRimasto1Campo() {
         return eRimasto1Campo;
@@ -31,11 +28,8 @@ class EsitoCampoRimasto {
 
     public void seteRimasto1Campo(boolean eRimasto1Campo) {
         this.eRimasto1Campo = eRimasto1Campo;
-
-    public EsitoCampoRimasto(boolean isRimasto1Campo, BorderedEditText campoRimasto) {
-        this.rimasto1Campo = isRimasto1Campo;
-        this.campoRimasto = campoRimasto;
     }
+
 
     public boolean isRimasto1Campo() {
         return rimasto1Campo;
@@ -53,6 +47,7 @@ class EsitoCampoRimasto {
     public void setCampoRimasto(BorderedEditText campoRimasto) {
         this.campoRimasto = campoRimasto;
     }
+
     public boolean isCampoFocusedAndEmpty() {
         return campoFocusedAndEmpty;
     }
