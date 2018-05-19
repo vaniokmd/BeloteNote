@@ -46,9 +46,10 @@ public class CampiInserimentoPuntiImpl implements CampiInserimentoPuntiFactory {
                 configuraCampo(campo);
                 this.tableRow.addView(campo);
             }
-            initMappaCampi();
+
 
         }
+        initMappaCampi();
 
     }
     private void initMappaCampi(){
