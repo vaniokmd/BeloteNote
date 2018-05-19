@@ -183,12 +183,11 @@ public class TabellaPunti extends AppCompatActivity {
 
         popupWindowInserimentoPunti = new PopupWindowInserimentoPunti(actionCode, idGioco, popupView, getSupportFragmentManager(), footer.getWidth(), footer.getHeight() + inserisciTableRow.getHeight());
 
-        // Initialize more widgets from `popup_layout.xml`
-        // If the PopupWindow should be focusable
+
         popupWindowInserimentoPunti.setFocusable(true);
 
-        // If you need the PopupWindow to dismiss when when touched outside
-        popupWindowInserimentoPunti.setBackgroundDrawable(new BitmapDrawable());
+
+        //popupWindowInserimentoPunti.setBackgroundDrawable(new BitmapDrawable());
 
         int location[] = new int[2];
 

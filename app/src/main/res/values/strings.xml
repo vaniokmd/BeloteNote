@@ -2,8 +2,8 @@
     <string name="a_castigat">The winner is</string>
     <string name="cu_punctajul">with the score</string>
     <string name="vrei_sa_continui_cu_o_partida_noua">You continue with a new match?</string>
-    <string name="nu">yes</string>
-    <string name="da">no</string>
+    <string name="nu">no</string>
+    <string name="da">yes</string>
     <string name="inserisc_nome_gioco">insert game\'s name</string>
     <string name="introduc_manual_puncte_castigatoare">insert manually winner points</string>
     <string name="puncte_castigatoare_precedente">winner points:</string>
