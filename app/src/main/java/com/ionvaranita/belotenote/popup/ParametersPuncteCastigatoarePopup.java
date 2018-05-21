@@ -6,15 +6,17 @@ public class ParametersPuncteCastigatoarePopup {
     private View mainView;
     private int actioCode;
     private boolean isNomeGiocoMostrabile;
+    private int lastMatchWinnerpoints;
 
     public ParametersPuncteCastigatoarePopup() {
 
     }
 
-    public ParametersPuncteCastigatoarePopup(View mainView, int actioCode, boolean isNomeGiocoMostrabile) {
+    public ParametersPuncteCastigatoarePopup(View mainView, int actioCode, boolean isNomeGiocoMostrabile,int lastMatchWinnerpoints) {
         this.mainView = mainView;
         this.actioCode = actioCode;
         this.isNomeGiocoMostrabile = isNomeGiocoMostrabile;
+        this.lastMatchWinnerpoints = lastMatchWinnerpoints;
     }
 
     public View getMainView() {
@@ -39,5 +41,12 @@ public class ParametersPuncteCastigatoarePopup {
 
     public void setNomeGiocoMostrabile(boolean nomeGiocoMostrabile) {
         isNomeGiocoMostrabile = nomeGiocoMostrabile;
+    }
+    public int getLastMatchWinnerpoints() {
+        return lastMatchWinnerpoints;
+    }
+
+    public void setLastMatchWinnerpoints(int lastMatchWinnerpoints) {
+        this.lastMatchWinnerpoints = lastMatchWinnerpoints;
     }
 }

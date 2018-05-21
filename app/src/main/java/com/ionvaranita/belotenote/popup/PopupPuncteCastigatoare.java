@@ -62,6 +62,10 @@ public class PopupPuncteCastigatoare {
     private Integer idGioco;
     private TableRow nomeGiocoFooterTableRow;
     private TextView textViewWinnerPoints;
+    private TableRow lastMatchWinnerPointsTableRow;
+    private TableRow winnerPointsTableRow;
+    private TextView lastMatchWinnerPointsValueTextViewl;
+    private Integer latMatchWinnerPoints;
 
     private Spinner spinnerPuncteCastigatoarePrecedente;
 
@@ -81,6 +85,8 @@ public class PopupPuncteCastigatoare {
         isNomeGiocoMostrabile = parametersPuncteCastigatoarePopup.isNomeGiocoMostrabile();
 
 
+
+
         layoutInflater = ((LayoutInflater) contesto.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         popupViewPuncteCastigatoare = layoutInflater.inflate(R.layout.popup_puncte_castigatoare_global, null);
         textViewWinnerPoints = popupViewPuncteCastigatoare.findViewById(R.id.textview_winner_points);
@@ -92,12 +98,32 @@ public class PopupPuncteCastigatoare {
 
         nomeGiocoFooterTableRow = popupViewPuncteCastigatoare.findViewById(R.id.nome_gioco_global_table_row);
 
+        lastMatchWinnerPointsTableRow = popupViewPuncteCastigatoare.findViewById(R.id.tablerow_last_match_winner_points);
+
+        winnerPointsTableRow = popupViewPuncteCastigatoare.findViewById(R.id.tablerow_winner_ponts);
+
+        puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
+        lastMatchWinnerPointsValueTextViewl = popupViewPuncteCastigatoare.findViewById(R.id.textview_last_match_winner_points_value);
+
+        this.latMatchWinnerPoints = parametersPuncteCastigatoarePopup.getLastMatchWinnerpoints();
 
         if (isNomeGiocoMostrabile) {
             nomeGiocoFooterTableRow.setVisibility(View.VISIBLE);
+            lastMatchWinnerPointsTableRow.setVisibility(View.INVISIBLE);
+            winnerPointsTableRow.setVisibility(View.VISIBLE);
+            puncteCastigatoareGlobalInserimanto.setVisibility(View.INVISIBLE);
+
+
 
         } else if (!isNomeGiocoMostrabile) {
             nomeGiocoFooterTableRow.setVisibility(View.INVISIBLE);
+            lastMatchWinnerPointsTableRow.setVisibility(View.VISIBLE);
+            winnerPointsTableRow.setVisibility(View.INVISIBLE);
+            puncteCastigatoareGlobalInserimanto.setVisibility(View.VISIBLE);
+            puncteCastigatoareGlobalInserimanto.requestFocus();
+            lastMatchWinnerPointsValueTextViewl.setText(""+latMatchWinnerPoints);
+
+
         }
 
         itemsMenuRecyclerView = (RecyclerView) mainView.findViewById(R.id.lista_jocuri_recycleview);
@@ -168,7 +194,6 @@ public class PopupPuncteCastigatoare {
     }
 
     private void setMostraONascondiInputPuncteCastigatoare() {
-        puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
 
         spinnerPuncteCastigatoarePrecedente.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -231,13 +256,15 @@ public class PopupPuncteCastigatoare {
     public void inserisciJocNouSauPartidaNuova() {
         if (actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA) {
             if (verificaIntegrita()) {
-                BorderedEditText nomeGioco = mappaCampi.get(ConstantiGlobal.ID_NOME_GIOCO);
 
                 InfoGiocoNuovo4GiocatoriInSquadra infoGiocoNuovo4GiocatoriInSquadra = new InfoGiocoNuovo4GiocatoriInSquadra(contesto);
 
-                infoGiocoNuovo4GiocatoriInSquadra.setIdGioco(idGioco);
-                infoGiocoNuovo4GiocatoriInSquadra.setNomeGioco(nomeGioco.getText().toString());
+                if(isNomeGiocoMostrabile){
+                    BorderedEditText nomeGioco = mappaCampi.get(ConstantiGlobal.ID_NOME_GIOCO);
+                    infoGiocoNuovo4GiocatoriInSquadra.setNomeGioco(nomeGioco.getText().toString());
+                }
                 infoGiocoNuovo4GiocatoriInSquadra.setPuncteCastigatoare(puncteCastigatoare);
+                infoGiocoNuovo4GiocatoriInSquadra.setIdGioco(idGioco);
 
 
                 BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
@@ -257,6 +284,9 @@ public class PopupPuncteCastigatoare {
 
     private boolean verificaIntegrita() {
 
+        if(latMatchWinnerPoints!=null){
+            return verificaPuncteCastigatoare();
+        }
 
         return verificaCampiFooter() && verificaPuncteCastigatoare();
     }
@@ -277,6 +307,10 @@ public class PopupPuncteCastigatoare {
 
 
     private boolean verificaPuncteCastigatoare() {
+        if(latMatchWinnerPoints!=null){
+            puncteCastigatoare = Integer.parseInt(puncteCastigatoareGlobalInserimanto.getText().toString());
+            return puncteCastigatoare > latMatchWinnerPoints;
+        }
         if (puncteCastigatoareGlobalInserimanto.getText() != null && IntegerUtils.isInteger(puncteCastigatoareGlobalInserimanto.getText().toString())) {
             puncteCastigatoare = Integer.parseInt(puncteCastigatoareGlobalInserimanto.getText().toString());
             return true;

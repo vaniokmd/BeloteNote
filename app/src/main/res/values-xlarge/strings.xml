@@ -2,4 +2,5 @@
 <resources>
     <string name="credits">credits</string>
     <string name="about">About</string>
+    <string name="last_match_winner_points">last match winner points</string>
 </resources>
