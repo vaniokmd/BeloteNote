@@ -94,7 +94,7 @@ public class MenuJocuri extends AppCompatActivity {
     public void inserisciJocNou(View view){
         ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup = new ParametersPuncteCastigatoarePopup();
         parametersPuncteCastigatoarePopup.setActioCode(ActionCode.GIOCATORI_4_IN_SQUADRA);
-        parametersPuncteCastigatoarePopup.setMainWindow(this.getWindow());
+        parametersPuncteCastigatoarePopup.setMainView(this.getWindow().getDecorView());
         parametersPuncteCastigatoarePopup.setNomeGiocoMostrabile(true);
         parametersPuncteCastigatoarePopup.setActioCode(actionCode);
 

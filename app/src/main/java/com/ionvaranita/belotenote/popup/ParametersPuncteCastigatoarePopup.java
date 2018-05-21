@@ -1,10 +1,9 @@
 package com.ionvaranita.belotenote.popup;
 
 import android.view.View;
-import android.view.Window;
 
 public class ParametersPuncteCastigatoarePopup {
-    private Window mainWindow;
+    private View mainView;
     private int actioCode;
     private boolean isNomeGiocoMostrabile;
 
@@ -12,18 +11,18 @@ public class ParametersPuncteCastigatoarePopup {
 
     }
 
-    public ParametersPuncteCastigatoarePopup(Window mainWindow, int actioCode, boolean isNomeGiocoMostrabile) {
-        this.mainWindow = mainWindow;
+    public ParametersPuncteCastigatoarePopup(View mainView, int actioCode, boolean isNomeGiocoMostrabile) {
+        this.mainView = mainView;
         this.actioCode = actioCode;
         this.isNomeGiocoMostrabile = isNomeGiocoMostrabile;
     }
 
-    public Window getMainWindow() {
-        return mainWindow;
+    public View getMainView() {
+        return mainView;
     }
 
-    public void setMainWindow(Window mainWindow) {
-        this.mainWindow = mainWindow;
+    public void setMainView(View mainView) {
+        this.mainView = mainView;
     }
 
     public int getActioCode() {

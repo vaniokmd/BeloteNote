@@ -7,11 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -48,7 +48,7 @@ public class PopupPuncteCastigatoare {
     private AppDatabase db;
     private RecyclerView itemsMenuRecyclerView;
     private PopupWindow popupWindow;
-    private Window mainWindow;
+    private View mainView;
     private boolean isNomeGiocoMostrabile;
     private final Context contesto;
     private Button okButtonPopup;
@@ -76,8 +76,8 @@ public class PopupPuncteCastigatoare {
 
     public PopupPuncteCastigatoare(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup) {
         this.actionCode = parametersPuncteCastigatoarePopup.getActioCode();
-        mainWindow = parametersPuncteCastigatoarePopup.getMainWindow();
-        this.contesto = mainWindow.getContext();
+        this.mainView = parametersPuncteCastigatoarePopup.getMainView();
+        this.contesto = mainView.getContext();
         isNomeGiocoMostrabile = parametersPuncteCastigatoarePopup.isNomeGiocoMostrabile();
 
 
@@ -100,7 +100,7 @@ public class PopupPuncteCastigatoare {
             nomeGiocoFooterTableRow.setVisibility(View.INVISIBLE);
         }
 
-        itemsMenuRecyclerView = (RecyclerView) mainWindow.findViewById(R.id.lista_jocuri_recycleview);
+        itemsMenuRecyclerView = (RecyclerView) mainView.findViewById(R.id.lista_jocuri_recycleview);
 
         db = AppDatabase.getPersistentDatabase(contesto);
 
@@ -134,9 +134,15 @@ public class PopupPuncteCastigatoare {
         adapterSpinner = new AdapterSpinner(contesto, R.layout.item_spinner_puncte_castigatoare, puncteCastigatoareGlobalList);
 
         spinnerPuncteCastigatoarePrecedente.setAdapter(adapterSpinner);
+        if(isNomeGiocoMostrabile){
+            popupWindow = new PopupWindow(popupViewPuncteCastigatoare,
+                    itemsMenuRecyclerView.getWidth(), itemsMenuRecyclerView.getHeight());
+        }
+        else{
+            popupWindow = new PopupWindow(popupViewPuncteCastigatoare, LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+        }
 
-        popupWindow = new PopupWindow(popupViewPuncteCastigatoare,
-                itemsMenuRecyclerView.getWidth(), itemsMenuRecyclerView.getHeight());
+
 
     }
 
@@ -208,10 +214,18 @@ public class PopupPuncteCastigatoare {
     public void showPopup() {
 
         popupWindow.setFocusable(true);
-        int[] location = new int[2];
-        itemsMenuRecyclerView.getLocationOnScreen(location);
-        popupWindow.showAtLocation(itemsMenuRecyclerView, Gravity.NO_GRAVITY,
-                location[0], location[1]);
+
+        if(isNomeGiocoMostrabile){
+            int[] location = new int[2];
+            itemsMenuRecyclerView.getLocationOnScreen(location);
+            popupWindow.showAtLocation(itemsMenuRecyclerView, Gravity.NO_GRAVITY,
+                    location[0], location[1]);
+        }
+        else{
+            popupWindow.showAtLocation(mainView,Gravity.CENTER,0,0);
+
+        }
+
     }
 
     public void inserisciJocNouSauPartidaNuova() {

@@ -38,18 +38,17 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
     private Button da;
     private Button nu;
     private PopupWindow popupWindow;
-    private View window;
 
     private TableRow risultatoStampatoCineACastigat;
     private TableRow valoriRisultatoCineACastigat;
+    private View mainView ;
 
     private LayoutInflater layoutInflater;
 
     private TextView testoACastigat;
 
-    private PopupVreiSaContinuiCuOPartidaNoua(Context context,View window,Integer actionCode,Integer idJoc,Integer idPartida,String cineACastigatEnum){
+    private PopupVreiSaContinuiCuOPartidaNoua(Context context, Integer actionCode, Integer idJoc, Integer idPartida, String cineACastigatEnum){
         contesto = context;
-        this.window=window;
         this.actionCode = actionCode;
         this.idJoc = idJoc;
         this.idPartida = idPartida;
@@ -57,6 +56,8 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
         layoutInflater = ((LayoutInflater) contesto.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         popupViewCineACastigat = layoutInflater.inflate(R.layout.popup_cine_a_castigat,null);
         testoACastigat = popupViewCineACastigat.findViewById(R.id.testo_a_castigat);
+
+        mainView = layoutInflater.inflate(R.layout.popup_puncte_castigatoare_global,null);
 
         risultatoStampatoCineACastigat = popupViewCineACastigat.findViewById(R.id.risultato_stampato_cine_a_castigat);
         valoriRisultatoCineACastigat = popupViewCineACastigat.findViewById(R.id.valori_risultato_stampato_cine_a_castigat);
@@ -67,7 +68,13 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
         da.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vaiNellaTabellaPunti();
+                ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup = new ParametersPuncteCastigatoarePopup();
+                parametersPuncteCastigatoarePopup.setActioCode(actionCode);
+                parametersPuncteCastigatoarePopup.setMainView(mainView);
+                parametersPuncteCastigatoarePopup.setNomeGiocoMostrabile(false);
+
+                PopupPuncteCastigatoare popupPuncteCastigatoare = new PopupPuncteCastigatoare(parametersPuncteCastigatoarePopup,idJoc,idPartida);
+                popupPuncteCastigatoare.showPopup();
 
             }
         });
@@ -83,8 +90,8 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
 
     }
 
-    public PopupVreiSaContinuiCuOPartidaNoua(Context context, View window, Integer actionCode, Integer idJoc, Integer idPartida,String cineACastigatEnum,Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean){
-        this(context,window,actionCode,idJoc,idPartida,cineACastigatEnum);
+    public PopupVreiSaContinuiCuOPartidaNoua(Context context, Integer actionCode, Integer idJoc, Integer idPartida,String cineACastigatEnum,Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean){
+        this(context,actionCode,idJoc,idPartida,cineACastigatEnum);
 
         String testoCineACastigat = contesto.getResources().getString(R.string.a_castigat);
 
@@ -177,7 +184,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
     }
     public void showPopup(){
 
-        popupWindow.showAtLocation(window, Gravity.CENTER,0,0);
+        popupWindow.showAtLocation(mainView, Gravity.CENTER,0,0);
     }
 
     private void vaiNellaTabellaPunti(){

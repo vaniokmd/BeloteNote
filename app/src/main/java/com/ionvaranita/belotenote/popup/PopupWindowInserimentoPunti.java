@@ -45,7 +45,6 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
     Map<Integer, BorderedEditText> mappaCampiInseriti;
     private Context context;
     private TableRow tableRow;
-
     List<BorderedEditText> listaCampi;
 
     private void init(View popupLayout) {
@@ -272,7 +271,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
             String cineACistigat = businessInserimento4GiocatoriInSquadra.getCineACistigat();
 
             if(!cineACistigat.equals(ConstantiGlobal.CONTINUA)){
-                PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(context,tableRow.getRootView(),actionCode,idGioco,entity.getIdPartida(),cineACistigat,entity);
+                PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(context,actionCode,idGioco,entity.getIdPartida(),cineACistigat,entity);
                 this.dismiss();
                 popupVreiSaContinuiCuOPartidaNoua.showPopup();
                 return;
