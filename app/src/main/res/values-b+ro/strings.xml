@@ -46,4 +46,5 @@
     <string name="credits">credits</string>
     <string name="about">About</string>
     <string name="last_match_winner_points">last match winner points</string>
+    <string name="greater_than">greater than</string>
 </resources>

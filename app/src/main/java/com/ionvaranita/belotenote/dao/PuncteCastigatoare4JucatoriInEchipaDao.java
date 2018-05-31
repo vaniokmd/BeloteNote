@@ -2,7 +2,9 @@ package com.ionvaranita.belotenote.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.ionvaranita.belotenote.entity.PuncteCastigatoare4JucatoriInEchipaBean;
 
@@ -19,6 +21,6 @@ public interface PuncteCastigatoare4JucatoriInEchipaDao {
     PuncteCastigatoare4JucatoriInEchipaBean selectPuncteCastigatoare4JucatoriInEchipaByIdJocAndMaxIdPartida(Integer idGioco);
     @Query("select * from PuncteCastigatoare4JucatoriInEchipaBean where idGioco = :idGioco and idPartida =:idPartida ")
     PuncteCastigatoare4JucatoriInEchipaBean selectPuncteCastigatoare4JucatoriInEchipaByIdJocAndIdPartida(Integer idGioco,Integer idPartida);
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertPuncteCastigatoare4JucatoriInEchipa(PuncteCastigatoare4JucatoriInEchipaBean puncteCastigatoare4JucatoriInEchipaBean);
 }

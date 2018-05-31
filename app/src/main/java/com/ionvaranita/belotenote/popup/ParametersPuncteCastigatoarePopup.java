@@ -1,22 +1,20 @@
 package com.ionvaranita.belotenote.popup;
 
+import android.content.Context;
 import android.view.View;
 
-public class ParametersPuncteCastigatoarePopup {
-    private View mainView;
-    private int actioCode;
-    private boolean isNomeGiocoMostrabile;
-    private int lastMatchWinnerpoints;
+import com.ionvaranita.belotenote.info.InfoCineACistigat;
 
+public class ParametersPuncteCastigatoarePopup {
+    private Context context;
+    private Integer idGioco;
+    private Integer idPartida;
+    private View mainView;
+    private Integer actioCode;
+    private boolean isNomeGiocoMostrabile;
+    private InfoCineACistigat infoCineACistigat;
     public ParametersPuncteCastigatoarePopup() {
 
-    }
-
-    public ParametersPuncteCastigatoarePopup(View mainView, int actioCode, boolean isNomeGiocoMostrabile,int lastMatchWinnerpoints) {
-        this.mainView = mainView;
-        this.actioCode = actioCode;
-        this.isNomeGiocoMostrabile = isNomeGiocoMostrabile;
-        this.lastMatchWinnerpoints = lastMatchWinnerpoints;
     }
 
     public View getMainView() {
@@ -27,11 +25,11 @@ public class ParametersPuncteCastigatoarePopup {
         this.mainView = mainView;
     }
 
-    public int getActioCode() {
+    public Integer getActioCode() {
         return actioCode;
     }
 
-    public void setActioCode(int actioCode) {
+    public void setActioCode(Integer actioCode) {
         this.actioCode = actioCode;
     }
 
@@ -42,11 +40,35 @@ public class ParametersPuncteCastigatoarePopup {
     public void setNomeGiocoMostrabile(boolean nomeGiocoMostrabile) {
         isNomeGiocoMostrabile = nomeGiocoMostrabile;
     }
-    public int getLastMatchWinnerpoints() {
-        return lastMatchWinnerpoints;
+    public Integer getIdGioco() {
+        return idGioco;
     }
 
-    public void setLastMatchWinnerpoints(int lastMatchWinnerpoints) {
-        this.lastMatchWinnerpoints = lastMatchWinnerpoints;
+    public void setIdGioco(Integer idGioco) {
+        this.idGioco = idGioco;
+    }
+
+    public Integer getIdPartida() {
+        return idPartida;
+    }
+
+    public void setIdPartida(Integer idPartida) {
+        this.idPartida = idPartida;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public InfoCineACistigat getInfoCineACistigat() {
+        return infoCineACistigat;
+    }
+
+    public void setInfoCineACistigat(InfoCineACistigat infoCineACistigat) {
+        this.infoCineACistigat = infoCineACistigat;
     }
 }

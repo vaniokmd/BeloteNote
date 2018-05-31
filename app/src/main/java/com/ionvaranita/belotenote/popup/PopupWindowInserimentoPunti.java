@@ -27,6 +27,7 @@ import com.ionvaranita.belotenote.constanti.IdsCampiInserimento;
 import com.ionvaranita.belotenote.constanti.Turnul4GiocatoriInSquadraEnum;
 import com.ionvaranita.belotenote.database.AppDatabase;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
+import com.ionvaranita.belotenote.info.InfoCineACistigat;
 import com.ionvaranita.belotenote.utils.GlobalButtonOnClickListener;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
     private FragmentManager fragmentManager;
     private Integer actionCode;
     private Integer idGioco;
+    private Integer idPartida;
     private LinearLayout keyboardLinearLayout;
     Map<Integer, BorderedEditText> mappaCampiInseriti;
     private Context context;
@@ -267,11 +269,30 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
             BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(context);
             businessInserimento4GiocatoriInSquadra.setIdGioco(idGioco);
             businessInserimento4GiocatoriInSquadra.inserisciBeanNelDatabase(entity);
+            idPartida = businessInserimento4GiocatoriInSquadra.getIdPartida();
+            idGioco = businessInserimento4GiocatoriInSquadra.getIdGioco();
+            InfoCineACistigat infoCineACistigat = businessInserimento4GiocatoriInSquadra.getInfoCineACistigat();
 
-            String cineACistigat = businessInserimento4GiocatoriInSquadra.getCineACistigat();
+            if(infoCineACistigat!=null&&!infoCineACistigat.cineACistigat().equals(ConstantiGlobal.CONTINUA)){
+                if(infoCineACistigat.cineACistigat().equals((ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI))){
+                    ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup = new ParametersPuncteCastigatoarePopup();
+                    parametersPuncteCastigatoarePopup.setActioCode(actionCode);
+                    parametersPuncteCastigatoarePopup.setInfoCineACistigat(infoCineACistigat);
+                    parametersPuncteCastigatoarePopup.setMainView(this.getContentView());
+                    parametersPuncteCastigatoarePopup.setContext(context);
+                    parametersPuncteCastigatoarePopup.setNomeGiocoMostrabile(false);
+                    parametersPuncteCastigatoarePopup.setIdGioco(idGioco);
+                    parametersPuncteCastigatoarePopup.setIdPartida(idPartida);
 
-            if(!cineACistigat.equals(ConstantiGlobal.CONTINUA)){
-                PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(context,actionCode,idGioco,entity.getIdPartida(),cineACistigat,entity);
+
+                    PopupPuncteCastigatoare popupPuncteCastigatoare = new PopupPuncteCastigatoare(parametersPuncteCastigatoarePopup);
+                    this.dismiss();
+                    popupPuncteCastigatoare.showPopup();
+                    return;
+                }
+
+                PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(context,actionCode,idGioco,entity.getIdPartida(),infoCineACistigat,entity);
+
                 this.dismiss();
                 popupVreiSaContinuiCuOPartidaNoua.showPopup();
                 return;

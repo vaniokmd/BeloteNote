@@ -23,7 +23,7 @@ import com.ionvaranita.belotenote.entity.TurnManagement4GiocatoriInSquadra;
  * Created by ionvaranita on 20/11/17.
  */
 @Database(entities = {TurnManagement4GiocatoriInSquadra.class
-        ,Punti4GiocatoriInSquadraEntityBean.class, PuncteCastigatoareGlobalBean.class, Scor4JucatoriInEchipaEntityBean.class, PuncteCastigatoare4JucatoriInEchipaBean.class,Gioco4GiocatoriInSquadra.class}, version = 10)
+        ,Punti4GiocatoriInSquadraEntityBean.class, PuncteCastigatoareGlobalBean.class, Scor4JucatoriInEchipaEntityBean.class, PuncteCastigatoare4JucatoriInEchipaBean.class,Gioco4GiocatoriInSquadra.class}, version = 13)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "BeloteNoteDatabase";
 

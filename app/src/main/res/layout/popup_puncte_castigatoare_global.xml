@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
-
         <!--<EditText
             android:id="@+id/nume_joc_4_jucatori_in_echipa_popup"
             android:layout_width="match_parent"
@@ -29,7 +28,6 @@
     </TableRow>
 
     <TableRow
-        android:id="@+id/tablerow_winner_ponts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/padding_of_16"
@@ -55,29 +53,6 @@
 
 
     </TableRow>
-
-    <TableRow
-        android:id="@+id/tablerow_last_match_winner_points"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible">
-
-        <TextView
-            android:id="@+id/textview_last_match_winner_points_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/last_match_winner_points"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/textview_last_match_winner_points_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-    </TableRow>
-
-
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -106,7 +81,6 @@
         android:paddingTop="@dimen/padding_of_16">
 
         <com.ionvaranita.belotenote.borders.BorderedEditText
-
             android:id="@+id/puncte_castigatoare_global_inserimento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -147,8 +121,5 @@
             android:background="@drawable/text_button_shape"
             android:text="@string/ok"
             android:textSize="12sp" />
-
     </TableRow>
-
-
 </LinearLayout>

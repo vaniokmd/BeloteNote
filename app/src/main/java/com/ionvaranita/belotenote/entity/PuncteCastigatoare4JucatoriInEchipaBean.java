@@ -1,13 +1,15 @@
 package com.ionvaranita.belotenote.entity;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 /**
  * Created by ionvaranita on 02/04/18.
  */
-@Entity
+@Entity(indices = {@Index(value = {"idGioco", "idPartida"}, unique = true)})
+
 public class PuncteCastigatoare4JucatoriInEchipaBean {
     @PrimaryKey
     private Integer idGioco;
