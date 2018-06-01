@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/puncte_castigatoare_precedente"
+            android:text="@string/winner_points"
             android:textColor="@android:color/black"
             android:textStyle="bold|italic" />
 

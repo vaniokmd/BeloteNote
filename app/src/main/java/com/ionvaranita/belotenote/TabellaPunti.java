@@ -1,5 +1,8 @@
 package com.ionvaranita.belotenote;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.pm.ActivityInfo;
@@ -17,6 +20,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import android.widget.TableRow;
@@ -34,6 +38,7 @@ import com.ionvaranita.belotenote.constanti.IdsCampiScor;
 import com.ionvaranita.belotenote.constanti.IdsCampiStampa;
 import com.ionvaranita.belotenote.database.AppDatabase;
 import com.ionvaranita.belotenote.entity.Gioco4GiocatoriInSquadra;
+import com.ionvaranita.belotenote.entity.PuncteCastigatoare4JucatoriInEchipaBean;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 import com.ionvaranita.belotenote.entity.Scor4JucatoriInEchipaEntityBean;
 import com.ionvaranita.belotenote.entity.TurnManagement4GiocatoriInSquadra;
@@ -49,6 +54,7 @@ import java.util.logging.Logger;
  */
 
 public class TabellaPunti extends AppCompatActivity {
+    private Context context;
     private View popupView;
     private PopupWindowInserimentoPunti popupWindowInserimentoPunti;
     private static Turnul4GiocatoriInSquadraEnum urmatorulTurn = Turnul4GiocatoriInSquadraEnum.TURNUL_NOI;
@@ -75,7 +81,7 @@ public class TabellaPunti extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(com.ionvaranita.belotenote.R.layout.tabella_punti);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-
+        this.context = this.getApplicationContext();
         db = AppDatabase.getPersistentDatabase(getApplicationContext());
         actionCode = getIntent().getIntExtra(ConstantiGlobal.ACTION_CODE, -1);
 
@@ -112,6 +118,9 @@ public class TabellaPunti extends AppCompatActivity {
         popolaCampiStampa();
 
         List<Punti4GiocatoriInSquadraEntityBean> listaRecordsTabella4JucatoriInEchipa = db.tabellaPunti4GiocatoriInSquadraDao().selectAllPunti4GiocatoriInSquadraByIdGioco(idGioco);
+        if(listaRecordsTabella4JucatoriInEchipa.size()>1){
+            listaRecordsTabella4JucatoriInEchipa.remove(0);
+        }
         paginaPatruJucatoriInEchipaRecycleView = (RecyclerView) findViewById(com.ionvaranita.belotenote.R.id.recycler_view_items_tabella_4_jucatori_in_echipa);
         adapterTabella4JucatoriinEchipa = new AdapterTabella4JucatoriinEchipa(this, listaRecordsTabella4JucatoriInEchipa);
         paginaPatruJucatoriInEchipaRecycleView.setAdapter(adapterTabella4JucatoriinEchipa);
@@ -125,7 +134,6 @@ public class TabellaPunti extends AppCompatActivity {
     private void popolaCamiScor() {
         if (actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA) {
             Scor4JucatoriInEchipaEntityBean scorBean = db.scor4JucatoriInEchipaDao().selectScorBean4JucatoriInEchipaByIdJoc(idGioco);
-
             Gioco4GiocatoriInSquadra giocoBean = db.joc4JucatoriInEchipaDao().selectJocByIdJoc(idGioco);
 
             CampiScorImpl campiScorImpl = new CampiScorImpl();
@@ -141,6 +149,28 @@ public class TabellaPunti extends AppCompatActivity {
 
             TextView nomeGioco = mappaCampiScor.get(ConstantiGlobal.ID_NOME_GIOCO);
             nomeGioco.setText(giocoBean.getNumeGioco());
+            nomeGioco.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    PuncteCastigatoare4JucatoriInEchipaBean castigatoare4JucatoriInEchipaBean = db.puncteCastigatoare4JucatoriInEchipaDao().selectPuncteCastigatoare4JucatoriInEchipaByIdJocAndMaxIdPartida(idGioco);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(nomeGioco.getContext());
+                    String infoGioco = nomeGioco.getContext().getString(R.string.games_name);
+                    infoGioco = infoGioco + ": "+giocoBean.getNumeGioco().toString()+"\n" +
+                            nomeGioco.getContext().getResources().getString(R.string.winner_points)+" "+castigatoare4JucatoriInEchipaBean.getPuncteCastigatoare();
+                    builder.setTitle(nomeGioco.getContext().getResources().getString(R.string.games_info))
+                            .setMessage(infoGioco)
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return false;
+                }
+            });
+
         }
     }
 

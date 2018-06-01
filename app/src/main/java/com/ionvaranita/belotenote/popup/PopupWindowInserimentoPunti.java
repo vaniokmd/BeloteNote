@@ -154,7 +154,15 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                             } else if (valoreButton.equals(del)) {
 
                                 if (campo.getText().toString().length() > 0) {
-                                    campo.setText(campo.getText().toString().substring(0, campo.getText().toString().length() - 1));
+                                    if(campo.getText().toString().equals(meno_10)){
+                                        campo.setText("");
+                                    }
+                                    else{
+                                        campo.setText(campo.getText().toString().substring(0, campo.getText().toString().length() - 1));
+                                        if(campo.getText().toString().isEmpty()){
+                                            campoRimasto.setHint("");
+                                        }
+                                    }
                                 }
                                 EsitoCampoRimasto esitoCampoRimasto = calcolaCampoRimasto();
                                 if(esitoCampoRimasto.isRimasto1Campo()){
@@ -165,8 +173,11 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
 
 
                             } else if (valoreButton.equals(meno_10)) {
+                                if(campo.getId()!=ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO){
+                                    campo.setText(buttonKey.getText().toString());
+                                    calcolaCampoRimasto();
 
-                                campo.setText(buttonKey.getText().toString());
+                                }
                             } else {
                                 campo.setText(campo.getText().toString() + buttonKey.getText().toString());
                                 EsitoCampoRimasto esitoCampoRimasto = calcolaCampoRimasto();
@@ -213,7 +224,6 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                     nrCampiCompletati++;
                     puntiGioco = Integer.parseInt(campo.getText().toString());
                 }
-
             }
             else if(!campo.getText().toString().isEmpty()||campo.isFocused()){
                 if(campo.isFocused()&&campo.getText().toString().isEmpty()){
@@ -224,7 +234,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                     }
                 }
                 else{
-                    sommaAltriCampi+=Integer.parseInt(campo.getText().toString());
+                    sommaAltriCampi+=Integer.parseInt(fixMeno10(campo.getText().toString()));
                 }
                 nrCampiCompletati++;
             }
@@ -245,6 +255,12 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
         }
         return esitoCampoRimasto;
 
+    }
+    private String fixMeno10(String numero){
+        if(numero.equals(context.getResources().getString(R.string.meno_10))){
+            return "0";
+        }
+        return numero;
     }
 
     private void inserisciPuntiNelDatabase() {

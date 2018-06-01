@@ -6,7 +6,7 @@
     <string name="da">da</string>
     <string name="inserisc_nome_gioco">introduce nume joc</string>
     <string name="introduc_manual_puncte_castigatoare">introduc manual puncte câstigãtoare</string>
-    <string name="puncte_castigatoare_precedente">puncte câșigatoare:</string>
+    <string name="winner_points">puncte câșigatoare:</string>
     <string name="cancel">Anuleazã</string>
     <string name="ok">Ok</string>
     <string name="app_name">Belote Note</string>
@@ -47,4 +47,5 @@
     <string name="about">About</string>
     <string name="last_match_winner_points">last match winner points</string>
     <string name="greater_than">greater than</string>
+    <string name="games_info">game\\\'s info</string>
 </resources>

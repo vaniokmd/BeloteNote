@@ -104,13 +104,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
         nu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(context);
-                InfoRigaVuota4GiocatoriInSquadra infoRigaVuota4GiocatoriInSquadra = new InfoRigaVuota4GiocatoriInSquadra();
-
-                infoRigaVuota4GiocatoriInSquadra.setWinnerPoints(lastMatchWinnerPoints);
-                infoRigaVuota4GiocatoriInSquadra.setIdGioco(idGioco);
-                infoRigaVuota4GiocatoriInSquadra.setIdPartida(idPartida);
-                businessInserimento4GiocatoriInSquadra.inserisciRigaVuota(infoRigaVuota4GiocatoriInSquadra);
+                vaiNellaTabellaPunti();
                 popupWindow.dismiss();
             }
         });

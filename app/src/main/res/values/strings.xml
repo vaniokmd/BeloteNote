@@ -6,7 +6,7 @@
     <string name="da">yes</string>
     <string name="inserisc_nome_gioco">insert game\'s name</string>
     <string name="introduc_manual_puncte_castigatoare">insert manually winner points</string>
-    <string name="puncte_castigatoare_precedente">winner points:</string>
+    <string name="winner_points">winner points:</string>
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
     <string name="app_name">Belote Note</string>
@@ -53,4 +53,6 @@
     <string name="avem_cel_putin">We have at least</string>
     <string name="winner_players">winner players</string>
     <string name="greater_than">greater than</string>
+    <string name="games_name">Game\'s name</string>
+    <string name="games_info">Game\'s info</string>
 </resources>
