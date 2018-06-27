@@ -55,4 +55,7 @@
     <string name="greater_than">greater than</string>
     <string name="games_name">Game\'s name</string>
     <string name="games_info">Game\'s info</string>
+    <string name="match_finished">match finished!</string>
+    <string name="playing_match">playing match</string>
+    <string name="playing_prolonged_match">playing prolonged match</string>
 </resources>

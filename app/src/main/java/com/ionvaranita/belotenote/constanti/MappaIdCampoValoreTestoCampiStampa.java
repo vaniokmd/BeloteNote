@@ -3,7 +3,6 @@ package com.ionvaranita.belotenote.constanti;
 import android.content.Context;
 
 import com.ionvaranita.belotenote.R;
-import com.ionvaranita.belotenote.utils.CustomApplicationContext;
 
 import java.util.HashMap;
 import java.util.Map;

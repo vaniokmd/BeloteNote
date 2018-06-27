@@ -4,6 +4,15 @@ public class InfoRigaVuota4GiocatoriInSquadra {
     private Integer idGioco;
     private Integer idPartida;
     private Integer winnerPoints;
+    private String tipoFinePartida;
+
+    public String getTipoFinePartida() {
+        return tipoFinePartida;
+    }
+
+    public void setTipoFinePartida(String tipoFinePartida) {
+        this.tipoFinePartida = tipoFinePartida;
+    }
 
     public Integer getIdGioco() {
         return idGioco;

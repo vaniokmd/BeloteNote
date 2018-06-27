@@ -19,7 +19,25 @@ public class Gioco4GiocatoriInSquadra {
     @NonNull
     private long dataGioco;//2
 
+    private String status;
 
+    private Integer nrPartide;
+
+    public Integer getNrPartide() {
+        return nrPartide;
+    }
+
+    public void setNrPartide(Integer nrPartide) {
+        this.nrPartide = nrPartide;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Gioco4GiocatoriInSquadra() {
         dataGioco = new java.util.Date().getTime();

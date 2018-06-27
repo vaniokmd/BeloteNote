@@ -18,13 +18,11 @@ import android.widget.TextView;
 
 import com.ionvaranita.belotenote.R;
 import com.ionvaranita.belotenote.TabellaPunti;
-import com.ionvaranita.belotenote.business.BusinessInserimento4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
 import com.ionvaranita.belotenote.constanti.Turnul4GiocatoriInSquadraEnum;
 import com.ionvaranita.belotenote.database.AppDatabase;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 import com.ionvaranita.belotenote.info.InfoCineACistigat;
-import com.ionvaranita.belotenote.info.InfoRigaVuota4GiocatoriInSquadra;
 
 import static android.graphics.Typeface.BOLD;
 
@@ -35,7 +33,7 @@ import static android.graphics.Typeface.BOLD;
 public class PopupVreiSaContinuiCuOPartidaNoua {
     private Context contesto;
     private Integer actionCode;
-    private Integer idJoc;
+    private Integer idGioco;
     private Integer idPartida;
     private View popupViewCineACastigat;
     private String cineACastigatEnum;
@@ -53,14 +51,17 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
 
     private AppDatabase db;
 
-    private PopupVreiSaContinuiCuOPartidaNoua(Context context, Integer actionCode, Integer idGioco, Integer idPartida, InfoCineACistigat infoCineACistigat){
-        contesto = context;
-        this.actionCode = actionCode;
-        this.idJoc = idGioco;
-        this.idPartida = idPartida;
+    public PopupVreiSaContinuiCuOPartidaNoua(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup){
+        contesto = parametersPuncteCastigatoarePopup.getContext();
+        this.actionCode = parametersPuncteCastigatoarePopup.getActioCode();
+        this.idGioco = parametersPuncteCastigatoarePopup.getIdGioco();
 
-        this.cineACastigatEnum = infoCineACistigat.cineACistigat();
-        db = AppDatabase.getPersistentDatabase(contesto);
+        this.db = AppDatabase.getPersistentDatabase(contesto);
+
+        this.idPartida = db.tabellaPunti4GiocatoriInSquadraDao().getLastRecordPunti4GiocatoriInSquadraByIdGioco(idGioco).getIdPartida();
+
+
+        this.cineACastigatEnum = parametersPuncteCastigatoarePopup.getInfoCineACistigat().aflaCineACistigat();
 
         layoutInflater = ((LayoutInflater) contesto.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         popupViewCineACastigat = layoutInflater.inflate(R.layout.popup_cine_a_castigat,null);
@@ -80,13 +81,13 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
             public void onClick(View view) {
                 ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup = new ParametersPuncteCastigatoarePopup();
                 parametersPuncteCastigatoarePopup.setActioCode(actionCode);
-                parametersPuncteCastigatoarePopup.setMainView(mainView);
+                parametersPuncteCastigatoarePopup.setAnchorView(mainView);
                 parametersPuncteCastigatoarePopup.setIdGioco(idGioco);
-                parametersPuncteCastigatoarePopup.setIdPartida(idPartida);
-                if(cineACastigatEnum != ConstantiGlobal.CONTINUA||cineACastigatEnum != ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI){
+                parametersPuncteCastigatoarePopup.setContext(contesto);
+                if(!cineACastigatEnum.equalsIgnoreCase(ConstantiGlobal.CONTINUA)||!cineACastigatEnum.equalsIgnoreCase(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI)){
                     parametersPuncteCastigatoarePopup.setNomeGiocoMostrabile(false);
                 }
-                if(cineACastigatEnum == ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI){
+                if(cineACastigatEnum.equalsIgnoreCase(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI)){
                     try {
                         throw new Exception("Nu Are ce cauta CONTINUA_CON_AGGIUNTA_PUNTI aici" );
                     } catch (Exception e) {
@@ -114,8 +115,8 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
 
 
 
-    public PopupVreiSaContinuiCuOPartidaNoua(Context context, Integer actionCode, Integer idJoc, Integer idPartida,InfoCineACistigat infoCineACistigat,Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean){
-        this(context,actionCode,idJoc,idPartida,infoCineACistigat);
+    public PopupVreiSaContinuiCuOPartidaNoua(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup,Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean){
+        this(parametersPuncteCastigatoarePopup);
 
         String testoCineACastigat = contesto.getResources().getString(R.string.a_castigat);
 
@@ -163,7 +164,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
         puncteNoiTextView.setText(punti4GiocatoriInSquadraEntityBean.getPuntiNoi().toString());
         puncteVoiTextView.setText(punti4GiocatoriInSquadraEntityBean.getPuntiVoi().toString());
 
-        if(cineACastigatEnum.equals(testoNoi)){
+        if(cineACastigatEnum.equals(InfoCineACistigat.WINNER_IS_WE)){
             noiTexView.setTypeface(null, Typeface.BOLD_ITALIC);
             puncteNoiTextView.setTypeface(null, Typeface.BOLD_ITALIC);
 
@@ -180,7 +181,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
             testoACastigat.setText(spannableString);
 
         }
-        else if(cineACastigatEnum.equals(testoVoi)){
+        else if(cineACastigatEnum.equals(InfoCineACistigat.WINNER_IS_YOU)){
             puncteVoiTextView.setTypeface(null, Typeface.BOLD_ITALIC);
 
             voiTexView.setTypeface(null,Typeface.BOLD_ITALIC);
@@ -212,7 +213,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
 
     private void vaiNellaTabellaPunti(){
         Intent intent = new Intent(contesto, TabellaPunti.class);
-        intent.putExtra(Turnul4GiocatoriInSquadraEnum.ID_JOC.getDescrizione(), idJoc);
+        intent.putExtra(Turnul4GiocatoriInSquadraEnum.ID_JOC.getDescrizione(), idGioco);
         intent.putExtra(ConstantiGlobal.ACTION_CODE, actionCode);
         contesto.startActivity(intent);
     }

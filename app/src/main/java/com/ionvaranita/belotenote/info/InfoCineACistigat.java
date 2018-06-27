@@ -3,7 +3,7 @@ package com.ionvaranita.belotenote.info;
 import android.content.Context;
 
 import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
-import com.ionvaranita.belotenote.constanti.MappaIdCampoValoreTestoCampiStampa;
+import com.ionvaranita.belotenote.constanti.MappaIdCampoStringCineACistigat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,44 +12,61 @@ import java.util.Map;
 import java.util.Set;
 
 public class InfoCineACistigat {
+    public String getCineACistigat() {
+        return cineACistigat;
+    }
+
+    public void setCineACistigat(String cineACistigat) {
+        this.cineACistigat = cineACistigat;
+    }
+
+    private String cineACistigat;
+    public static final String WINNER_IS_WE = "A CISTIGAT NOI";
+    public static final String WINNER_IS_YOU = "A CISTIGAT VOI";
     private Context context;
-    private Map<Integer,Integer> mappaIdCampoValore;
+    private Map<Integer, Integer> mappaIdCampoValore;
     private Boolean abbiamo2OpiuGiocatoriVincitori;
     private Integer maxValuePunti;
     private List<Integer> listaIdVincitori = new ArrayList<>();
 
-    public InfoCineACistigat(Context context, Map<Integer,Integer> mappaIdCampoValore, Integer puncteCastigatoare){
-        this.mappaIdCampoValore=mappaIdCampoValore;
+    public InfoCineACistigat(Context context, Map<Integer, Integer> mappaIdCampoValore, Integer puncteCastigatoare) {
+        this.mappaIdCampoValore = mappaIdCampoValore;
         this.maxValuePunti = puncteCastigatoare;
         this.context = context;
         inizializza();
     }
 
-    private void inizializza(){
+    public InfoCineACistigat() {
+
+    }
+
+    private void inizializza() {
         Set<Integer> ids = mappaIdCampoValore.keySet();
-        for(Integer id : ids){
+        for (Integer id : ids) {
             Integer valore = mappaIdCampoValore.get(id);
-            if(valore>maxValuePunti){
+            if (valore > maxValuePunti) {
                 maxValuePunti = valore;
                 listaIdVincitori.add(id);
             }
         }
-        abbiamo2OpiuGiocatoriVincitori = listaIdVincitori.size()>1;
+        abbiamo2OpiuGiocatoriVincitori = listaIdVincitori.size() > 1;
 
     }
 
-    public String cineACistigat(){
+    public String aflaCineACistigat() {
+        if (cineACistigat == null) {
+            if (listaIdVincitori.size() == 1) {
+                Map<Integer, String> mappaIdCampoNomeTesto = new MappaIdCampoStringCineACistigat().getMappaIdsCampoValoreTesto4giocatoriInSquadra();
+                cineACistigat = mappaIdCampoNomeTesto.get(listaIdVincitori.get(0));
+            } else if (abbiamo2OpiuGiocatoriVincitori) {
+                cineACistigat = ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI;
+            } else {
+                cineACistigat = ConstantiGlobal.CONTINUA;
+            }
+        }
 
-        if(listaIdVincitori.size()==1){
-        Map<Integer,String> mappaIdCampoNomeTesto = new MappaIdCampoValoreTestoCampiStampa(context).getMappaIdsCampoValoreTesto4giocatoriInSquadra();
-        return mappaIdCampoNomeTesto.get(listaIdVincitori.get(0));
-    }
-        else if(abbiamo2OpiuGiocatoriVincitori){
-        return ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI;
-    }
-        else{
-        return ConstantiGlobal.CONTINUA;
-    }
+        return cineACistigat;
+
     }
 
     public Map<Integer, Integer> getMappaIdCampoValore() {

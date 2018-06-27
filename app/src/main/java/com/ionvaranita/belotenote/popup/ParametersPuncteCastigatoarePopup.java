@@ -9,7 +9,7 @@ public class ParametersPuncteCastigatoarePopup {
     private Context context;
     private Integer idGioco;
     private Integer idPartida;
-    private View mainView;
+    private View anchorView;
     private Integer actioCode;
     private boolean isNomeGiocoMostrabile;
     private InfoCineACistigat infoCineACistigat;
@@ -17,12 +17,12 @@ public class ParametersPuncteCastigatoarePopup {
 
     }
 
-    public View getMainView() {
-        return mainView;
+    public View getAnchorView() {
+        return anchorView;
     }
 
-    public void setMainView(View mainView) {
-        this.mainView = mainView;
+    public void setAnchorView(View anchorView) {
+        this.anchorView = anchorView;
     }
 
     public Integer getActioCode() {
