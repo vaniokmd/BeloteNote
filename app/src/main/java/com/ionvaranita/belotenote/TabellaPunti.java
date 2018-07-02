@@ -128,7 +128,7 @@ public class TabellaPunti extends AppCompatActivity {
         if (listaRecordsTabella4JucatoriInEchipa.size() > 1) {
             listaRecordsTabella4JucatoriInEchipa.remove(0);
             Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean = listaRecordsTabella4JucatoriInEchipa.get(listaRecordsTabella4JucatoriInEchipa.size() - 1);
-            tipoFinePartida=punti4GiocatoriInSquadraEntityBean.getFinePartida();
+            tipoFinePartida = punti4GiocatoriInSquadraEntityBean.getFinePartida();
         }
         paginaPatruJucatoriInEchipaRecycleView = (RecyclerView) findViewById(com.ionvaranita.belotenote.R.id.recycler_view_items_tabella_4_jucatori_in_echipa);
         adapterTabella4JucatoriinEchipa = new AdapterTabella4JucatoriinEchipa(this, listaRecordsTabella4JucatoriInEchipa);
@@ -166,8 +166,8 @@ public class TabellaPunti extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(nomeGioco.getContext());
                     String infoGioco = nomeGioco.getContext().getString(R.string.games_name);
                     infoGioco = infoGioco + ": " + giocoBean.getNumeGioco().toString() + "\n" +
-                            nomeGioco.getContext().getResources().getString(R.string.winner_points) + " " + castigatoare4JucatoriInEchipaBean.getPuncteCastigatoare()+"\n" +
-                            "Status: "+giocoBean.getStatus();
+                            nomeGioco.getContext().getResources().getString(R.string.winner_points) + " " + castigatoare4JucatoriInEchipaBean.getPuncteCastigatoare() + "\n" +
+                            "Status: " + giocoBean.getStatus();
                     builder.setTitle(nomeGioco.getContext().getResources().getString(R.string.games_info))
                             .setMessage(infoGioco)
                             .setCancelable(false)
@@ -227,7 +227,6 @@ public class TabellaPunti extends AppCompatActivity {
             boolean partidaNonFinita = statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaNonFinita());
 
             ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup = new ParametersPuncteCastigatoarePopup();
-            parametersPuncteCastigatoarePopup.setNomeGiocoMostrabile(false);
             parametersPuncteCastigatoarePopup.setActioCode(ActionCode.GIOCATORI_4_IN_SQUADRA);
             parametersPuncteCastigatoarePopup.setContext(context);
             parametersPuncteCastigatoarePopup.setIdGioco(idGioco);
@@ -239,16 +238,11 @@ public class TabellaPunti extends AppCompatActivity {
             parametersPuncteCastigatoarePopup.setInfoCineACistigat(infoCineACistigat);
 
             if (partidaFinita) {
-                PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(parametersPuncteCastigatoarePopup, listaRecordsTabella4JucatoriInEchipa.get(listaRecordsTabella4JucatoriInEchipa.size() - 2));
-                popupVreiSaContinuiCuOPartidaNoua.showPopup();
-
-            } else if (partidaNonFinitaConAggiuntaPunti) {
-
-                View footer = this.findViewById(R.id.recycler_view_items_tabella_4_jucatori_in_echipa);
-                parametersPuncteCastigatoarePopup.setAnchorView(footer);
+                parametersPuncteCastigatoarePopup.setNuovaPartida(true);
                 PopupPuncteCastigatoare popupPuncteCastigatoare = new PopupPuncteCastigatoare(parametersPuncteCastigatoarePopup);
                 popupPuncteCastigatoare.showPopup();
-            } else if (partidaNonFinita) {
+
+            } else if (partidaNonFinita || partidaNonFinitaConAggiuntaPunti) {
                 View footer = this.findViewById(R.id.recycler_view_items_tabella_4_jucatori_in_echipa);
                 final TableRow inserisciTableRow = this.findViewById(R.id.inserisci_table_row_4_jucatori_in_echipa);
                 popupWindowInserimentoPunti = new PopupWindowInserimentoPunti(actionCode, idGioco, popupView, getSupportFragmentManager(), footer.getWidth(), footer.getHeight() + inserisciTableRow.getHeight());

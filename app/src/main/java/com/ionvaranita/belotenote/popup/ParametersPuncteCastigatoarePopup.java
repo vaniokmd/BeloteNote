@@ -9,22 +9,32 @@ public class ParametersPuncteCastigatoarePopup {
     private Context context;
     private Integer idGioco;
     private Integer idPartida;
-    private View anchorView;
     private Integer actioCode;
-    private boolean isNomeGiocoMostrabile;
+    private boolean nuovaPartida;
+    private boolean partidaProlungata;
     private InfoCineACistigat infoCineACistigat;
+
+    public boolean isNuovaPartida() {
+        return nuovaPartida;
+    }
+
+    public void setNuovaPartida(boolean nuovaPartida) {
+        this.partidaProlungata = !nuovaPartida;
+        this.nuovaPartida = nuovaPartida;
+    }
+
+    public boolean isPartidaProlungata() {
+        return partidaProlungata;
+    }
+
+    public void setPartidaProlungata(boolean partidaProlungata) {
+        this.nuovaPartida = !partidaProlungata;
+        this.partidaProlungata = partidaProlungata;
+    }
+
     public ParametersPuncteCastigatoarePopup() {
 
     }
-
-    public View getAnchorView() {
-        return anchorView;
-    }
-
-    public void setAnchorView(View anchorView) {
-        this.anchorView = anchorView;
-    }
-
     public Integer getActioCode() {
         return actioCode;
     }
@@ -33,13 +43,6 @@ public class ParametersPuncteCastigatoarePopup {
         this.actioCode = actioCode;
     }
 
-    public boolean isNomeGiocoMostrabile() {
-        return isNomeGiocoMostrabile;
-    }
-
-    public void setNomeGiocoMostrabile(boolean nomeGiocoMostrabile) {
-        isNomeGiocoMostrabile = nomeGiocoMostrabile;
-    }
     public Integer getIdGioco() {
         return idGioco;
     }

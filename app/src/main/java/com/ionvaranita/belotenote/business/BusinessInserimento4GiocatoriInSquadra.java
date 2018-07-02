@@ -186,20 +186,19 @@ public class BusinessInserimento4GiocatoriInSquadra {
         boolean isContinuaConAggiuntaPunti = infoCineACistigat.aflaCineACistigat().equalsIgnoreCase(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI);
 
         ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup = new ParametersPuncteCastigatoarePopup();
-        parametersPuncteCastigatoarePopup.setNomeGiocoMostrabile(false);
         parametersPuncteCastigatoarePopup.setActioCode(ActionCode.GIOCATORI_4_IN_SQUADRA);
         parametersPuncteCastigatoarePopup.setContext(context);
         parametersPuncteCastigatoarePopup.setIdGioco(idGioco);
         parametersPuncteCastigatoarePopup.setIdPartida(idPartida);
         parametersPuncteCastigatoarePopup.setInfoCineACistigat(infoCineACistigat);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        parametersPuncteCastigatoarePopup.setAnchorView(inflater.inflate(R.layout.popup_puncte_castigatoare_global,null));
 
         final StatusGioco4GiocatoriInSquadra statusGioco4GiocatoriInSquadra = new StatusGioco4GiocatoriInSquadra(context);
 
         final BusinessInserimento4GiocatoriInSquadra questoOggetto = this;
 
         if(qualcunoHaVinto){
+            parametersPuncteCastigatoarePopup.setNuovaPartida(true);
             InfoRigaVuota4GiocatoriInSquadra infoRigaVuota4GiocatoriInSquadra = new InfoRigaVuota4GiocatoriInSquadra();
             infoRigaVuota4GiocatoriInSquadra.setIdPartida(idPartida);
             infoRigaVuota4GiocatoriInSquadra.setIdGioco(idGioco);
@@ -220,7 +219,7 @@ public class BusinessInserimento4GiocatoriInSquadra {
 
         else if(isContinuaConAggiuntaPunti){
 
-
+            parametersPuncteCastigatoarePopup.setPartidaProlungata(true);
             lastBean.setFinePartida(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI);
             db.tabellaPunti4GiocatoriInSquadraDao().inserisciPunti4GiocatoriInSquadra(lastBean);
             PopupPuncteCastigatoare popupPuncteCastigatoare = new PopupPuncteCastigatoare(parametersPuncteCastigatoarePopup);
@@ -347,6 +346,6 @@ public class BusinessInserimento4GiocatoriInSquadra {
         inserisciOAggiornaWinnerPoints(infoWinnerPoints);
         StatusGioco4GiocatoriInSquadra statusGioco4GiocatoriInSquadra = new StatusGioco4GiocatoriInSquadra(context);
         updateStatusAndDeltaNrPartideGioco4GiocatoriInSquadra(statusGioco4GiocatoriInSquadra.getPartidaNonFinitaProlungata(),0);
-
+        vaiNellaTabellaPunti();
     }
 }

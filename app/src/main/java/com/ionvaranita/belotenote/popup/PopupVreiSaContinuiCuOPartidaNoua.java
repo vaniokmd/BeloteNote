@@ -81,11 +81,10 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
             public void onClick(View view) {
                 ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup = new ParametersPuncteCastigatoarePopup();
                 parametersPuncteCastigatoarePopup.setActioCode(actionCode);
-                parametersPuncteCastigatoarePopup.setAnchorView(mainView);
                 parametersPuncteCastigatoarePopup.setIdGioco(idGioco);
                 parametersPuncteCastigatoarePopup.setContext(contesto);
                 if(!cineACastigatEnum.equalsIgnoreCase(ConstantiGlobal.CONTINUA)||!cineACastigatEnum.equalsIgnoreCase(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI)){
-                    parametersPuncteCastigatoarePopup.setNomeGiocoMostrabile(false);
+                    parametersPuncteCastigatoarePopup.setNuovaPartida(true);
                 }
                 if(cineACastigatEnum.equalsIgnoreCase(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI)){
                     try {
