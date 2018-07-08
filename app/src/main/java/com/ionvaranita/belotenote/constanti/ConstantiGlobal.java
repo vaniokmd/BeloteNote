@@ -21,4 +21,6 @@ public class ConstantiGlobal {
     public static final String CONTINUA = "continua";
 
     public static final String CONTINUA_CON_AGGIUNTA_PUNTI = "ahhiungi_puncte_castigatoare";
+
+    public static final String OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI = "ahhiungi_puncte_castigatoare";
 }

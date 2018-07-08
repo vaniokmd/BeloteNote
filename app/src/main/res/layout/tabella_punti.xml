@@ -127,7 +127,7 @@
         android:padding="@dimen/padding_of_16">
 
         <Button
-            android:id="@+id/inserisci_button_patru_jucatori_in_echipa"
+            android:id="@+id/inserisci_button_tabella_punti"
             style="@style/AppTheme.Button.Inserisci"
             android:background="@drawable/text_button_shape"
             android:layout_width="match_parent"

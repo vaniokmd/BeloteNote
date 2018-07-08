@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -81,6 +82,13 @@ public class TabellaPunti extends AppCompatActivity {
 
     private LinearLayoutManager linearLayoutManager;
 
+    private Button inserisciButton;
+
+    private boolean partidaFinita;
+
+    private boolean partidaNonFinitaConAggiuntaPunti;
+
+    private  boolean partidaNonFinita;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +97,10 @@ public class TabellaPunti extends AppCompatActivity {
         this.setContentView(com.ionvaranita.belotenote.R.layout.tabella_punti);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         this.context = this;
+        this.inserisciButton = this.findViewById(R.id.inserisci_button_tabella_punti);
+
+
+
         db = AppDatabase.getPersistentDatabase(getApplicationContext());
         actionCode = getIntent().getIntExtra(ConstantiGlobal.ACTION_CODE, -1);
 
@@ -115,7 +127,22 @@ public class TabellaPunti extends AppCompatActivity {
             gestisci4GiocatoriInSquadra();
         }
 
+        setDenominazioneInserisciButton();
 
+
+    }
+
+    private void setDenominazioneInserisciButton() {
+        StatusGioco4GiocatoriInSquadra statusGioco4GiocatoriInSquadra = new StatusGioco4GiocatoriInSquadra(context);
+        partidaFinita = statusGioco4GiocatoriInSquadra.getPartidaFinita().equals(statusGioco);
+
+        partidaNonFinitaConAggiuntaPunti = statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaNonFinitaProlungata());
+
+        partidaNonFinita = statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaNonFinita());
+
+        if(partidaFinita){
+            inserisciButton.setText(R.string.insert_new_match);
+        }
     }
 
     private void gestisci4GiocatoriInSquadra() {
@@ -219,12 +246,6 @@ public class TabellaPunti extends AppCompatActivity {
 
     public void showPopup(View anchorView) {
         if (statusGioco != null) {
-            StatusGioco4GiocatoriInSquadra statusGioco4GiocatoriInSquadra = new StatusGioco4GiocatoriInSquadra(context);
-            boolean partidaFinita = statusGioco4GiocatoriInSquadra.getPartidaFinita().equals(statusGioco);
-
-            boolean partidaNonFinitaConAggiuntaPunti = statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaNonFinitaProlungata());
-
-            boolean partidaNonFinita = statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaNonFinita());
 
             ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup = new ParametersPuncteCastigatoarePopup();
             parametersPuncteCastigatoarePopup.setActioCode(ActionCode.GIOCATORI_4_IN_SQUADRA);

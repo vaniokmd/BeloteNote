@@ -7,6 +7,7 @@ import com.ionvaranita.belotenote.constanti.MappaIdCampoStringCineACistigat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,12 +28,22 @@ public class InfoCineACistigat {
     private Map<Integer, Integer> mappaIdCampoValore;
     private Boolean abbiamo2OpiuGiocatoriVincitori;
     private Integer maxValuePunti;
-    private List<Integer> listaIdVincitori = new ArrayList<>();
+    private Map<Integer, Integer> mappaVincitori = new HashMap<>();
+    private boolean unVincitore;
 
-    public InfoCineACistigat(Context context, Map<Integer, Integer> mappaIdCampoValore, Integer puncteCastigatoare) {
+    public boolean isUnVincitore() {
+        return unVincitore;
+    }
+
+    public void setUnVincitore(boolean unVincitore) {
+        this.unVincitore = unVincitore;
+    }
+
+    public InfoCineACistigat(Context context, Map<Integer, Integer> mappaIdCampoValore, Integer puncteCastigatoare, boolean unVincitore) {
         this.mappaIdCampoValore = mappaIdCampoValore;
         this.maxValuePunti = puncteCastigatoare;
         this.context = context;
+        this.unVincitore = unVincitore;
         inizializza();
     }
 
@@ -44,28 +55,57 @@ public class InfoCineACistigat {
         Set<Integer> ids = mappaIdCampoValore.keySet();
         for (Integer id : ids) {
             Integer valore = mappaIdCampoValore.get(id);
-            if (valore > maxValuePunti) {
+            if (valore >= maxValuePunti) {
                 maxValuePunti = valore;
-                listaIdVincitori.add(id);
+                mappaVincitori.put(id, valore);
             }
         }
-        abbiamo2OpiuGiocatoriVincitori = listaIdVincitori.size() > 1;
+        abbiamo2OpiuGiocatoriVincitori = mappaVincitori.values().size() > 1;
 
     }
 
     public String aflaCineACistigat() {
-        if (cineACistigat == null) {
-            if (listaIdVincitori.size() == 1) {
-                Map<Integer, String> mappaIdCampoNomeTesto = new MappaIdCampoStringCineACistigat().getMappaIdsCampoValoreTesto4giocatoriInSquadra();
-                cineACistigat = mappaIdCampoNomeTesto.get(listaIdVincitori.get(0));
-            } else if (abbiamo2OpiuGiocatoriVincitori) {
-                cineACistigat = ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI;
-            } else {
-                cineACistigat = ConstantiGlobal.CONTINUA;
+
+        if (mappaVincitori.values().size() == 1) {
+            Map<Integer, String> mappaIdCampoNomeTesto = new MappaIdCampoStringCineACistigat().getMappaIdsCampoValoreTesto4giocatoriInSquadra();
+            cineACistigat = mappaIdCampoNomeTesto.get(mappaVincitori.keySet().iterator().next());
+        } else if (abbiamo2OpiuGiocatoriVincitori) {
+            Map<Integer, String> mappaIdCampoNomeTesto = new MappaIdCampoStringCineACistigat().getMappaIdsCampoValoreTesto4giocatoriInSquadra();
+            List<Integer> listaVincitoriMax = getMaxPunti();
+            if (unVincitore && listaVincitoriMax.size() == 1) {
+                mappaIdCampoNomeTesto.get(listaVincitoriMax.get(0));
+            } else if (unVincitore&&listaVincitoriMax.size() > 1) {
+                cineACistigat = ConstantiGlobal.OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI;
             }
+            else{
+                cineACistigat = ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI;
+            }
+        } else {
+            cineACistigat = ConstantiGlobal.CONTINUA;
         }
 
+
         return cineACistigat;
+
+    }
+
+    private List<Integer> getMaxPunti() {
+        List<Integer> listaPunti = new ArrayList<>();
+        Iterator<Integer> iterator = mappaVincitori.values().iterator();
+        Integer maxValue = null;
+        while (iterator.hasNext()) {
+            Integer punti = iterator.next();
+            if (maxValue == null) {
+                maxValue = punti;
+            } else if (maxValue < punti) {
+                listaPunti.clear();
+                maxValue = punti;
+                listaPunti.add(maxValue);
+            } else if (maxValue == punti) {
+                listaPunti.add(maxValue);
+            }
+        }
+        return listaPunti;
 
     }
 
@@ -81,7 +121,7 @@ public class InfoCineACistigat {
         return maxValuePunti;
     }
 
-    public List<Integer> getListaIdVincitori() {
-        return listaIdVincitori;
+    public Map<Integer,Integer> getMappaVincitori() {
+        return mappaVincitori;
     }
 }

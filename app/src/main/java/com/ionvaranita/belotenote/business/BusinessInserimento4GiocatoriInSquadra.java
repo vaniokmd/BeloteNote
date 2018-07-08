@@ -39,7 +39,6 @@ import static com.ionvaranita.belotenote.constanti.ConstantiGlobal.CONTINUA;
 
 
 public class BusinessInserimento4GiocatoriInSquadra {
-    private View anchorView;
     private InfoCineACistigat infoCineACistigat;
     private Integer idGioco;
     private Integer idPartida;
@@ -47,14 +46,10 @@ public class BusinessInserimento4GiocatoriInSquadra {
     private AppDatabase db;
     private Punti4GiocatoriInSquadraEntityBean lastBean;
 
-    private BusinessInserimento4GiocatoriInSquadra(Context context) {
+    public BusinessInserimento4GiocatoriInSquadra(Context context) {
         this.context=context;
         db = AppDatabase.getPersistentDatabase(context);
 
-    }
-    public BusinessInserimento4GiocatoriInSquadra(Context context,View anchorView){
-        this(context);
-        this.anchorView = anchorView;
     }
 
     public void inserisciPrimaVoltaNelDatabase(InfoGiocoNuovo4GiocatoriInSquadra infoGiocoNuovo4GiocatoriInSquadra) {
@@ -159,9 +154,8 @@ public class BusinessInserimento4GiocatoriInSquadra {
         bean.setPuntiNoi(puntiNoiAggiornato);
         bean.setPuntiVoi(puntiVoiAggiornato);
 
-        if(isProssimoTurno(lastBean.getTurno())){
-            inserisciNuovoTurno();
-        }
+        inserisciNuovoTurno();
+
 
 
         Integer turnoAggiornato = lastBean.getTurno() + 1;
@@ -179,7 +173,7 @@ public class BusinessInserimento4GiocatoriInSquadra {
 
         PuncteCastigatoare4JucatoriInEchipaBean puncteCastigatoare4JucatoriInEchipaBean = db.puncteCastigatoare4JucatoriInEchipaDao().selectPuncteCastigatoare4JucatoriInEchipaByIdJocAndIdPartida(idGioco, lastBean.getIdPartida());
 
-        infoCineACistigat =getCineACistigat(puncteCastigatoare4JucatoriInEchipaBean.getPuncteCastigatoare(),mappaIdCampoValore);
+        infoCineACistigat =getCineACistigat(puncteCastigatoare4JucatoriInEchipaBean.getPuncteCastigatoare(),mappaIdCampoValore,false);
 
         boolean qualcunoHaVinto = !infoCineACistigat.aflaCineACistigat().equalsIgnoreCase(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI)&&!infoCineACistigat.aflaCineACistigat().equalsIgnoreCase(CONTINUA);
 
@@ -223,7 +217,16 @@ public class BusinessInserimento4GiocatoriInSquadra {
             lastBean.setFinePartida(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI);
             db.tabellaPunti4GiocatoriInSquadraDao().inserisciPunti4GiocatoriInSquadra(lastBean);
             PopupPuncteCastigatoare popupPuncteCastigatoare = new PopupPuncteCastigatoare(parametersPuncteCastigatoarePopup);
-
+            popupPuncteCastigatoare.getCancelButtonPopup().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    parametersPuncteCastigatoarePopup.setNuovaPartida(true);
+                    infoCineACistigat.setUnVincitore(true);
+                    parametersPuncteCastigatoarePopup.setInfoCineACistigat(infoCineACistigat);
+                    PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(parametersPuncteCastigatoarePopup,bean);
+                    popupVreiSaContinuiCuOPartidaNoua.showPopup();
+                }
+            });
             popupPuncteCastigatoare.showPopup();
 
 
@@ -248,9 +251,6 @@ public class BusinessInserimento4GiocatoriInSquadra {
         turnManagement4GiocatoriInSquadraDao.insertTurnManagement4JucatoriInEchipa(turnManagement4GiocatoriInSquadra);
     }
 
-    private boolean isProssimoTurno(Integer turno){
-        return turno!=0&&turno%2==1;
-    }
 
     private void aggiornaScor4GiocatoriInSquadra(String cineACistigat){
         Scor4JucatoriInEchipaDao scor4JucatoriInEchipaDao = db.scor4JucatoriInEchipaDao();
@@ -288,8 +288,8 @@ public class BusinessInserimento4GiocatoriInSquadra {
     }
 
 
-    private InfoCineACistigat getCineACistigat(Integer puncteCastigatoare, Map<Integer,Integer> mappaIdCampoValore){
-            return new InfoCineACistigat(context,mappaIdCampoValore,puncteCastigatoare);
+    private InfoCineACistigat getCineACistigat(Integer puncteCastigatoare, Map<Integer,Integer> mappaIdCampoValore,boolean unSoloVincitorie){
+            return new InfoCineACistigat(context,mappaIdCampoValore,puncteCastigatoare,unSoloVincitorie);
 
 
     }
@@ -343,6 +343,7 @@ public class BusinessInserimento4GiocatoriInSquadra {
     }
 
     public void inserisciAdausAllaPartida(InfoWinnerPoints infoWinnerPoints ) {
+        idGioco = infoWinnerPoints.getIdGioco();
         inserisciOAggiornaWinnerPoints(infoWinnerPoints);
         StatusGioco4GiocatoriInSquadra statusGioco4GiocatoriInSquadra = new StatusGioco4GiocatoriInSquadra(context);
         updateStatusAndDeltaNrPartideGioco4GiocatoriInSquadra(statusGioco4GiocatoriInSquadra.getPartidaNonFinitaProlungata(),0);

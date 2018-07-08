@@ -58,4 +58,5 @@
     <string name="match_finished">match finished!</string>
     <string name="playing_match">playing match</string>
     <string name="playing_prolonged_match">playing prolonged match</string>
+    <string name="insert_new_match">insert new match</string>
 </resources>

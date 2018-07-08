@@ -70,6 +70,7 @@ public class PopupPuncteCastigatoare {
     private boolean partidaProlungata;
     private boolean nuovaPartida;
     private boolean nuovoGioco;
+    private ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup;
 
     public PopupPuncteCastigatoare(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup) {
         this.idGioco = parametersPuncteCastigatoarePopup.getIdGioco();
@@ -77,6 +78,7 @@ public class PopupPuncteCastigatoare {
         this.contesto = parametersPuncteCastigatoarePopup.getContext();
         this.actionCode = parametersPuncteCastigatoarePopup.getActioCode();
         this.anchorView = ((LayoutInflater) contesto.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.popup_puncte_castigatoare_global, null);
+        this.parametersPuncteCastigatoarePopup = parametersPuncteCastigatoarePopup;
 
         layoutInflater = ((LayoutInflater) contesto.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
 
@@ -89,7 +91,7 @@ public class PopupPuncteCastigatoare {
         if (partidaProlungata) {
             popupViewPuncteCastigatoare = layoutInflater.inflate(R.layout.adauga_puncte_castigatoare_in_plus, null);
             TextView t = popupViewPuncteCastigatoare.findViewById(R.id.x_jucatori_castigatori);
-            t.setText("" + parametersPuncteCastigatoarePopup.getInfoCineACistigat().getListaIdVincitori().size() + " " + contesto.getResources().getString(R.string.winner_players));
+            t.setText("" + parametersPuncteCastigatoarePopup.getInfoCineACistigat().getMappaVincitori().size() + " " + contesto.getResources().getString(R.string.winner_players));
             maxPuncte = parametersPuncteCastigatoarePopup.getInfoCineACistigat().getMaxValuePunti();
             spinnerPuncteCastigatoarePrecedente = popupViewPuncteCastigatoare.findViewById(R.id.spinner_puncte_castigatoare_precedente);
             puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
@@ -143,6 +145,14 @@ public class PopupPuncteCastigatoare {
         popupWindow = new PopupWindow(popupViewPuncteCastigatoare, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     }
 
+    public Button getCancelButtonPopup() {
+        return cancelButtonPopup;
+    }
+
+    public void setCancelButtonPopup(Button cancelButtonPopup) {
+        this.cancelButtonPopup = cancelButtonPopup;
+    }
+
     private void setOkCancelButton() {
         okButtonPopup = popupViewPuncteCastigatoare.findViewById(R.id.ok_button_puncte_castigatoare_global_popup);
         cancelButtonPopup = popupViewPuncteCastigatoare.findViewById(R.id.cancel_button_puncte_castigatoare_global_popup);
@@ -163,9 +173,12 @@ public class PopupPuncteCastigatoare {
             @Override
             public void onClick(View v) {
                 thisPopup.popupWindow.dismiss();
+
             }
         });
+
     }
+
 
 
     private void gestisci4GiocatoriInSquadra() {
@@ -252,7 +265,7 @@ public class PopupPuncteCastigatoare {
                     infoGiocoNuovo4GiocatoriInSquadra.setIdGioco(idGioco);
 
 
-                    BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto, anchorView);
+                    BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
 
                     businessInserimento4GiocatoriInSquadra.inserisciPrimaVoltaNelDatabase(infoGiocoNuovo4GiocatoriInSquadra);
 
@@ -270,7 +283,7 @@ public class PopupPuncteCastigatoare {
                     InfoNuovaPartida4GiocatoriInSquadra infoNuovaPartida4GiocatoriInSquadra = new InfoNuovaPartida4GiocatoriInSquadra();
                     infoNuovaPartida4GiocatoriInSquadra.setIdGioco(idGioco);
                     infoNuovaPartida4GiocatoriInSquadra.setWinnerPoints(winnerPoints);
-                    BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto, anchorView);
+                    BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
                     businessInserimento4GiocatoriInSquadra.inserisciNuovaPartidaNeDatabase(infoNuovaPartida4GiocatoriInSquadra);
                 }
                 vaiNellaTabellaPunti();
@@ -284,7 +297,7 @@ public class PopupPuncteCastigatoare {
                 InfoWinnerPoints infoWinnerPoints = new InfoWinnerPoints();
                 infoWinnerPoints.setIdGioco(idGioco);
                 infoWinnerPoints.setWinnerPoints(winnerPoints);
-                BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto, anchorView);
+                BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
 
                 businessInserimento4GiocatoriInSquadra.inserisciAdausAllaPartida(infoWinnerPoints);
             }
