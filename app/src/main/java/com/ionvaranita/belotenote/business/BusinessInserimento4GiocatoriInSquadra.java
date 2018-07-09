@@ -186,23 +186,16 @@ public class BusinessInserimento4GiocatoriInSquadra {
         parametersPuncteCastigatoarePopup.setIdPartida(idPartida);
         parametersPuncteCastigatoarePopup.setInfoCineACistigat(infoCineACistigat);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        final StatusGioco4GiocatoriInSquadra statusGioco4GiocatoriInSquadra = new StatusGioco4GiocatoriInSquadra(context);
-
         final BusinessInserimento4GiocatoriInSquadra questoOggetto = this;
-
         if(qualcunoHaVinto){
             parametersPuncteCastigatoarePopup.setNuovaPartida(true);
             InfoRigaVuota4GiocatoriInSquadra infoRigaVuota4GiocatoriInSquadra = new InfoRigaVuota4GiocatoriInSquadra();
             infoRigaVuota4GiocatoriInSquadra.setIdPartida(idPartida);
             infoRigaVuota4GiocatoriInSquadra.setIdGioco(idGioco);
             infoRigaVuota4GiocatoriInSquadra.setWinnerPoints(puncteCastigatoare4JucatoriInEchipaBean.getPuncteCastigatoare());
-            infoRigaVuota4GiocatoriInSquadra.setTipoFinePartida(infoCineACistigat.aflaCineACistigat());
+            infoRigaVuota4GiocatoriInSquadra.setInfoCineACistigat(infoCineACistigat);
 
-            inserisciRigaVuota(infoRigaVuota4GiocatoriInSquadra);
-            updateStatusAndDeltaNrPartideGioco4GiocatoriInSquadra(statusGioco4GiocatoriInSquadra.getPartidaFinita(),1);
-
-            aggiornaScor4GiocatoriInSquadra(infoCineACistigat.aflaCineACistigat());
+            finisciPartida(infoRigaVuota4GiocatoriInSquadra);
             PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(parametersPuncteCastigatoarePopup,bean);
             popupVreiSaContinuiCuOPartidaNoua.showPopup();
 
@@ -234,6 +227,16 @@ public class BusinessInserimento4GiocatoriInSquadra {
         else{
             vaiNellaTabellaPunti();
         }
+
+    }
+    public void finisciPartida(InfoRigaVuota4GiocatoriInSquadra infoRigaVuota4GiocatoriInSquadra){
+        final StatusGioco4GiocatoriInSquadra statusGioco4GiocatoriInSquadra = new StatusGioco4GiocatoriInSquadra(context);
+        if (infoCineACistigat==null){
+            infoCineACistigat = infoRigaVuota4GiocatoriInSquadra.getInfoCineACistigat();
+        }
+        inserisciRigaVuota(infoRigaVuota4GiocatoriInSquadra);
+        updateStatusAndDeltaNrPartideGioco4GiocatoriInSquadra(statusGioco4GiocatoriInSquadra.getPartidaFinita(),1);
+        aggiornaScor4GiocatoriInSquadra(infoCineACistigat.aflaCineACistigat());
 
     }
 
@@ -271,7 +274,7 @@ public class BusinessInserimento4GiocatoriInSquadra {
         Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean = new Punti4GiocatoriInSquadraEntityBean();
         punti4GiocatoriInSquadraEntityBean.setIdGioco(infoRigaVuota4GiocatoriInSquadra.getIdGioco());
         punti4GiocatoriInSquadraEntityBean.setIdPartida(infoRigaVuota4GiocatoriInSquadra.getIdPartida());
-        punti4GiocatoriInSquadraEntityBean.setFinePartida(infoRigaVuota4GiocatoriInSquadra.getTipoFinePartida());
+        punti4GiocatoriInSquadraEntityBean.setFinePartida(infoRigaVuota4GiocatoriInSquadra.getInfoCineACistigat().aflaCineACistigat());
         if(lastBean!=null){
             punti4GiocatoriInSquadraEntityBean.setTurno(lastBean.getTurno()+1);
         }

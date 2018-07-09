@@ -71,9 +71,9 @@ public class InfoCineACistigat {
             cineACistigat = mappaIdCampoNomeTesto.get(mappaVincitori.keySet().iterator().next());
         } else if (abbiamo2OpiuGiocatoriVincitori) {
             Map<Integer, String> mappaIdCampoNomeTesto = new MappaIdCampoStringCineACistigat().getMappaIdsCampoValoreTesto4giocatoriInSquadra();
-            List<Integer> listaVincitoriMax = getMaxPunti();
+            List<Integer> listaVincitoriMax = getIdMaxPunti();
             if (unVincitore && listaVincitoriMax.size() == 1) {
-                mappaIdCampoNomeTesto.get(listaVincitoriMax.get(0));
+                cineACistigat =mappaIdCampoNomeTesto.get(listaVincitoriMax.get(0));
             } else if (unVincitore&&listaVincitoriMax.size() > 1) {
                 cineACistigat = ConstantiGlobal.OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI;
             }
@@ -89,23 +89,24 @@ public class InfoCineACistigat {
 
     }
 
-    private List<Integer> getMaxPunti() {
-        List<Integer> listaPunti = new ArrayList<>();
-        Iterator<Integer> iterator = mappaVincitori.values().iterator();
+    private List<Integer> getIdMaxPunti() {
+        List<Integer> idsMaxPunti = new ArrayList<>();
+        Iterator<Integer> iterator = mappaVincitori.keySet().iterator();
         Integer maxValue = null;
         while (iterator.hasNext()) {
-            Integer punti = iterator.next();
+            Integer idCampo = iterator.next();
+            Integer punti = mappaVincitori.get(idCampo);
             if (maxValue == null) {
                 maxValue = punti;
             } else if (maxValue < punti) {
-                listaPunti.clear();
+                idsMaxPunti.clear();
                 maxValue = punti;
-                listaPunti.add(maxValue);
+                idsMaxPunti.add(idCampo);
             } else if (maxValue == punti) {
-                listaPunti.add(maxValue);
+                idsMaxPunti.add(idCampo);
             }
         }
-        return listaPunti;
+        return idsMaxPunti;
 
     }
 

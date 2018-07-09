@@ -4,14 +4,14 @@ public class InfoRigaVuota4GiocatoriInSquadra {
     private Integer idGioco;
     private Integer idPartida;
     private Integer winnerPoints;
-    private String tipoFinePartida;
+    private InfoCineACistigat infoCineACistigat;
 
-    public String getTipoFinePartida() {
-        return tipoFinePartida;
+    public InfoCineACistigat getInfoCineACistigat() {
+        return infoCineACistigat;
     }
 
-    public void setTipoFinePartida(String tipoFinePartida) {
-        this.tipoFinePartida = tipoFinePartida;
+    public void setInfoCineACistigat(InfoCineACistigat infoCineACistigat) {
+        this.infoCineACistigat = infoCineACistigat;
     }
 
     public Integer getIdGioco() {
