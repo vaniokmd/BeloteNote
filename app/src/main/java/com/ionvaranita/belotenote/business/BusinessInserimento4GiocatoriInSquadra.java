@@ -274,9 +274,10 @@ public class BusinessInserimento4GiocatoriInSquadra {
         Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean = new Punti4GiocatoriInSquadraEntityBean();
         punti4GiocatoriInSquadraEntityBean.setIdGioco(infoRigaVuota4GiocatoriInSquadra.getIdGioco());
         punti4GiocatoriInSquadraEntityBean.setIdPartida(infoRigaVuota4GiocatoriInSquadra.getIdPartida());
-        punti4GiocatoriInSquadraEntityBean.setFinePartida(infoRigaVuota4GiocatoriInSquadra.getInfoCineACistigat().aflaCineACistigat());
+
         if(lastBean!=null){
             punti4GiocatoriInSquadraEntityBean.setTurno(lastBean.getTurno()+1);
+            punti4GiocatoriInSquadraEntityBean.setFinePartida(infoRigaVuota4GiocatoriInSquadra.getInfoCineACistigat().aflaCineACistigat());
         }
         else{
             punti4GiocatoriInSquadraEntityBean.setTurno(0);

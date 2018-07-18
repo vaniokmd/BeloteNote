@@ -27,9 +27,10 @@ public class InfoCineACistigat {
     private Context context;
     private Map<Integer, Integer> mappaIdCampoValore;
     private Boolean abbiamo2OpiuGiocatoriVincitori;
-    private Integer maxValuePunti;
+    private Integer puncteCastigatoare;
     private Map<Integer, Integer> mappaVincitori = new HashMap<>();
     private boolean unVincitore;
+    private Integer maxValuePunti;
 
     public boolean isUnVincitore() {
         return unVincitore;
@@ -41,6 +42,7 @@ public class InfoCineACistigat {
 
     public InfoCineACistigat(Context context, Map<Integer, Integer> mappaIdCampoValore, Integer puncteCastigatoare, boolean unVincitore) {
         this.mappaIdCampoValore = mappaIdCampoValore;
+        this.puncteCastigatoare = puncteCastigatoare;
         this.maxValuePunti = puncteCastigatoare;
         this.context = context;
         this.unVincitore = unVincitore;
@@ -55,12 +57,14 @@ public class InfoCineACistigat {
         Set<Integer> ids = mappaIdCampoValore.keySet();
         for (Integer id : ids) {
             Integer valore = mappaIdCampoValore.get(id);
-            if (valore >= maxValuePunti) {
-                maxValuePunti = valore;
+            if (valore >= puncteCastigatoare) {
+                if(maxValuePunti<valore){
+                    maxValuePunti = valore;
+                }
                 mappaVincitori.put(id, valore);
             }
         }
-        abbiamo2OpiuGiocatoriVincitori = mappaVincitori.values().size() > 1;
+        abbiamo2OpiuGiocatoriVincitori = mappaVincitori.size() > 1;
 
     }
 
@@ -78,6 +82,7 @@ public class InfoCineACistigat {
                 cineACistigat = ConstantiGlobal.OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI;
             }
             else{
+
                 cineACistigat = ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI;
             }
         } else {
