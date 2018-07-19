@@ -2,6 +2,7 @@ package com.ionvaranita.belotenote.business;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -36,6 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.ionvaranita.belotenote.constanti.ConstantiGlobal.CONTINUA;
+import static com.ionvaranita.belotenote.constanti.ConstantiGlobal.OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI;
 
 
 public class BusinessInserimento4GiocatoriInSquadra {
@@ -175,20 +177,24 @@ public class BusinessInserimento4GiocatoriInSquadra {
 
         infoCineACistigat =getCineACistigat(puncteCastigatoare4JucatoriInEchipaBean.getPuncteCastigatoare(),mappaIdCampoValore,false);
 
-        boolean qualcunoHaVinto = !infoCineACistigat.aflaCineACistigat().equalsIgnoreCase(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI)&&!infoCineACistigat.aflaCineACistigat().equalsIgnoreCase(CONTINUA);
+        final String cineACistigat = infoCineACistigat.aflaCineACistigat();
 
-        boolean isContinuaConAggiuntaPunti = infoCineACistigat.aflaCineACistigat().equalsIgnoreCase(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI);
+        boolean qualcunoHaVinto = !cineACistigat.equalsIgnoreCase(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI)&&(!cineACistigat.equalsIgnoreCase(CONTINUA))&&!cineACistigat.equalsIgnoreCase(OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI);
 
-        ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup = new ParametersPuncteCastigatoarePopup();
-        parametersPuncteCastigatoarePopup.setActioCode(ActionCode.GIOCATORI_4_IN_SQUADRA);
-        parametersPuncteCastigatoarePopup.setContext(context);
-        parametersPuncteCastigatoarePopup.setIdGioco(idGioco);
-        parametersPuncteCastigatoarePopup.setIdPartida(idPartida);
-        parametersPuncteCastigatoarePopup.setInfoCineACistigat(infoCineACistigat);
+        boolean isContinuaConAggiuntaPunti = cineACistigat.equalsIgnoreCase(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI);
+
+        boolean seiObbligatoDiProlungareLaPartida = cineACistigat.equalsIgnoreCase(OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI);
+
+        final ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopupLocal = new ParametersPuncteCastigatoarePopup();
+        parametersPuncteCastigatoarePopupLocal.setActioCode(ActionCode.GIOCATORI_4_IN_SQUADRA);
+        parametersPuncteCastigatoarePopupLocal.setContext(context);
+        parametersPuncteCastigatoarePopupLocal.setIdGioco(idGioco);
+        parametersPuncteCastigatoarePopupLocal.setIdPartida(idPartida);
+        parametersPuncteCastigatoarePopupLocal.setInfoCineACistigat(infoCineACistigat);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final BusinessInserimento4GiocatoriInSquadra questoOggetto = this;
         if(qualcunoHaVinto){
-            parametersPuncteCastigatoarePopup.setNuovaPartida(true);
+            parametersPuncteCastigatoarePopupLocal.setNuovaPartida(true);
             InfoRigaVuota4GiocatoriInSquadra infoRigaVuota4GiocatoriInSquadra = new InfoRigaVuota4GiocatoriInSquadra();
             infoRigaVuota4GiocatoriInSquadra.setIdPartida(idPartida);
             infoRigaVuota4GiocatoriInSquadra.setIdGioco(idGioco);
@@ -196,7 +202,7 @@ public class BusinessInserimento4GiocatoriInSquadra {
             infoRigaVuota4GiocatoriInSquadra.setInfoCineACistigat(infoCineACistigat);
 
             finisciPartida(infoRigaVuota4GiocatoriInSquadra);
-            PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(parametersPuncteCastigatoarePopup,bean);
+            PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(parametersPuncteCastigatoarePopupLocal,bean);
             popupVreiSaContinuiCuOPartidaNoua.showPopup();
 
 
@@ -206,23 +212,27 @@ public class BusinessInserimento4GiocatoriInSquadra {
 
         else if(isContinuaConAggiuntaPunti){
 
-            parametersPuncteCastigatoarePopup.setPartidaProlungata(true);
+            parametersPuncteCastigatoarePopupLocal.setPartidaProlungata(true);
             lastBean.setFinePartida(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI);
             db.tabellaPunti4GiocatoriInSquadraDao().inserisciPunti4GiocatoriInSquadra(lastBean);
-            PopupPuncteCastigatoare popupPuncteCastigatoare = new PopupPuncteCastigatoare(parametersPuncteCastigatoarePopup);
+            PopupPuncteCastigatoare popupPuncteCastigatoare = new PopupPuncteCastigatoare(parametersPuncteCastigatoarePopupLocal);
             popupPuncteCastigatoare.getCancelButtonPopup().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    parametersPuncteCastigatoarePopup.setNuovaPartida(true);
-                    infoCineACistigat.setUnVincitore(true);
-                    parametersPuncteCastigatoarePopup.setInfoCineACistigat(infoCineACistigat);
-                    PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(parametersPuncteCastigatoarePopup,bean);
+                    parametersPuncteCastigatoarePopupLocal.setNuovaPartida(true);
+                    infoCineACistigat =getCineACistigat(puncteCastigatoare4JucatoriInEchipaBean.getPuncteCastigatoare(),mappaIdCampoValore,true);
+
+                    parametersPuncteCastigatoarePopupLocal.setInfoCineACistigat(infoCineACistigat);
+                    PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(parametersPuncteCastigatoarePopupLocal,bean);
                     popupVreiSaContinuiCuOPartidaNoua.showPopup();
                 }
             });
             popupPuncteCastigatoare.showPopup();
 
 
+        }
+        else if (seiObbligatoDiProlungareLaPartida){
+            Log.d(this.getClass().getSimpleName(),"Sei obbligato di prolongare la partita");
         }
         else{
             vaiNellaTabellaPunti();
@@ -231,6 +241,7 @@ public class BusinessInserimento4GiocatoriInSquadra {
     }
     public void finisciPartida(InfoRigaVuota4GiocatoriInSquadra infoRigaVuota4GiocatoriInSquadra){
         final StatusGioco4GiocatoriInSquadra statusGioco4GiocatoriInSquadra = new StatusGioco4GiocatoriInSquadra(context);
+        idGioco = infoRigaVuota4GiocatoriInSquadra.getIdGioco();
         if (infoCineACistigat==null){
             infoCineACistigat = infoRigaVuota4GiocatoriInSquadra.getInfoCineACistigat();
         }

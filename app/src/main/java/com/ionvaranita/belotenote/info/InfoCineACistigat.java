@@ -76,7 +76,7 @@ public class InfoCineACistigat {
         } else if (abbiamo2OpiuGiocatoriVincitori) {
             Map<Integer, String> mappaIdCampoNomeTesto = new MappaIdCampoStringCineACistigat().getMappaIdsCampoValoreTesto4giocatoriInSquadra();
             List<Integer> listaVincitoriMax = getIdMaxPunti();
-            if (unVincitore && listaVincitoriMax.size() == 1) {
+            if (unVincitore&&listaVincitoriMax.size() == 1) {
                 cineACistigat =mappaIdCampoNomeTesto.get(listaVincitoriMax.get(0));
             } else if (unVincitore&&listaVincitoriMax.size() > 1) {
                 cineACistigat = ConstantiGlobal.OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI;
@@ -103,7 +103,7 @@ public class InfoCineACistigat {
             Integer punti = mappaVincitori.get(idCampo);
             if (maxValue == null) {
                 maxValue = punti;
-            } else if (maxValue < punti) {
+            }if (maxValue < punti) {
                 idsMaxPunti.clear();
                 maxValue = punti;
                 idsMaxPunti.add(idCampo);
@@ -111,6 +111,7 @@ public class InfoCineACistigat {
                 idsMaxPunti.add(idCampo);
             }
         }
+
         return idsMaxPunti;
 
     }
