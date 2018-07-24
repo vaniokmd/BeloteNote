@@ -12,25 +12,15 @@ public class ParametersPuncteCastigatoarePopup {
     private Integer actioCode;
     private boolean nuovaPartida;
     private boolean partidaProlungata;
+    private boolean isObligatoProlungare;
+    private boolean isNuovoGioco;
     private InfoCineACistigat infoCineACistigat;
 
     public boolean isNuovaPartida() {
         return nuovaPartida;
     }
 
-    public void setNuovaPartida(boolean nuovaPartida) {
-        this.partidaProlungata = !nuovaPartida;
-        this.nuovaPartida = nuovaPartida;
-    }
 
-    public boolean isPartidaProlungata() {
-        return partidaProlungata;
-    }
-
-    public void setPartidaProlungata(boolean partidaProlungata) {
-        this.nuovaPartida = !partidaProlungata;
-        this.partidaProlungata = partidaProlungata;
-    }
 
     public ParametersPuncteCastigatoarePopup() {
 
@@ -73,5 +63,43 @@ public class ParametersPuncteCastigatoarePopup {
 
     public void setInfoCineACistigat(InfoCineACistigat infoCineACistigat) {
         this.infoCineACistigat = infoCineACistigat;
+    }
+    public boolean isObligatoProlungare() {
+        return isObligatoProlungare;
+    }
+
+    public void setObligatoProlungare(boolean obligatoProlungare) {
+        this.isNuovoGioco = !obligatoProlungare;
+        this.partidaProlungata = !obligatoProlungare;
+        this.nuovaPartida = !obligatoProlungare;
+        this.isObligatoProlungare=obligatoProlungare;
+    }
+
+    public boolean isNuovoGioco() {
+        return isNuovoGioco;
+    }
+
+    public void setNuovoGioco(boolean nuovoGioco) {
+        this.isNuovoGioco = nuovoGioco;
+        this.partidaProlungata = !nuovoGioco;
+        this.nuovaPartida = !nuovoGioco;
+        this.isObligatoProlungare=!nuovoGioco;
+    }
+    public void setNuovaPartida(boolean nuovaPartida) {
+        this.isNuovoGioco = !nuovaPartida;
+        this.partidaProlungata = !nuovaPartida;
+        this.nuovaPartida = nuovaPartida;
+        this.isObligatoProlungare=!nuovaPartida;
+    }
+
+    public boolean isPartidaProlungata() {
+        return partidaProlungata;
+    }
+
+    public void setPartidaProlungata(boolean partidaProlungata) {
+        this.nuovaPartida = !partidaProlungata;
+        this.isNuovoGioco = !partidaProlungata;
+        this.partidaProlungata = partidaProlungata;
+        this.isObligatoProlungare = !partidaProlungata;
     }
 }

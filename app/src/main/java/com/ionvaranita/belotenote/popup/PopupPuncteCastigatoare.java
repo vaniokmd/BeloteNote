@@ -70,6 +70,7 @@ public class PopupPuncteCastigatoare {
     private boolean partidaProlungata;
     private boolean nuovaPartida;
     private boolean nuovoGioco;
+    private boolean obligatoProlungarePartida;
     private ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup;
 
     public PopupPuncteCastigatoare(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup) {
@@ -86,12 +87,14 @@ public class PopupPuncteCastigatoare {
 
         nuovaPartida = parametersPuncteCastigatoarePopup.isNuovaPartida();
 
-        nuovoGioco = !(partidaProlungata || nuovaPartida);
+        nuovoGioco = parametersPuncteCastigatoarePopup.isNuovoGioco();
 
-        if (partidaProlungata) {
+        obligatoProlungarePartida = parametersPuncteCastigatoarePopup.isObligatoProlungare();
+        if (partidaProlungata||obligatoProlungarePartida) {
             popupViewPuncteCastigatoare = layoutInflater.inflate(R.layout.adauga_puncte_castigatoare_in_plus, null);
             TextView t = popupViewPuncteCastigatoare.findViewById(R.id.x_jucatori_castigatori);
-            t.setText("" + parametersPuncteCastigatoarePopup.getInfoCineACistigat().getMappaVincitori().size() + " " + contesto.getResources().getString(R.string.winner_players));
+            if (partidaProlungata)t.setText("" + parametersPuncteCastigatoarePopup.getInfoCineACistigat().getMappaVincitori().size() + " " + contesto.getResources().getString(R.string.winner_players));
+            else t.setText("Abbiomo 2 giocatori con lo stesso punteggio , sei obbligato di prolungare la partida");
             maxPuncte = parametersPuncteCastigatoarePopup.getInfoCineACistigat().getMaxValuePunti();
             spinnerPuncteCastigatoarePrecedente = popupViewPuncteCastigatoare.findViewById(R.id.spinner_puncte_castigatoare_precedente);
             puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
@@ -138,7 +141,7 @@ public class PopupPuncteCastigatoare {
     }
 
     private void configuraIlPopup() {
-        if (!partidaProlungata) {
+        if (!partidaProlungata&&!obligatoProlungarePartida) {
             popolaRecyclerViewPuncteCastigatoareGlobal();
             setMostraONascondiInputPuncteCastigatoare();
         }
@@ -163,7 +166,7 @@ public class PopupPuncteCastigatoare {
                     inserisciJocNou();
                 } else if (nuovaPartida) {
                     inserisciPartidaNuova();
-                } else if (partidaProlungata) {
+                } else if (partidaProlungata||obligatoProlungarePartida) {
                     inserisciAdausAllaPartida();
                 }
             }

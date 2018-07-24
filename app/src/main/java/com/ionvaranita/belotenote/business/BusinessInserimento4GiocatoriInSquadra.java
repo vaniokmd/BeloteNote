@@ -183,7 +183,7 @@ public class BusinessInserimento4GiocatoriInSquadra {
 
         boolean isContinuaConAggiuntaPunti = cineACistigat.equalsIgnoreCase(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI);
 
-        boolean seiObbligatoDiProlungareLaPartida = cineACistigat.equalsIgnoreCase(OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI);
+
 
         final ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopupLocal = new ParametersPuncteCastigatoarePopup();
         parametersPuncteCastigatoarePopupLocal.setActioCode(ActionCode.GIOCATORI_4_IN_SQUADRA);
@@ -216,23 +216,31 @@ public class BusinessInserimento4GiocatoriInSquadra {
             lastBean.setFinePartida(ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI);
             db.tabellaPunti4GiocatoriInSquadraDao().inserisciPunti4GiocatoriInSquadra(lastBean);
             PopupPuncteCastigatoare popupPuncteCastigatoare = new PopupPuncteCastigatoare(parametersPuncteCastigatoarePopupLocal);
-            popupPuncteCastigatoare.getCancelButtonPopup().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    parametersPuncteCastigatoarePopupLocal.setNuovaPartida(true);
-                    infoCineACistigat =getCineACistigat(puncteCastigatoare4JucatoriInEchipaBean.getPuncteCastigatoare(),mappaIdCampoValore,true);
+            infoCineACistigat =getCineACistigat(puncteCastigatoare4JucatoriInEchipaBean.getPuncteCastigatoare(),mappaIdCampoValore,true);
+            String cineACistigatUnSoloGiocatore = infoCineACistigat.aflaCineACistigat();
 
-                    parametersPuncteCastigatoarePopupLocal.setInfoCineACistigat(infoCineACistigat);
-                    PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(parametersPuncteCastigatoarePopupLocal,bean);
-                    popupVreiSaContinuiCuOPartidaNoua.showPopup();
-                }
-            });
-            popupPuncteCastigatoare.showPopup();
+            boolean seiObbligatoDiProlungareLaPartida = cineACistigatUnSoloGiocatore.equalsIgnoreCase(OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI);
+            if(seiObbligatoDiProlungareLaPartida){
+                parametersPuncteCastigatoarePopupLocal.setObligatoProlungare(true);
+                parametersPuncteCastigatoarePopupLocal.setInfoCineACistigat(infoCineACistigat);
+                PopupPuncteCastigatoare popupPuncteCastigatoare1 =  new PopupPuncteCastigatoare(parametersPuncteCastigatoarePopupLocal);
+                popupPuncteCastigatoare1.getCancelButtonPopup().setVisibility(View.INVISIBLE);
+                popupPuncteCastigatoare1.showPopup();
 
+            }
+            else{
+                popupPuncteCastigatoare.getCancelButtonPopup().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        parametersPuncteCastigatoarePopupLocal.setNuovaPartida(true);
+                        parametersPuncteCastigatoarePopupLocal.setInfoCineACistigat(infoCineACistigat);
+                        PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(parametersPuncteCastigatoarePopupLocal,bean);
+                        popupVreiSaContinuiCuOPartidaNoua.showPopup();
+                    }
+                });
+                popupPuncteCastigatoare.showPopup();
+            }
 
-        }
-        else if (seiObbligatoDiProlungareLaPartida){
-            Log.d(this.getClass().getSimpleName(),"Sei obbligato di prolongare la partita");
         }
         else{
             vaiNellaTabellaPunti();

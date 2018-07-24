@@ -107,7 +107,7 @@ public class InfoCineACistigat {
                 idsMaxPunti.clear();
                 maxValue = punti;
                 idsMaxPunti.add(idCampo);
-            } else if (maxValue == punti) {
+            } else if (maxValue.equals(punti)) {
                 idsMaxPunti.add(idCampo);
             }
         }

@@ -175,8 +175,8 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
 
         puncteNoiTextView.setText(punti4GiocatoriInSquadraEntityBean.getPuntiNoi().toString());
         puncteVoiTextView.setText(punti4GiocatoriInSquadraEntityBean.getPuntiVoi().toString());
-
-        if(infoCineACistigat.aflaCineACistigat().equals(InfoCineACistigat.WINNER_IS_WE)){
+        String cineACistigat = infoCineACistigat.aflaCineACistigat();
+        if(cineACistigat.equals(InfoCineACistigat.WINNER_IS_WE)){
             noiTexView.setTypeface(null, Typeface.BOLD_ITALIC);
             puncteNoiTextView.setTypeface(null, Typeface.BOLD_ITALIC);
 
@@ -193,7 +193,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
             testoACastigat.setText(spannableString);
 
         }
-        else if(infoCineACistigat.aflaCineACistigat().equals(InfoCineACistigat.WINNER_IS_YOU)){
+        else if(cineACistigat.equals(InfoCineACistigat.WINNER_IS_YOU)){
             puncteVoiTextView.setTypeface(null, Typeface.BOLD_ITALIC);
 
             voiTexView.setTypeface(null,Typeface.BOLD_ITALIC);
