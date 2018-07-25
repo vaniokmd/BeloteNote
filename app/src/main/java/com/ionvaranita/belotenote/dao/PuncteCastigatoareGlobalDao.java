@@ -17,7 +17,7 @@ public interface PuncteCastigatoareGlobalDao {
 
     @Query("select * from PuncteCastigatoareGlobalBean order by data desc")
     List<PuncteCastigatoareGlobalBean> selectAllPuncteCastigatoareGlobalOrderByData();
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertPuncteCastigatoareGlobal(PuncteCastigatoareGlobalBean puncteCastigatoareGlobalBean);
 
 }

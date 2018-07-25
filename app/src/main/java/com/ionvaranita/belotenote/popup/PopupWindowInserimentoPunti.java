@@ -161,15 +161,22 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                                     }
                                     else{
                                         campo.setText(campo.getText().toString().substring(0, campo.getText().toString().length() - 1));
-                                        if(campo.getText().toString().isEmpty()){
-                                            campoRimasto.setHint("");
-                                        }
+
                                     }
                                 }
                                 EsitoCampoRimasto esitoCampoRimasto = calcolaCampoRimasto();
                                 if(esitoCampoRimasto.isRimasto1Campo()){
                                     Log.d(esitoCampoRimasto.getCampoRimasto().toString(),"e ultimo rimasto: "+esitoCampoRimasto.isRimasto1Campo()+" campo precedente is focused and empty"+esitoCampoRimasto.isCampoFocusedAndEmpty());
                                     completaIlCampoRimasto(campo);
+                                }
+                                else{
+                                    if(campo.getText().toString().isEmpty()){
+
+                                        campoRimasto.setHint(hintDifferenza.toString());
+                                    }
+                                }
+                                if(campo.getText().toString().isEmpty()&&new Integer(campo.getId()).equals(ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO)){
+                                    campoRimasto.setHint("");
                                 }
 
 
@@ -206,7 +213,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
 
     }
     private BorderedEditText campoRimasto=null;
-
+    private Integer hintDifferenza = null;
 
     private EsitoCampoRimasto calcolaCampoRimasto(){
         EsitoCampoRimasto esitoCampoRimasto = new EsitoCampoRimasto();
@@ -252,7 +259,11 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
             esitoCampoRimasto.setCampoRimasto(campoRimasto);
 
             esitoCampoRimasto.setCampoFocusedAndEmpty(campoIsFocusedAndEmpty);
-            if(!campoIsFocusedAndEmpty)campoRimasto.setHint(Integer.toString(puntiGioco-sommaAltriCampi));
+            hintDifferenza =puntiGioco-sommaAltriCampi;
+            if(!campoIsFocusedAndEmpty){
+                campoRimasto.setHint(Integer.toString(hintDifferenza));
+                esitoCampoRimasto.setHintDifferenza(hintDifferenza);
+            }
 
         }
         return esitoCampoRimasto;

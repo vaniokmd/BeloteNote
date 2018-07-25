@@ -4,6 +4,16 @@ import com.ionvaranita.belotenote.borders.BorderedEditText;
 
 
 public class EsitoCampoRimasto {
+    private Integer hintDifferenza;
+
+    public Integer getHintDifferenza() {
+        return hintDifferenza;
+    }
+
+    public void setHintDifferenza(Integer hintDifferenza) {
+        this.hintDifferenza = hintDifferenza;
+    }
+
     private boolean rimasto1Campo;
     private BorderedEditText campoRimasto;
     private boolean campoFocusedAndEmpty;
