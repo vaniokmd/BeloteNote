@@ -31,8 +31,11 @@ import com.ionvaranita.belotenote.info.InfoCineACistigat;
 import com.ionvaranita.belotenote.utils.GlobalButtonOnClickListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by ionvaranita on 19/04/18.
@@ -124,7 +127,6 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
 
     private void attivaLaKeyboardPerQuestoCampo(final BorderedEditText campo) {
         KeyboardFragment keyboardFragment = (KeyboardFragment) fragmentManager.findFragmentById(R.id.container_keyboard_4_jucatori_in_echipa);
-
         keyboardLinearLayout = (LinearLayout) keyboardFragment.getView();
         int nrTabele = keyboardLinearLayout.getChildCount();
         for (int i = 0; i < nrTabele; i++) {
@@ -135,7 +137,6 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                 int nrButtoni = riga.getChildCount();
                 for (int k = 0; k < nrButtoni; k++) {
                     final Button buttonKey = (Button) riga.getChildAt(k);
-
                     final String del = tableRow.getContext().getResources().getString(R.string.del);
                     final String done = tableRow.getContext().getResources().getString(R.string.done);
                     final String meno_10 = tableRow.getContext().getString(R.string.meno_10);
@@ -144,13 +145,10 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                         public void onClick(View view) {
                             new GlobalButtonOnClickListener(context).vibrate();
                             String valoreButton = buttonKey.getText().toString();
-
-
                             if (valoreButton.equals(done)) {
                                 if (actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA) {
                                     if(verificaIntegrita()){
                                         inserisciPuntiNelDatabase();
-
                                     }
                                 }
                             } else if (valoreButton.equals(del)) {
@@ -164,22 +162,18 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
 
                                     }
                                 }
-                                EsitoCampoRimasto esitoCampoRimasto = calcolaCampoRimasto();
-                                if(esitoCampoRimasto.isRimasto1Campo()){
-                                    Log.d(esitoCampoRimasto.getCampoRimasto().toString(),"e ultimo rimasto: "+esitoCampoRimasto.isRimasto1Campo()+" campo precedente is focused and empty"+esitoCampoRimasto.isCampoFocusedAndEmpty());
-                                    completaIlCampoRimasto(campo);
-                                }
-                                else{
-                                    if(campo.getText().toString().isEmpty()){
+                                calcolaCampoRimasto();
 
-                                        campoRimasto.setHint(hintDifferenza.toString());
+                                if(campo.getText().toString().isEmpty()){
+                                    if(multimeaCampiRimasti.size()>1){
+                                        cancellaHintCampiRimasti();
                                     }
                                 }
-                                if(campo.getText().toString().isEmpty()&&new Integer(campo.getId()).equals(ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO)){
-                                    campoRimasto.setHint("");
+                                else{
+                                    if(multimeaCampiRimasti.size()==1){
+                                        multimeaCampiRimasti.iterator().next().setHint(hintDifferenza.toString());
+                                    }
                                 }
-
-
 
                             } else if (valoreButton.equals(meno_10)) {
                                 if(campo.getId()!=ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO){
@@ -189,10 +183,11 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                                 }
                             } else {
                                 campo.setText(campo.getText().toString() + buttonKey.getText().toString());
-                                EsitoCampoRimasto esitoCampoRimasto = calcolaCampoRimasto();
-                                if(esitoCampoRimasto.isRimasto1Campo()){
-                                    Log.d(esitoCampoRimasto.getCampoRimasto().toString(),"e ultimo rimasto: "+esitoCampoRimasto.isRimasto1Campo()+" campo precedente is focused and empty"+esitoCampoRimasto.isCampoFocusedAndEmpty());
+                                calcolaCampoRimasto();
+                                if(multimeaCampiRimasti.size()==1){
+                                    multimeaCampiRimasti.iterator().next().setHint(hintDifferenza.toString());
                                 }
+
                             }
                             campo.setSelection(campo.getText().toString().length());
 
@@ -205,68 +200,56 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
 
     }
 
-    private void completaIlCampoRimasto(BorderedEditText campo) {
-
+    private void cancellaHintCampiRimasti(){
+        Iterator<BorderedEditText> iteratorCampi =multimeaCampiRimasti.iterator();
+        while (iteratorCampi.hasNext()){
+            iteratorCampi.next().setHint("");
+        }
+        hintDifferenza=0;
     }
 
-    private void inizializzaCampoRimasto(BorderedEditText campo){
+    Set<BorderedEditText> multimeaCampiRimasti = new HashSet<>();
+    private Integer hintDifferenza = 0;
+    Integer puntiGioco = null;
 
-    }
-    private BorderedEditText campoRimasto=null;
-    private Integer hintDifferenza = null;
+    private void calcolaCampoRimasto(){
 
-    private EsitoCampoRimasto calcolaCampoRimasto(){
-        EsitoCampoRimasto esitoCampoRimasto = new EsitoCampoRimasto();
 
         List<BorderedEditText> listaCampi = new ArrayList<>(mappaCampiInseriti.values());
 
+        multimeaCampiRimasti.clear();
 
-        Integer puntiGioco = null;
-        int nrCampiCompletati = 0;
-        boolean campoIsFocusedAndEmpty=false;
-
-        Integer sommaAltriCampi = 0;
+        int contenitore = 0;
 
         for(BorderedEditText campo:listaCampi){
             if(campo.getId()==ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO){
                 if(!campo.getText().toString().isEmpty()){
-                    nrCampiCompletati++;
+
                     puntiGioco = Integer.parseInt(campo.getText().toString());
+                }
+                else{
+                    puntiGioco=null;
+                    multimeaCampiRimasti.add(campo);
+
                 }
             }
             else if(!campo.getText().toString().isEmpty()||campo.isFocused()){
                 if(campo.isFocused()&&campo.getText().toString().isEmpty()){
-                    campoIsFocusedAndEmpty=true;
-                    campo.setHint("");
-                    if(campoRimasto!=null){
-                        campoRimasto.setHint("");
-                    }
+                    multimeaCampiRimasti.add(campo);
                 }
                 else{
-                    sommaAltriCampi+=Integer.parseInt(fixMeno10(campo.getText().toString()));
+                    contenitore+=Integer.parseInt(fixMeno10(campo.getText().toString()));
+
                 }
-                nrCampiCompletati++;
+
             }
             else{
-                campoRimasto=campo;
+                multimeaCampiRimasti.add(campo);
             }
         }
-
-        boolean isRimasto1Campo = (listaCampi.size()-nrCampiCompletati)==1&&puntiGioco!=null;
-        esitoCampoRimasto.setRimasto1Campo(isRimasto1Campo);
-        if(isRimasto1Campo){
-
-            esitoCampoRimasto.setCampoRimasto(campoRimasto);
-
-            esitoCampoRimasto.setCampoFocusedAndEmpty(campoIsFocusedAndEmpty);
-            hintDifferenza =puntiGioco-sommaAltriCampi;
-            if(!campoIsFocusedAndEmpty){
-                campoRimasto.setHint(Integer.toString(hintDifferenza));
-                esitoCampoRimasto.setHintDifferenza(hintDifferenza);
-            }
-
+        if(puntiGioco!=null&&multimeaCampiRimasti.size()==1){
+            hintDifferenza = puntiGioco - contenitore;
         }
-        return esitoCampoRimasto;
 
     }
     private String fixMeno10(String numero){
