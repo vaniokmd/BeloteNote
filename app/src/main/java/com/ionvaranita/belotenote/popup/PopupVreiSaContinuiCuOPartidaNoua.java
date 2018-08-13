@@ -38,8 +38,8 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
     private Integer idGioco;
     private Integer idPartida;
     private View popupViewCineACastigat;
-    private Button da;
-    private Button nu;
+//    private Button da;
+    private Button ok;
     private PopupWindow popupWindow;
 
     private TableRow risultatoStampatoCineACastigat;
@@ -78,7 +78,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
         popupWindow = new PopupWindow(popupViewCineACastigat, LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
 
         int lastMatchWinnerPoints = db.puncteCastigatoare4JucatoriInEchipaDao().selectPuncteCastigatoare4JucatoriInEchipaByIdJocAndIdPartida(idGioco,idPartida).getPuncteCastigatoare();
-        da = popupViewCineACastigat.findViewById(R.id.da_vreau_sa_continui_cu_o_partida_noua);
+        /*da = popupViewCineACastigat.findViewById(R.id.da_vreau_sa_continui_cu_o_partida_noua);
         da.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,10 +101,10 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
                 popupPuncteCastigatoare.showPopup();
 
             }
-        });
+        });*/
 
-        nu = popupViewCineACastigat.findViewById(R.id.nu_vreau_sa_continui_cu_o_partida_noua);
-        nu.setOnClickListener(new View.OnClickListener() {
+        ok = popupViewCineACastigat.findViewById(R.id.nu_vreau_sa_continui_cu_o_partida_noua);
+        ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(infoCineACistigat.isUnVincitore()){

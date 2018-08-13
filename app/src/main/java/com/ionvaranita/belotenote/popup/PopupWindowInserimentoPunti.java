@@ -250,6 +250,9 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
         if(puntiGioco!=null&&multimeaCampiRimasti.size()==1){
             hintDifferenza = puntiGioco - contenitore;
         }
+        else if(puntiGioco==null&&multimeaCampiRimasti.size()==1){
+            hintDifferenza = contenitore;
+        }
 
     }
     private String fixMeno10(String numero){

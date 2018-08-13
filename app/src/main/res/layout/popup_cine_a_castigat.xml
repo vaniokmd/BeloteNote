@@ -63,7 +63,7 @@
 
 
 
-    <TableRow
+    <!--<TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -81,7 +81,7 @@
             android:textSize="@dimen/text_size_26"
             android:textStyle="bold" />
     </TableRow>
-
+    -->
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -96,16 +96,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/nu" />
+            android:text="@string/ok" />
 
-        <Button
+        <!--<Button
             android:id="@+id/da_vreau_sa_continui_cu_o_partida_noua"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/da" />
-
+        -->
     </TableRow>
 
 
