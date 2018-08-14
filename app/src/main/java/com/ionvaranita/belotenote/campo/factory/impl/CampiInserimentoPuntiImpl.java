@@ -64,7 +64,7 @@ public class CampiInserimentoPuntiImpl implements CampiInserimentoPuntiFactory {
         TableRow.LayoutParams layoutParams = GlobalLayoutParams.layoutParamsCampiInserimento();
         campo.setLayoutParams(layoutParams);
         InputFilter[] filters = new InputFilter[1];
-        filters[0] = new InputFilter.LengthFilter(LengthOfCharacters.INSERIMENTO_PUNTI_MAX_LENGHT); //Filter to 10 characters
+        filters[0] = new InputFilter.LengthFilter(LengthOfCharacters.INSERIMENTO_PUNTI_MAX_LENGHT); //Filter to 3 characters
         campo.setFilters(filters);
         campo.setMaxLines(1);
         if (Build.VERSION.SDK_INT > 17) campo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);

@@ -2,27 +2,31 @@ package com.ionvaranita.belotenote.business;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.ionvaranita.belotenote.R;
 import com.ionvaranita.belotenote.TabellaPunti;
 import com.ionvaranita.belotenote.constanti.ActionCode;
 import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
 import com.ionvaranita.belotenote.constanti.IdsCampiStampa;
+import com.ionvaranita.belotenote.constanti.IdsPersone4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.constanti.StatusGioco4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.constanti.Turnul4GiocatoriInSquadraEnum;
+import com.ionvaranita.belotenote.dao.BoltDao;
 import com.ionvaranita.belotenote.dao.Joc4JucatoriInEchipaDao;
 import com.ionvaranita.belotenote.dao.Scor4JucatoriInEchipaDao;
 import com.ionvaranita.belotenote.dao.TurnManagement4GiocatoriInSquadraDao;
+import com.ionvaranita.belotenote.dao.VisualizzazioneBoltDao;
 import com.ionvaranita.belotenote.database.AppDatabase;
+import com.ionvaranita.belotenote.entity.BoltEntityBean;
 import com.ionvaranita.belotenote.entity.Gioco4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.entity.PuncteCastigatoare4JucatoriInEchipaBean;
 import com.ionvaranita.belotenote.entity.PuncteCastigatoareGlobalBean;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 import com.ionvaranita.belotenote.entity.Scor4JucatoriInEchipaEntityBean;
 import com.ionvaranita.belotenote.entity.TurnManagement4GiocatoriInSquadra;
+import com.ionvaranita.belotenote.entity.VisualizzazioneBoltEntityBean;
+import com.ionvaranita.belotenote.info.InfoBolt;
 import com.ionvaranita.belotenote.info.InfoCineACistigat;
 import com.ionvaranita.belotenote.info.InfoGiocoNuovo4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.info.InfoNuovaPartida4GiocatoriInSquadra;
@@ -30,7 +34,7 @@ import com.ionvaranita.belotenote.info.InfoRigaVuota4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.info.InfoWinnerPoints;
 import com.ionvaranita.belotenote.popup.ParametersPuncteCastigatoarePopup;
 import com.ionvaranita.belotenote.popup.PopupPuncteCastigatoare;
-import com.ionvaranita.belotenote.popup.PopupVreiSaContinuiCuOPartidaNoua;
+import com.ionvaranita.belotenote.popup.PopupCineACistigat;
 import com.ionvaranita.belotenote.utils.IntegerUtils;
 
 import java.util.HashMap;
@@ -52,6 +56,25 @@ public class BusinessInserimento4GiocatoriInSquadra {
         this.context=context;
         db = AppDatabase.getPersistentDatabase(context);
 
+    }
+    public void inserisciBoltEdAggiornaNrBolt(InfoBolt infoBolt){
+        BoltDao boltDao = db.boltDao();
+        VisualizzazioneBoltDao visualizzazioneBoltDao = db.visualizzazioneBoltDao();
+
+        VisualizzazioneBoltEntityBean visualizzazioneBoltEntityBean = new VisualizzazioneBoltEntityBean();
+        visualizzazioneBoltEntityBean.setIdGioco(infoBolt.getIdGioco());
+        visualizzazioneBoltEntityBean.setIdPersona(infoBolt.getIdPersona());
+        visualizzazioneBoltEntityBean.setIdRiga(infoBolt.getIdRiga());
+
+        visualizzazioneBoltDao.insertBolt(visualizzazioneBoltEntityBean);
+
+        BoltEntityBean boltEntityBean = new BoltEntityBean();
+        boltEntityBean.setIdGioco(infoBolt.getIdGioco());
+        boltEntityBean.setIdPartida(infoBolt.getIdPartida());
+        boltEntityBean.setIdPersona(infoBolt.getIdPersona());
+        boltEntityBean.setNrBolt(infoBolt.getNrBolt());
+
+        boltDao.insertOrUpdateBoltByIdGiocoIdPartidaIdPersona(boltEntityBean);
     }
 
     public void inserisciPrimaVoltaNelDatabase(InfoGiocoNuovo4GiocatoriInSquadra infoGiocoNuovo4GiocatoriInSquadra) {
@@ -140,13 +163,13 @@ public class BusinessInserimento4GiocatoriInSquadra {
 
     }
 
-    public void inserisciBeanNelDatabase(Punti4GiocatoriInSquadraEntityBean bean) {
+    public void inserisciBeanNelDatabase(Punti4GiocatoriInSquadraEntityBean bean,Integer idPersona) {
         lastBean = db.tabellaPunti4GiocatoriInSquadraDao().getLastRecordPunti4GiocatoriInSquadraByIdGioco(idGioco);
         idGioco = lastBean.getIdGioco();
         idPartida = lastBean.getIdPartida();
-        Integer lastPuntiNoi = IntegerUtils.integerFix(lastBean.getPuntiNoi());
+        Integer lastPuntiNoi = IntegerUtils.integerFixAndBoltFix(lastBean.getPuntiNoi());
 
-        Integer lastPuntiVoi = IntegerUtils.integerFix(lastBean.getPuntiVoi());
+        Integer lastPuntiVoi = IntegerUtils.integerFixAndBoltFix(lastBean.getPuntiVoi());
 
         bean.setIdGioco(idGioco);
 
@@ -166,7 +189,36 @@ public class BusinessInserimento4GiocatoriInSquadra {
         bean.setTurno(turnoAggiornato);
         bean.setIdPartida(lastBean.getIdPartida());
 
-        db.tabellaPunti4GiocatoriInSquadraDao().inserisciPunti4GiocatoriInSquadra(bean);
+        if(idPersona==null){
+            db.tabellaPunti4GiocatoriInSquadraDao().inserisciPunti4GiocatoriInSquadra(bean);
+            lastBean = db.tabellaPunti4GiocatoriInSquadraDao().getLastRecordPunti4GiocatoriInSquadraByIdGioco(idGioco);
+        }
+
+
+
+        if(idPersona!=null){
+            Integer nrBolt = db.boltDao().getNrBoltByIdGiocoIdPartidaIdPersona(idGioco,idPartida,idPersona);
+            if(nrBolt!=null){
+                if(idPersona.equals(IdsPersone4GiocatoriInSquadra.ID_PERSONA_NOI)){
+
+                }
+                else if(idPersona.equals(IdsPersone4GiocatoriInSquadra.ID_PERSONA_VOI)){
+
+                }
+            }
+            idGioco = lastBean.getIdGioco();
+            idPartida = lastBean.getIdPartida();
+            Integer idRiga = lastBean.getId();
+
+            InfoBolt infoBolt = new InfoBolt();
+            infoBolt.setIdGioco(idGioco);
+            infoBolt.setIdPartida(idPartida);
+            infoBolt.setIdPersona(idPersona);
+            infoBolt.setIdRiga(idRiga);
+            infoBolt.setNrBolt(1);
+
+
+        }
 
         Map<Integer, Integer> mappaIdCampoValore = new HashMap<>();
 
@@ -202,8 +254,8 @@ public class BusinessInserimento4GiocatoriInSquadra {
             infoRigaVuota4GiocatoriInSquadra.setInfoCineACistigat(infoCineACistigat);
 
             finisciPartida(infoRigaVuota4GiocatoriInSquadra);
-            PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(parametersPuncteCastigatoarePopupLocal,bean);
-            popupVreiSaContinuiCuOPartidaNoua.showPopup();
+            PopupCineACistigat popupCineACistigat = new PopupCineACistigat(parametersPuncteCastigatoarePopupLocal,bean);
+            popupCineACistigat.showPopup();
 
 
 
@@ -234,8 +286,8 @@ public class BusinessInserimento4GiocatoriInSquadra {
                     public void onClick(View v) {
                         parametersPuncteCastigatoarePopupLocal.setNuovaPartida(true);
                         parametersPuncteCastigatoarePopupLocal.setInfoCineACistigat(infoCineACistigat);
-                        PopupVreiSaContinuiCuOPartidaNoua popupVreiSaContinuiCuOPartidaNoua = new PopupVreiSaContinuiCuOPartidaNoua(parametersPuncteCastigatoarePopupLocal,bean);
-                        popupVreiSaContinuiCuOPartidaNoua.showPopup();
+                        PopupCineACistigat popupCineACistigat = new PopupCineACistigat(parametersPuncteCastigatoarePopupLocal,bean);
+                        popupCineACistigat.showPopup();
                     }
                 });
                 popupPuncteCastigatoare.showPopup();

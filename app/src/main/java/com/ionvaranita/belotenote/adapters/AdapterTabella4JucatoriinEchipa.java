@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ionvaranita.belotenote.R;
+import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 
 import java.util.List;
@@ -65,22 +66,24 @@ import java.util.List;
 //            turul.setText(integerToString(patruJucatoriInEchipa.getTurno()));
 
             TextView noi=viewHolder.noi;
-            noi.setText(integerToString(patruJucatoriInEchipa.getPuntiNoi()));
+            noi.setText(fixBoltAndMeno10(patruJucatoriInEchipa.getPuntiNoi()));
             TextView voi=viewHolder.voi;
-            voi.setText(integerToString(patruJucatoriInEchipa.getPuntiVoi()));
+            voi.setText(fixBoltAndMeno10(patruJucatoriInEchipa.getPuntiVoi()));
             TextView joaca=viewHolder.joaca;
-            joaca.setText(integerToString(patruJucatoriInEchipa.getPuntiGioco()));
+            joaca.setText(fixBoltAndMeno10(patruJucatoriInEchipa.getPuntiGioco()));
 
 
         }
-
-        public static String integerToString(Integer integer){
-
-            if(integer==null){
+        private String fixBoltAndMeno10(Integer numero){
+            if(numero==null){
                 return "-";
             }
-            return Integer.toString(integer);
+            else if(numero.equals(ConstantiGlobal.BOLT_DECIMAL_VALUE)){
+                return "B";
+            }
+            return numero.toString();
         }
+
 
 
         @Override

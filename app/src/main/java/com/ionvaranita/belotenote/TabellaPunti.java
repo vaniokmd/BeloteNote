@@ -46,7 +46,6 @@ import com.ionvaranita.belotenote.entity.TurnManagement4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.info.InfoCineACistigat;
 import com.ionvaranita.belotenote.popup.ParametersPuncteCastigatoarePopup;
 import com.ionvaranita.belotenote.popup.PopupPuncteCastigatoare;
-import com.ionvaranita.belotenote.popup.PopupVreiSaContinuiCuOPartidaNoua;
 import com.ionvaranita.belotenote.popup.PopupWindowInserimentoPunti;
 
 import java.util.List;

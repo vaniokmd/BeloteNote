@@ -27,7 +27,6 @@ import com.ionvaranita.belotenote.constanti.IdsCampiInserimento;
 import com.ionvaranita.belotenote.constanti.Turnul4GiocatoriInSquadraEnum;
 import com.ionvaranita.belotenote.database.AppDatabase;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
-import com.ionvaranita.belotenote.info.InfoCineACistigat;
 import com.ionvaranita.belotenote.utils.GlobalButtonOnClickListener;
 
 import java.util.ArrayList;
@@ -42,6 +41,7 @@ import java.util.Set;
  */
 
 public class PopupWindowInserimentoPunti extends PopupWindow {
+    private static final String STRING_BOLT = "B";
     private FragmentManager fragmentManager;
     private Integer actionCode;
     private Integer idGioco;
@@ -139,7 +139,23 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                     final Button buttonKey = (Button) riga.getChildAt(k);
                     final String del = tableRow.getContext().getResources().getString(R.string.del);
                     final String done = tableRow.getContext().getResources().getString(R.string.done);
-                    final String meno_10 = tableRow.getContext().getString(R.string.meno_10);
+                    final String meno_10orBolt = tableRow.getContext().getString(R.string.meno_10orBolt);
+                    if(buttonKey.getText().toString().equals(meno_10orBolt)){
+                        buttonKey.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                if(campo.getId()!=ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO){
+                                    new GlobalButtonOnClickListener(context).vibrate();
+                                    campo.setText(STRING_BOLT);
+                                    calcolaCampoRimasto();
+                                    if(multimeaCampiRimasti.size()==1){
+                                        multimeaCampiRimasti.iterator().next().setHint(hintDifferenza.toString());
+                                    }
+                                }
+                                return true;
+                            }
+                        });
+                    }
                     buttonKey.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -154,7 +170,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                             } else if (valoreButton.equals(del)) {
 
                                 if (campo.getText().toString().length() > 0) {
-                                    if(campo.getText().toString().equals(meno_10)){
+                                    if(campo.getText().toString().equals(meno_10orBolt)){
                                         campo.setText("");
                                     }
                                     else{
@@ -175,9 +191,9 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                                     }
                                 }
 
-                            } else if (valoreButton.equals(meno_10)) {
+                            } else if (valoreButton.equals(meno_10orBolt)) {
                                 if(campo.getId()!=ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO){
-                                    campo.setText(buttonKey.getText().toString());
+                                    campo.setText("-10");
                                     calcolaCampoRimasto();
 
                                 }
@@ -238,7 +254,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                     multimeaCampiRimasti.add(campo);
                 }
                 else{
-                    contenitore+=Integer.parseInt(fixMeno10(campo.getText().toString()));
+                    contenitore+=Integer.parseInt(fixBoltOrMeno10(campo.getText().toString(),false));
 
                 }
 
@@ -255,11 +271,24 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
         }
 
     }
-    private String fixMeno10(String numero){
-        if(numero.equals(context.getResources().getString(R.string.meno_10))){
+    private String fixBoltOrMeno10(String numero,boolean inseriscoNelDatabase){
+        boolean isMeno10 = numero.equals("-10");
+        boolean isBolt = numero.equals("B");
+        if((isMeno10||isBolt)&&!inseriscoNelDatabase){
             return "0";
         }
+        else if((isMeno10||isBolt)&&inseriscoNelDatabase){
+            if(isMeno10){
+                return "0";
+            }
+            else if(isBolt){
+                return ConstantiGlobal.BOLT_DECIMAL_VALUE.toString();
+            }
+        }
         return numero;
+    }
+    private boolean isBolt(String valore){
+        return valore.equals(STRING_BOLT);
     }
 
     private void inserisciPuntiNelDatabase() {
@@ -272,10 +301,12 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
             Integer puntiGioco = Integer.parseInt(puntiGiocoString);
 
             String puntiNoiString = mappaCampiInseriti.get(IdsCampiInserimento.ID_PUNTI_NOI_INSERIMENTO).getText().toString();
-            Integer puntiNoi = Integer.parseInt(puntiNoiString);
+            Integer puntiNoi = Integer.parseInt(fixBoltOrMeno10(puntiNoiString,true));
 
             String puntiVoiString = mappaCampiInseriti.get(IdsCampiInserimento.ID_PUNTI_VOI_INSERIMENTO).getText().toString();
-            Integer puntiVoi = Integer.parseInt(puntiVoiString);
+            Integer puntiVoi = Integer.parseInt(fixBoltOrMeno10(puntiVoiString,true));
+
+
 
             entity.setId(null);
             entity.setPuntiGioco(puntiGioco);
@@ -286,6 +317,10 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
             businessInserimento4GiocatoriInSquadra.inserisciBeanNelDatabase(entity);
             idPartida = businessInserimento4GiocatoriInSquadra.getIdPartida();
             idGioco = businessInserimento4GiocatoriInSquadra.getIdGioco();
+            if(isBolt(puntiNoiString)){
+
+            }
+
 
         }
     }
@@ -298,8 +333,9 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
             for (int i = 0; i < listaCampi.size(); i++) {
                 BorderedEditText campo = listaCampi.get(i);
                 if (campo.getId() != ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO) {
-                    if (isInteger(campo.getText().toString(), campo.getId())) {
-                        puncteJoaca -= Integer.parseInt(campo.getText().toString());
+                    String valoreCampo = fixBoltOrMeno10(campo.getText().toString(),false);
+                    if (isInteger(valoreCampo, campo.getId())) {
+                        puncteJoaca -= Integer.parseInt(valoreCampo);
                     } else {
                         return false;
                     }

@@ -32,7 +32,7 @@ import static android.graphics.Typeface.BOLD;
  * Created by ionvaranita on 15/04/18.
  */
 
-public class PopupVreiSaContinuiCuOPartidaNoua {
+public class PopupCineACistigat {
     private Context contesto;
     private Integer actionCode;
     private Integer idGioco;
@@ -54,7 +54,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
 
     private InfoCineACistigat infoCineACistigat;
 
-    public PopupVreiSaContinuiCuOPartidaNoua(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup){
+    public PopupCineACistigat(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup){
         contesto = parametersPuncteCastigatoarePopup.getContext();
         this.actionCode = parametersPuncteCastigatoarePopup.getActioCode();
         this.idGioco = parametersPuncteCastigatoarePopup.getIdGioco();
@@ -127,7 +127,7 @@ public class PopupVreiSaContinuiCuOPartidaNoua {
 
 
 
-    public PopupVreiSaContinuiCuOPartidaNoua(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup,Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean){
+    public PopupCineACistigat(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup, Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean){
         this(parametersPuncteCastigatoarePopup);
 
         String testoCineACastigat = contesto.getResources().getString(R.string.a_castigat);

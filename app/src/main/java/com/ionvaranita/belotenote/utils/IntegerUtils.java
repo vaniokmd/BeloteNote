@@ -1,5 +1,7 @@
 package com.ionvaranita.belotenote.utils;
 
+import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
+
 /**
  * Created by ionvaranita on 25/03/2018.
  */
@@ -14,8 +16,8 @@ public class IntegerUtils {
             return false;
         }
     }
-    public static Integer integerFix(Integer numero){
-        if(numero==null){
+    public static Integer integerFixAndBoltFix(Integer numero){
+        if(numero==null||numero.equals(ConstantiGlobal.BOLT_DECIMAL_VALUE)){
             return 0;
         }
         return numero;
