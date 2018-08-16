@@ -3,12 +3,15 @@ package com.ionvaranita.belotenote.entity;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
-@Entity(indices = {@Index(value = {"idGioco", "getIdPartida","idPersona"}, unique = true)})
+@Entity(indices = {@Index(value = {"idGioco", "idPartida","idPersona"}, unique = true)})
 public class BoltEntityBean {
     @PrimaryKey
     private Integer idGioco;
+    @NonNull
     private Integer idPartida;
+    @NonNull
     private Integer idPersona;
     private Integer nrBolt;
 

@@ -89,6 +89,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
         final BorderedEditText inserimentoGioco = mappaCampiInseriti.get(ConstantiGlobal.ID_PUNTI_GIOCO_INSERIMENTO);
         inserimentoGioco.requestFocus();
         for (int i = 0; i < listaCampi.size(); i++) {
+
             final BorderedEditText campo = listaCampi.get(i);
 
             campo.setOnTouchListener(new View.OnTouchListener() {
@@ -287,9 +288,20 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
         }
         return numero;
     }
-    private boolean isBolt(String valore){
-        return valore.equals(STRING_BOLT);
+    private Integer isBoltPresente(){
+        for (Integer idCampo:mappaCampiInseriti.keySet()
+             ) {
+            BorderedEditText campo = mappaCampiInseriti.get(idCampo);
+            String valoreCampo = campo.getText().toString();
+            if(valoreCampo.equals(STRING_BOLT)){
+                return idCampo;
+            }
+        }
+        return null;
     }
+
+
+
 
     private void inserisciPuntiNelDatabase() {
         AppDatabase db = AppDatabase.getPersistentDatabase(context);
@@ -307,6 +319,11 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
             Integer puntiVoi = Integer.parseInt(fixBoltOrMeno10(puntiVoiString,true));
 
 
+            Integer idCampoBolt = isBoltPresente();
+
+            if(idCampoBolt!=null){
+
+            }
 
             entity.setId(null);
             entity.setPuntiGioco(puntiGioco);
@@ -314,12 +331,12 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
             entity.setPuntiVoi(puntiVoi);
             BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(context);
             businessInserimento4GiocatoriInSquadra.setIdGioco(idGioco);
+
             businessInserimento4GiocatoriInSquadra.inserisciBeanNelDatabase(entity);
             idPartida = businessInserimento4GiocatoriInSquadra.getIdPartida();
             idGioco = businessInserimento4GiocatoriInSquadra.getIdGioco();
-            if(isBolt(puntiNoiString)){
 
-            }
+
 
 
         }
