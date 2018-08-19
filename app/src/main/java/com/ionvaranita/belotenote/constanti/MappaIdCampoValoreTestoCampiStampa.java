@@ -25,9 +25,9 @@ public class MappaIdCampoValoreTestoCampiStampa {
         String voiStampa = context.getString(R.string.voi);
 
 
-        mappaIdsTesto.put(IdsCampiStampa.ID_PUNTI_NOI_STAMPA,noiStampa);
-        mappaIdsTesto.put(ConstantiGlobal.PUNTI_GIOCO_STAMPA,joacaStampa);
-        mappaIdsTesto.put(IdsCampiStampa.ID_PUNTI_VOI_STAMPA,voiStampa);
+        mappaIdsTesto.put(IdsCampiStampa.ID_PUNTI_NOI,noiStampa);
+        mappaIdsTesto.put(IdsCampiStampa.ID_PUNTI_GIOCO,joacaStampa);
+        mappaIdsTesto.put(IdsCampiStampa.ID_PUNTI_VOI,voiStampa);
         return mappaIdsTesto;
 
     }

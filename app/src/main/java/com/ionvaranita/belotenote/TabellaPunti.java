@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import android.content.pm.ActivityInfo;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.v7.app.ActionBar;
@@ -43,11 +44,14 @@ import com.ionvaranita.belotenote.entity.PuncteCastigatoare4JucatoriInEchipaBean
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 import com.ionvaranita.belotenote.entity.Scor4JucatoriInEchipaEntityBean;
 import com.ionvaranita.belotenote.entity.TurnManagement4GiocatoriInSquadra;
+import com.ionvaranita.belotenote.entity.WhoPlayEntityBean;
 import com.ionvaranita.belotenote.info.InfoCineACistigat;
+import com.ionvaranita.belotenote.info.ParametersPopupWindowInserimentoPunti;
 import com.ionvaranita.belotenote.popup.ParametersPuncteCastigatoarePopup;
 import com.ionvaranita.belotenote.popup.PopupPuncteCastigatoare;
 import com.ionvaranita.belotenote.popup.PopupWindowInserimentoPunti;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -88,6 +92,7 @@ public class TabellaPunti extends AppCompatActivity {
     private boolean partidaNonFinitaConAggiuntaPunti;
 
     private  boolean partidaNonFinita;
+    private boolean giocaQualcuno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,6 +216,39 @@ public class TabellaPunti extends AppCompatActivity {
         }
     }
 
+    private void configuraCampiStampaWhoPlay(Map<Integer,TextView> mappaIdCampiCampiStampa){
+        List<TextView> listaCampi = new ArrayList<>(mappaIdCampiCampiStampa.values());
+        for (Integer idCampoStampa:mappaIdCampiCampiStampa.keySet()){
+            TextView campoStampa = mappaIdCampiCampiStampa.get(idCampoStampa);
+            if(idCampoStampa!=IdsCampiStampa.ID_PUNTI_GIOCO){
+                setOnClickListenerCampoStampaWhoPlayed(listaCampi,campoStampa);
+            }
+        }
+    }
+
+    private void setOnClickListenerCampoStampaWhoPlayed(List<TextView> listaCampi,TextView campoStampa){
+        campoStampa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                campoStampa.setBackgroundColor(Color.GRAY);
+                WhoPlayEntityBean whoPlayEntityBean = new WhoPlayEntityBean();
+                whoPlayEntityBean.setIdGioco(idGioco);
+                whoPlayEntityBean.setIdPersona(campoStampa.getId());
+                db.whoPlayedDao().insertOrUpdateWhoPlayed(whoPlayEntityBean);
+                deselezionaGliAltriCampiTranne(listaCampi,campoStampa.getId());
+                giocaQualcuno=true;
+            }
+        });
+    }
+    private void deselezionaGliAltriCampiTranne(List<TextView> listaCampi,Integer idCampoEscluso){
+        for (TextView campo:listaCampi){
+            if(campo.getId()!=idCampoEscluso){
+                campo.setBackgroundColor(Color.TRANSPARENT);
+            }
+        }
+    }
+
+
     private void popolaCampiStampa() {
         if (actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA) {
             CampiStampaImpl campiStampaImpl = new CampiStampaImpl();
@@ -218,9 +256,10 @@ public class TabellaPunti extends AppCompatActivity {
             campiStampaImpl.popolaRigaStampa4GiocatoriInSquadra(campiStampaTableRow);
 
             Map<Integer, TextView> mappaCampiStampa = campiStampaImpl.getMappaCampi();
+            configuraCampiStampaWhoPlay(mappaCampiStampa);
 
-            TextView noiStampa = mappaCampiStampa.get(IdsCampiStampa.ID_PUNTI_NOI_STAMPA);
-            TextView voiStampa = mappaCampiStampa.get(IdsCampiStampa.ID_PUNTI_VOI_STAMPA);
+            TextView noiStampa = mappaCampiStampa.get(IdsCampiStampa.ID_PUNTI_NOI);
+            TextView voiStampa = mappaCampiStampa.get(IdsCampiStampa.ID_PUNTI_VOI);
 
             TurnManagement4GiocatoriInSquadra turulBean = db.turnManagement4GiocatoriInSquadraDao().selectTurn4JucatoriInEchipaByIdJoc(idGioco);
 
@@ -265,7 +304,18 @@ public class TabellaPunti extends AppCompatActivity {
             } else if (partidaNonFinita || partidaNonFinitaConAggiuntaPunti) {
                 View footer = this.findViewById(R.id.recycler_view_items_tabella_4_jucatori_in_echipa);
                 final TableRow inserisciTableRow = this.findViewById(R.id.inserisci_table_row_4_jucatori_in_echipa);
-                popupWindowInserimentoPunti = new PopupWindowInserimentoPunti(actionCode, idGioco, popupView, getSupportFragmentManager(), footer.getWidth(), footer.getHeight() + inserisciTableRow.getHeight());
+
+               ParametersPopupWindowInserimentoPunti parametersPopupWindowInserimentoPunti = new ParametersPopupWindowInserimentoPunti();
+                parametersPopupWindowInserimentoPunti.setIdGioco(idGioco);
+                parametersPopupWindowInserimentoPunti.setActionCode(actionCode);
+                parametersPopupWindowInserimentoPunti.setFragmentManager(getSupportFragmentManager());
+                parametersPopupWindowInserimentoPunti.setGiocaQualcuno(giocaQualcuno);
+                parametersPopupWindowInserimentoPunti.setHeight(footer.getHeight() + inserisciTableRow.getHeight());
+                parametersPopupWindowInserimentoPunti.setWidth(footer.getWidth());
+                parametersPopupWindowInserimentoPunti.setPopupLayout(popupView);
+
+
+                popupWindowInserimentoPunti = new PopupWindowInserimentoPunti(parametersPopupWindowInserimentoPunti);
                 popupWindowInserimentoPunti.setFocusable(true);
                 //popupWindowInserimentoPunti.setBackgroundDrawable(new BitmapDrawable());
                 int location[] = new int[2];

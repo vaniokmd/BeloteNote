@@ -128,7 +128,7 @@
 
             <Button
                 android:id="@+id/key_meno10"
-                android:text="@string/meno_10orBolt"
+                android:text="@string/meno_10"
                 style="@style/AppTheme.Button.Inserisci"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

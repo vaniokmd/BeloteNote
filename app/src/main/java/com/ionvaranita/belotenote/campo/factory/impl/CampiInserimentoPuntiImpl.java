@@ -5,14 +5,11 @@ import android.os.Build;
 import android.text.InputFilter;
 import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.TableRow;
 
-import com.ionvaranita.belotenote.R;
 import com.ionvaranita.belotenote.borders.BorderedEditText;
 import com.ionvaranita.belotenote.campo.factory.CampiInserimentoPuntiFactory;
-import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
-import com.ionvaranita.belotenote.constanti.IdsCampiInserimento;
+import com.ionvaranita.belotenote.constanti.IdsCampiStampa;
 import com.ionvaranita.belotenote.constanti.LengthOfCharacters;
 import com.ionvaranita.belotenote.utils.GlobalLayoutParams;
 
@@ -37,7 +34,7 @@ public class CampiInserimentoPuntiImpl implements CampiInserimentoPuntiFactory {
     @Override
     public void popolaRigaInserimento4GiocatoriInSquadra(TableRow riga) {
         init(riga);
-        List<Integer> listaIdCampi = IdsCampiInserimento.getIdsInserimento4GiocatoriInSquadra();
+        List<Integer> listaIdCampi = IdsCampiStampa.getIdsStampa4GiocatoriInSquadra();
         boolean laRigaEPopolata = this.tableRow.getChildCount() != 0;
         if (!laRigaEPopolata) {
             for (int i = 0; i < listaIdCampi.size(); i++) {

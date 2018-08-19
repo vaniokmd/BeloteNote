@@ -19,7 +19,6 @@ import com.ionvaranita.belotenote.R;
 
 @SuppressLint("AppCompatCustomView")
 public class BorderedEditText extends EditText {
-    private boolean staGiocando;
     private Paint paint = new Paint();
     public static final int BORDER_TOP = 0x00000001;
     public static final int BORDER_RIGHT = 0x00000002;
