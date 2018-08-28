@@ -32,8 +32,7 @@ public class FragmentTabella4JucatoriInEchipa extends Fragment {
     private RecyclerView patruJucatoriInEchipaRecycleView;
 
     private Integer idPartida;
-    //TODO idJoc
-    private Integer idJoc;
+    private Integer idGioco;
     private final Logger LOG = Logger.getLogger(this.getClass().getSimpleName());
 
     @Override
@@ -63,8 +62,8 @@ public class FragmentTabella4JucatoriInEchipa extends Fragment {
 
         voiPatruJucatoriInEchipa = (TextView) fragmentTabella4JucatoriInEchipa.findViewById(R.id.voi_patru_jucatori_in_echipa);
 
-        if (idJoc != null) {
-            TurnManagement4GiocatoriInSquadra turulBean = db.turnManagement4GiocatoriInSquadraDao().selectTurn4JucatoriInEchipaByIdJoc(idJoc);
+        if (idGioco != null) {
+            TurnManagement4GiocatoriInSquadra turulBean = db.turnManagement4GiocatoriInSquadraDao().selectTurn4JucatoriInEchipaByIdJoc(idGioco);
 
             String turulPresent = turulBean.getTurnoPresente();
 
@@ -86,8 +85,8 @@ public class FragmentTabella4JucatoriInEchipa extends Fragment {
             }
 
             try {
-                if (idJoc == 0) throw new Exception();
-                lista4JucatoriInEchipa = db.tabellaPunti4GiocatoriInSquadraDao().selectAllPunti4GiocatoriInSquadraByIdGioco(idJoc);
+                if (idGioco == 0) throw new Exception();
+                lista4JucatoriInEchipa = db.tabellaPunti4GiocatoriInSquadraDao().selectAllPunti4GiocatoriInSquadraByIdGioco(idGioco);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -96,11 +95,11 @@ public class FragmentTabella4JucatoriInEchipa extends Fragment {
             patruJucatoriInEchipaRecycleView = (RecyclerView) fragmentTabella4JucatoriInEchipa.findViewById(com.ionvaranita.belotenote.R.id.recycler_view_items_tabella_4_jucatori_in_echipa);
 
 
-            Scor4JucatoriInEchipaEntityBean scor4JucatoriInEchipaEntityBean = db.scor4JucatoriInEchipaDao().selectScorBean4JucatoriInEchipaByIdJoc(idJoc);
+            Scor4JucatoriInEchipaEntityBean scor4JucatoriInEchipaEntityBean = db.scor4JucatoriInEchipaDao().selectScorBean4JucatoriInEchipaByIdJoc(idGioco);
 
             if (scor4JucatoriInEchipaEntityBean == null) {
                 scor4JucatoriInEchipaEntityBean = new Scor4JucatoriInEchipaEntityBean();
-                scor4JucatoriInEchipaEntityBean.setIdGioco(idJoc);
+                scor4JucatoriInEchipaEntityBean.setIdGioco(idGioco);
                 scor4JucatoriInEchipaEntityBean.setScorNoi(0);
                 scor4JucatoriInEchipaEntityBean.setScorVoi(0);
                 db.scor4JucatoriInEchipaDao().insertScor4JucatoriInEchipa(scor4JucatoriInEchipaEntityBean);
@@ -118,7 +117,7 @@ public class FragmentTabella4JucatoriInEchipa extends Fragment {
             TextView numePartida = (TextView) fragmentTabella4JucatoriInEchipa.findViewById(com.ionvaranita.belotenote.R.id.nume_partida_patru_jucatori_in_echipa);
 
 
-            numePartida.setText(db.joc4JucatoriInEchipaDao().selectJocByIdJoc(idJoc).getNumeGioco());
+            numePartida.setText(db.joc4JucatoriInEchipaDao().selectJocByIdJoc(idGioco).getNumeGioco());
 
             TextView scorVoi = (TextView) fragmentTabella4JucatoriInEchipa.findViewById(com.ionvaranita.belotenote.R.id.scor_voi);
 
@@ -127,7 +126,7 @@ public class FragmentTabella4JucatoriInEchipa extends Fragment {
             scorVoi.setText(Integer.toString(scor4JucatoriInEchipaEntityBean.getScorVoi()));
 
 
-            AdapterTabella4JucatoriinEchipa adapterTabella4JucatoriinEchipa = new AdapterTabella4JucatoriinEchipa(fragmentTabella4JucatoriInEchipa.getContext(), lista4JucatoriInEchipa);
+            AdapterTabella4JucatoriinEchipa adapterTabella4JucatoriinEchipa = new AdapterTabella4JucatoriinEchipa(fragmentTabella4JucatoriInEchipa.getContext(), lista4JucatoriInEchipa,idGioco);
 
             patruJucatoriInEchipaRecycleView.setAdapter(adapterTabella4JucatoriinEchipa);
 

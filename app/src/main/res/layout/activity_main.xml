@@ -6,8 +6,7 @@
     android:background="@android:color/holo_green_dark"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="@dimen/padding_of_16"
-    tools:context=".MainActivity">
+    android:padding="@dimen/padding_of_16">
 
     <TableLayout
         android:layout_width="match_parent"

@@ -8,18 +8,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ionvaranita.belotenote.R;
-import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
-import com.ionvaranita.belotenote.constanti.IdsCampiStampa;
 import com.ionvaranita.belotenote.dao.VisualizzazioneBoltDao;
 import com.ionvaranita.belotenote.database.AppDatabase;
-import com.ionvaranita.belotenote.entity.BoltEntityBean;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 import com.ionvaranita.belotenote.entity.VisualizzazioneBoltEntityBean;
+import com.ionvaranita.belotenote.traduttori.impl.EntityBeanToViewImpl;
+import com.ionvaranita.belotenote.view.Punti4GiocatoriInSquadraView;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
 
 /**
  * Created by ionvaranita on 25/11/2017.
@@ -36,11 +35,11 @@ public class AdapterTabella4JucatoriinEchipa extends
     private Map<Integer,VisualizzazioneBoltEntityBean> mappaIdRigaBean = new HashMap<>();
     private Integer idGioco;
 
-    // ... view holder defined above...
 
-    // Store a member variable for the contacts
 
-    private List<Punti4GiocatoriInSquadraEntityBean> listaTabella4JucatoriInEchipa;
+
+
+    private List<Punti4GiocatoriInSquadraView> punti4GiocatoriInSquadraViewList;
     // Store the context for easy access
     private Context mContext;
 
@@ -49,39 +48,14 @@ public class AdapterTabella4JucatoriinEchipa extends
 
     // Pass in the contact array into the constructor
     public AdapterTabella4JucatoriinEchipa(Context context, List<Punti4GiocatoriInSquadraEntityBean> listaTabella4JucatoriInEchipa, Integer idGioco) {
-        this.listaTabella4JucatoriInEchipa = listaTabella4JucatoriInEchipa;
         this.idGioco = idGioco;
         mContext = context;
         db = AppDatabase.getPersistentDatabase(mContext);
         VisualizzazioneBoltDao visualizzazioneBoltDao = db.visualizzazioneBoltDao();
         listaBeanBolt = visualizzazioneBoltDao.getListaBoltByIdGioco(this.idGioco);
-        if (listaBeanBolt != null) {
-            for (VisualizzazioneBoltEntityBean bean : listaBeanBolt) {
-                mappaIdRigaBean.put(bean.getIdRiga(),bean);
-            }
-        }
-
+        EntityBeanToViewImpl entityBeanToView = new EntityBeanToViewImpl(listaBeanBolt);
+        punti4GiocatoriInSquadraViewList = entityBeanToView.listPunti4GiocatoriInSquadraEntityBeanToListView(listaTabella4JucatoriInEchipa);
     }
-    private void valorizzaICampiBolt(){
-        Set<Integer> insiemeRigheBolt = mappaIdRigaBean.keySet();
-        for (Punti4GiocatoriInSquadraEntityBean bean:
-             listaTabella4JucatoriInEchipa) {
-            Integer idRigaBean = bean.getId();
-            if(insiemeRigheBolt.contains(idRigaBean)){
-                //Per la performance!
-                insiemeRigheBolt.remove(idRigaBean);
-
-                VisualizzazioneBoltEntityBean visualizzazioneBoltEntityBean = mappaIdRigaBean.get(idRigaBean);
-
-                Integer idPersonaFromBean = visualizzazioneBoltEntityBean.getIdPersona();
-
-                if(idPersonaFromBean==IdsCampiStampa.ID_PUNTI_NOI){
-                    bean.setPuntiNoi(ConstantiGlobal.STRING_BOLT);
-                }
-            }
-        }
-    }
-
     // Easy access to the context object in the recyclerview
     private Context getContext() {
         return mContext;
@@ -104,51 +78,21 @@ public class AdapterTabella4JucatoriinEchipa extends
     @Override
     public void onBindViewHolder(AdapterTabella4JucatoriinEchipa.ViewHolder viewHolder, int position) {
         // Get the data model based on position
-        Punti4GiocatoriInSquadraEntityBean patruJucatoriInEchipa = listaTabella4JucatoriInEchipa.get(position);
-//            TextView turul=viewHolder.turul;
+        Punti4GiocatoriInSquadraView punti4GiocatoriInSquadraView = punti4GiocatoriInSquadraViewList.get(position);
 
-//            turul.setText(integerToString(patruJucatoriInEchipa.getTurno()));
-
-        Integer idRigaBean = patruJucatoriInEchipa.getId();
         noi = viewHolder.noi;
-        noi.setText(fixNullNumber(patruJucatoriInEchipa.getPuntiNoi()));
+        noi.setText(punti4GiocatoriInSquadraView.getPuntiNoi());
         voi = viewHolder.voi;
-        voi.setText(fixNullNumber(patruJucatoriInEchipa.getPuntiVoi()));
+        voi.setText(punti4GiocatoriInSquadraView.getPuntiVoi());
         TextView joaca = viewHolder.joaca;
-        joaca.setText(fixNullNumber(patruJucatoriInEchipa.getPuntiGioco()));
+        joaca.setText(punti4GiocatoriInSquadraView.getPuntiGioco());
 
 
     }
-
-    private boolean stampaBoltSeEsisteBolt(Integer idRiga){
-        VisualizzazioneBoltEntityBean bean = mappaIdRigaBean.get(idRiga);
-
-        if(bean!=null){
-            Integer idPersona = bean.getIdPersona();
-            if(idPersona==IdsCampiStampa.ID_PUNTI_NOI){
-                noi.setText(ConstantiGlobal.STRING_BOLT);
-            }
-            else if(idPersona==IdsCampiStampa.ID_PUNTI_VOI){
-                voi.setText(ConstantiGlobal.STRING_BOLT);
-            }
-            return true;
-        }
-
-    }
-
-    private String fixNullNumber(Integer numero) {
-        if (numero == null) {
-            return "-";
-        } else if (numero.equals(ConstantiGlobal.BOLT_DECIMAL_VALUE)) {
-            return "B";
-        }
-        return numero.toString();
-    }
-
 
     @Override
     public int getItemCount() {
-        return listaTabella4JucatoriInEchipa.size();
+        return punti4GiocatoriInSquadraViewList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

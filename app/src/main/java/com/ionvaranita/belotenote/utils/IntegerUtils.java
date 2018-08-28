@@ -17,7 +17,7 @@ public class IntegerUtils {
         }
     }
     public static Integer integerFixAndBoltFix(Integer numero){
-        if(numero==null||numero.equals(ConstantiGlobal.BOLT_DECIMAL_VALUE)){
+        if(numero==null||numero.equals(ConstantiGlobal.STRING_BOLT)){
             return 0;
         }
         return numero;

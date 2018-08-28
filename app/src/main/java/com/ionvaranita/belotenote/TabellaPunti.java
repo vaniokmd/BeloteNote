@@ -23,7 +23,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -67,7 +70,6 @@ public class TabellaPunti extends AppCompatActivity {
     private Context context;
     private View popupView;
     private PopupWindowInserimentoPunti popupWindowInserimentoPunti;
-    private static Turnul4GiocatoriInSquadraEnum urmatorulTurn = Turnul4GiocatoriInSquadraEnum.TURNUL_NOI;
     private static final Logger LOG = Logger.getLogger(TabellaPunti.class.getCanonicalName());
     private AppDatabase db;
     private AdapterTabella4JucatoriinEchipa adapterTabella4JucatoriinEchipa;
@@ -86,6 +88,7 @@ public class TabellaPunti extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
 
     private Button inserisciButton;
+    private StatusGioco4GiocatoriInSquadra statusGioco4GiocatoriInSquadra;
 
     private boolean partidaFinita;
 
@@ -93,6 +96,8 @@ public class TabellaPunti extends AppCompatActivity {
 
     private  boolean partidaNonFinita;
     private boolean giocaQualcuno;
+
+    private ImageView statusGiocoImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +108,7 @@ public class TabellaPunti extends AppCompatActivity {
         this.context = this;
         this.inserisciButton = this.findViewById(R.id.inserisci_button_tabella_punti);
 
-
+        statusGiocoImageView = this.findViewById(R.id.status_gioco);
 
         db = AppDatabase.getPersistentDatabase(getApplicationContext());
         actionCode = getIntent().getIntExtra(ConstantiGlobal.ACTION_CODE, -1);
@@ -137,7 +142,7 @@ public class TabellaPunti extends AppCompatActivity {
     }
 
     private void setDenominazioneInserisciButton() {
-        StatusGioco4GiocatoriInSquadra statusGioco4GiocatoriInSquadra = new StatusGioco4GiocatoriInSquadra(context);
+
         partidaFinita = statusGioco4GiocatoriInSquadra.getPartidaFinita().equals(statusGioco);
 
         partidaNonFinitaConAggiuntaPunti = statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaNonFinitaProlungata());
@@ -147,11 +152,17 @@ public class TabellaPunti extends AppCompatActivity {
         if(partidaFinita){
             inserisciButton.setText(R.string.insert_new_match);
         }
+        else{
+            inserisciButton.setEnabled(giocaQualcuno);
+        }
+
     }
 
     private void gestisci4GiocatoriInSquadra() {
 
         popolaCamiScor();
+
+        popolaCampoStatusGioco();
 
         popolaCampiStampa();
 
@@ -162,11 +173,38 @@ public class TabellaPunti extends AppCompatActivity {
             tipoFinePartida = punti4GiocatoriInSquadraEntityBean.getFinePartida();
         }
         paginaPatruJucatoriInEchipaRecycleView = (RecyclerView) findViewById(com.ionvaranita.belotenote.R.id.recycler_view_items_tabella_4_jucatori_in_echipa);
-        adapterTabella4JucatoriinEchipa = new AdapterTabella4JucatoriinEchipa(this, listaRecordsTabella4JucatoriInEchipa);
+        adapterTabella4JucatoriinEchipa = new AdapterTabella4JucatoriinEchipa(this, listaRecordsTabella4JucatoriInEchipa,idGioco);
         paginaPatruJucatoriInEchipaRecycleView.setAdapter(adapterTabella4JucatoriinEchipa);
 
         paginaPatruJucatoriInEchipaRecycleView.setLayoutManager(linearLayoutManager);
         paginaPatruJucatoriInEchipaRecycleView.getLayoutManager().scrollToPosition(listaRecordsTabella4JucatoriInEchipa.size() - 1);
+
+
+    }
+
+    private void popolaCampoStatusGioco() {
+        statusGioco4GiocatoriInSquadra = new StatusGioco4GiocatoriInSquadra(context);
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(200); //You can manage the blinking time with this parameter
+        anim.setStartOffset(20);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+
+        if(statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaNonFinita())){
+            statusGiocoImageView.setImageResource(R.mipmap.ic_playing_status);
+            statusGiocoImageView.startAnimation(anim);
+        }
+        else if(statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaNonFinitaProlungata())){
+            statusGiocoImageView.setImageResource(R.mipmap.ic_prolonged_status);
+            statusGiocoImageView.startAnimation(anim);
+        }
+        else if(statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaFinita())){
+            statusGiocoImageView.setImageResource(R.mipmap.ic_stop_status);
+        }
+
+
+
+
 
 
     }
@@ -176,6 +214,8 @@ public class TabellaPunti extends AppCompatActivity {
             Scor4JucatoriInEchipaEntityBean scorBean = db.scor4JucatoriInEchipaDao().selectScorBean4JucatoriInEchipaByIdJoc(idGioco);
             Gioco4GiocatoriInSquadra giocoBean = db.joc4JucatoriInEchipaDao().selectJocByIdJoc(idGioco);
             statusGioco = giocoBean.getStatus();
+
+
 
             CampiScorImpl campiScorImpl = new CampiScorImpl();
             campiScorImpl.popolaRigaScor4GiocatoriInSquadra(campiScorTableRow);
@@ -230,13 +270,17 @@ public class TabellaPunti extends AppCompatActivity {
         campoStampa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                campoStampa.setBackgroundColor(Color.GRAY);
-                WhoPlayEntityBean whoPlayEntityBean = new WhoPlayEntityBean();
-                whoPlayEntityBean.setIdGioco(idGioco);
-                whoPlayEntityBean.setIdPersona(campoStampa.getId());
-                db.whoPlayedDao().insertOrUpdateWhoPlayed(whoPlayEntityBean);
-                deselezionaGliAltriCampiTranne(listaCampi,campoStampa.getId());
-                giocaQualcuno=true;
+                if(campoStampa.getId()!=IdsCampiStampa.ID_PUNTI_GIOCO){
+                    campoStampa.setBackgroundColor(Color.GRAY);
+                    WhoPlayEntityBean whoPlayEntityBean = new WhoPlayEntityBean();
+                    whoPlayEntityBean.setIdGioco(idGioco);
+                    whoPlayEntityBean.setIdPersona(campoStampa.getId());
+                    db.whoPlayedDao().insertOrUpdateWhoPlayed(whoPlayEntityBean);
+                    deselezionaGliAltriCampiTranne(listaCampi,campoStampa.getId());
+                    giocaQualcuno=true;
+                    inserisciButton.setEnabled(giocaQualcuno);
+                }
+
             }
         });
     }

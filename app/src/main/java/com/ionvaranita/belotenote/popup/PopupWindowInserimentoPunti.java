@@ -51,10 +51,10 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
     private Integer idPartida;
     private LinearLayout keyboardLinearLayout;
     private View popupLayout;
-    Map<Integer, BorderedEditText> mappaCampiInseriti;
+    private Map<Integer, BorderedEditText> mappaCampiInseriti;
     private Context context;
     private TableRow tableRow;
-    List<BorderedEditText> listaCampi;
+    private List<BorderedEditText> listaCampiInserimento;
 
     private boolean ceQualcunoCheGioca;
 
@@ -71,12 +71,12 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
         inserimentoCampi.popolaRigaInserimento4GiocatoriInSquadra(tableRow);
 
         mappaCampiInseriti = inserimentoCampi.getMappaCampi();
-        listaCampi = new ArrayList<>(mappaCampiInseriti.values());
+        listaCampiInserimento = new ArrayList<>(mappaCampiInseriti.values());
 
     }
 
     public PopupWindowInserimentoPunti(ParametersPopupWindowInserimentoPunti parametersPopupWindowInserimentoPunti) {
-        super(parametersPopupWindowInserimentoPunti.getPopupLayout(),parametersPopupWindowInserimentoPunti.getWidth(),parametersPopupWindowInserimentoPunti.getWidth());
+        super(parametersPopupWindowInserimentoPunti.getPopupLayout(),parametersPopupWindowInserimentoPunti.getWidth(),parametersPopupWindowInserimentoPunti.getHeight());
         this.popupLayout = parametersPopupWindowInserimentoPunti.getPopupLayout();
         this.actionCode = parametersPopupWindowInserimentoPunti.getActionCode();
         this.fragmentManager = parametersPopupWindowInserimentoPunti.getFragmentManager();
@@ -97,9 +97,9 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
         inizializzaICampi4JucatoriInEchipa();
         final BorderedEditText inserimentoGioco = mappaCampiInseriti.get(IdsCampiStampa.ID_PUNTI_GIOCO);
         inserimentoGioco.requestFocus();
-        for (int i = 0; i < listaCampi.size(); i++) {
+        for (int i = 0; i < listaCampiInserimento.size(); i++) {
 
-            final BorderedEditText campo = listaCampi.get(i);
+            final BorderedEditText campo = listaCampiInserimento.get(i);
 
             campo.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -150,6 +150,7 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
                     final String del = tableRow.getContext().getResources().getString(R.string.del);
                     final String done = tableRow.getContext().getResources().getString(R.string.done);
                     final String meno_10 = tableRow.getContext().getString(R.string.meno_10);
+                    final String bolt = tableRow.getContext().getString(R.string.bolt);
                     if(buttonKey.getText().toString().equals(meno_10)){
                         buttonKey.setOnLongClickListener(new View.OnLongClickListener() {
                             @Override
@@ -355,8 +356,8 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
             String textPuncteJoaca = editTextPuncteJoaca.getText().toString();
             if (isInteger(textPuncteJoaca, editTextPuncteJoaca.getId())) {
                 Integer puncteJoaca = Integer.parseInt(textPuncteJoaca);
-                for (int i = 0; i < listaCampi.size(); i++) {
-                    BorderedEditText campo = listaCampi.get(i);
+                for (int i = 0; i < listaCampiInserimento.size(); i++) {
+                    BorderedEditText campo = listaCampiInserimento.get(i);
                     if (campo.getId() != IdsCampiStampa.ID_PUNTI_GIOCO) {
                         String valoreCampo = fixBoltOrMeno10(campo.getText().toString());
                         if (isInteger(valoreCampo, campo.getId())) {
