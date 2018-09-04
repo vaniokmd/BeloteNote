@@ -6,24 +6,30 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
+import com.ionvaranita.belotenote.dao.BoltDao;
 import com.ionvaranita.belotenote.dao.Joc4JucatoriInEchipaDao;
 import com.ionvaranita.belotenote.dao.PuncteCastigatoareGlobalDao;
 import com.ionvaranita.belotenote.dao.TabellaPunti4GiocatoriInSquadraDao;
 import com.ionvaranita.belotenote.dao.PuncteCastigatoare4JucatoriInEchipaDao;
 import com.ionvaranita.belotenote.dao.Scor4JucatoriInEchipaDao;
 import com.ionvaranita.belotenote.dao.TurnManagement4GiocatoriInSquadraDao;
+import com.ionvaranita.belotenote.dao.VisualizzazioneBoltDao;
+import com.ionvaranita.belotenote.dao.WhoPlayDao;
+import com.ionvaranita.belotenote.entity.BoltEntityBean;
 import com.ionvaranita.belotenote.entity.Gioco4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.entity.PuncteCastigatoareGlobalBean;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 import com.ionvaranita.belotenote.entity.PuncteCastigatoare4JucatoriInEchipaBean;
 import com.ionvaranita.belotenote.entity.Scor4JucatoriInEchipaEntityBean;
 import com.ionvaranita.belotenote.entity.TurnManagement4GiocatoriInSquadra;
+import com.ionvaranita.belotenote.entity.VisualizzazioneBoltEntityBean;
+import com.ionvaranita.belotenote.entity.WhoPlayEntityBean;
 
 /**
  * Created by ionvaranita on 20/11/17.
  */
-@Database(entities = {TurnManagement4GiocatoriInSquadra.class
-        ,Punti4GiocatoriInSquadraEntityBean.class, PuncteCastigatoareGlobalBean.class, Scor4JucatoriInEchipaEntityBean.class, PuncteCastigatoare4JucatoriInEchipaBean.class,Gioco4GiocatoriInSquadra.class}, version = 10)
+@Database(entities = {WhoPlayEntityBean.class,VisualizzazioneBoltEntityBean.class,BoltEntityBean.class,TurnManagement4GiocatoriInSquadra.class
+        ,Punti4GiocatoriInSquadraEntityBean.class, PuncteCastigatoareGlobalBean.class, Scor4JucatoriInEchipaEntityBean.class, PuncteCastigatoare4JucatoriInEchipaBean.class,Gioco4GiocatoriInSquadra.class}, version = 17)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "BeloteNoteDatabase";
 
@@ -41,6 +47,12 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PuncteCastigatoare4JucatoriInEchipaDao puncteCastigatoare4JucatoriInEchipaDao();
 
     public abstract PuncteCastigatoareGlobalDao puncteCastigatoareGlobalDao();
+
+    public abstract BoltDao boltDao();
+
+    public abstract VisualizzazioneBoltDao visualizzazioneBoltDao();
+
+    public abstract WhoPlayDao whoPlayedDao();
 
   /*  public abstract UserDao userModel();
 

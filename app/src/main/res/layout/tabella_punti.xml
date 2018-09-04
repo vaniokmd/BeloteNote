@@ -9,98 +9,46 @@
     android:paddingRight="@dimen/padding_of_16"
     android:paddingTop="@dimen/padding_of_16">
 
-    <TableRow
-        android:id="@+id/campi_scor_table_row"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:background="@drawable/row"
         android:gravity="center"
-        android:padding="@dimen/spazio_tra_celle"
-        android:textAlignment="center">
-<!--
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/scor_noi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="#000080"
-            android:textSize="@dimen/scor_dimensione"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/nume_partida_patru_jucatori_in_echipa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textSize="@dimen/footer_text_size" />
-
-
-        <TextView
-            android:id="@+id/scor_voi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/color_noi"
-            android:textSize="@dimen/scor_dimensione"
-            android:textStyle="bold" />
--->
-
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/campi_stampa_table_row"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:background="@drawable/row"
-        android:gravity="center"
-        android:padding="@dimen/spazio_tra_celle">
-
-        <!--<TextView
-            android:id="@+id/noi_patru_jucatori_in_echipa"
+        <TableRow
+            android:id="@+id/campi_scor_table_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/noi"
-            android:textAlignment="center"
-            android:textColor="@color/color_voi"
-            android:textSize="@dimen/footer_text_size"
-            android:textStyle="bold" />
+            android:textAlignment="center">
 
-        <TextView
-            android:id="@+id/jocul_patru_jucatori_in_echipa"
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/status_gioco_table_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/joaca"
-            android:textAlignment="center"
-            android:textSize="@dimen/footer_text_size" />
+            android:textAlignment="center">
 
-        <TextView
-            android:id="@+id/voi_patru_jucatori_in_echipa"
+            <ImageView
+                android:id="@+id/status_gioco"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/campi_stampa_table_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/voi"
-            android:textAlignment="center"
-            android:textColor="#006400"
-            android:textSize="@dimen/footer_text_size"
-            android:textStyle="bold" />-->
+            android:padding="@dimen/spazio_tra_celle">
 
 
-    </TableRow>
+        </TableRow>
+    </LinearLayout>
 
     <TableRow
         android:layout_width="match_parent"
@@ -127,12 +75,12 @@
         android:padding="@dimen/padding_of_16">
 
         <Button
-            android:id="@+id/inserisci_button_patru_jucatori_in_echipa"
+            android:id="@+id/inserisci_button_tabella_punti"
             style="@style/AppTheme.Button.Inserisci"
-            android:background="@drawable/text_button_shape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/text_button_shape"
             android:onClick="createNewRecord"
             android:text="@string/inserisci"
             android:textColor="@android:color/black" />

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/row"
+    android:padding="@dimen/padding_of_16"
+    android:gravity="center">
+    <TableRow
+        android:id="@+id/avem_cel_putin_tablerow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView android:id="@+id/avem_cel_putin_textview"
+            android:layout_weight="1"
+            android:text="@string/avem_cel_putin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView android:id="@+id/x_jucatori_castigatori"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </TableRow>
+    <TableRow
+        android:id="@+id/jucatorii_castigatori_table_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="@dimen/padding_of_16">
+
+        <com.ionvaranita.belotenote.borders.BorderedEditText
+
+            android:id="@+id/puncte_castigatoare_global_inserimento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="3"
+            android:hint="@string/greater_than"
+            android:textStyle="bold|italic"
+            android:visibility="invisible" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:padding="4dp">
+
+        <Button
+            android:id="@+id/cancel_button_puncte_castigatoare_global_popup"
+            style="@style/AppTheme.Button.Inserisci"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/text_button_shape"
+            android:text="@string/cancel"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/ok_button_puncte_castigatoare_global_popup"
+            style="@style/AppTheme.Button.Inserisci"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/text_button_shape"
+            android:text="@string/ok"
+            android:textSize="12sp" />
+
+    </TableRow>
+
+
+</LinearLayout>

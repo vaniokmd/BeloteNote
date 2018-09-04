@@ -3,6 +3,7 @@ package com.ionvaranita.belotenote.dao;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.ionvaranita.belotenote.entity.Gioco4GiocatoriInSquadra;
 
@@ -24,5 +25,8 @@ public interface Joc4JucatoriInEchipaDao {
 
     @Query("select * from Gioco4GiocatoriInSquadra where idGioco = :idJoc")
     Gioco4GiocatoriInSquadra selectJocByIdJoc(Integer idJoc);
+
+    @Update
+    void updateGioco4GiuocatoriInSquadra(Gioco4GiocatoriInSquadra gioco4GiocatoriInSquadra);
 
 }

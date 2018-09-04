@@ -7,11 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -29,7 +29,9 @@ import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
 import com.ionvaranita.belotenote.constanti.Turnul4GiocatoriInSquadraEnum;
 import com.ionvaranita.belotenote.database.AppDatabase;
 import com.ionvaranita.belotenote.entity.PuncteCastigatoareGlobalBean;
-import com.ionvaranita.belotenote.infogn.InfoGiocoNuovo4GiocatoriInSquadra;
+import com.ionvaranita.belotenote.info.InfoGiocoNuovo4GiocatoriInSquadra;
+import com.ionvaranita.belotenote.info.InfoNuovaPartida4GiocatoriInSquadra;
+import com.ionvaranita.belotenote.info.InfoWinnerPoints;
 import com.ionvaranita.belotenote.utils.IntegerUtils;
 
 import java.util.ArrayList;
@@ -42,14 +44,12 @@ import java.util.Map;
 
 public class PopupPuncteCastigatoare {
     private Map<Integer, BorderedEditText> mappaCampi;
-    private Integer puncteCastigatoare;
+    private Integer winnerPoints;
     private Integer actionCode;
     private List<PuncteCastigatoareGlobalBean> puncteCastigatoareGlobalList;
     private AppDatabase db;
-    private RecyclerView itemsMenuRecyclerView;
     private PopupWindow popupWindow;
-    private Window mainWindow;
-    private boolean isNomeGiocoMostrabile;
+    private View anchorView;
     private final Context contesto;
     private Button okButtonPopup;
     private Button cancelButtonPopup;
@@ -62,53 +62,75 @@ public class PopupPuncteCastigatoare {
     private Integer idGioco;
     private TableRow nomeGiocoFooterTableRow;
     private TextView textViewWinnerPoints;
+    private Integer maxPuncte;
 
     private Spinner spinnerPuncteCastigatoarePrecedente;
 
     private AdapterSpinner adapterSpinner;
-
-    public PopupPuncteCastigatoare(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup, Integer idGioco, Integer idPartida) {
-        this(parametersPuncteCastigatoarePopup);
-        this.idGioco = idGioco;
-        this.idPartida = idPartida;
-
-    }
+    private boolean partidaProlungata;
+    private boolean nuovaPartida;
+    private boolean nuovoGioco;
+    private boolean obligatoProlungarePartida;
+    private ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup;
 
     public PopupPuncteCastigatoare(ParametersPuncteCastigatoarePopup parametersPuncteCastigatoarePopup) {
+        this.idGioco = parametersPuncteCastigatoarePopup.getIdGioco();
+        this.idPartida = parametersPuncteCastigatoarePopup.getIdPartida();
+        this.contesto = parametersPuncteCastigatoarePopup.getContext();
         this.actionCode = parametersPuncteCastigatoarePopup.getActioCode();
-        mainWindow = parametersPuncteCastigatoarePopup.getMainWindow();
-        this.contesto = mainWindow.getContext();
-        isNomeGiocoMostrabile = parametersPuncteCastigatoarePopup.isNomeGiocoMostrabile();
-
+        this.anchorView = ((LayoutInflater) contesto.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.popup_puncte_castigatoare_global, null);
+        this.parametersPuncteCastigatoarePopup = parametersPuncteCastigatoarePopup;
 
         layoutInflater = ((LayoutInflater) contesto.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-        popupViewPuncteCastigatoare = layoutInflater.inflate(R.layout.popup_puncte_castigatoare_global, null);
-        textViewWinnerPoints = popupViewPuncteCastigatoare.findViewById(R.id.textview_winner_points);
 
-        spinnerPuncteCastigatoarePrecedente = popupViewPuncteCastigatoare.findViewById(R.id.spinner_puncte_castigatoare_precedente);
+        partidaProlungata = parametersPuncteCastigatoarePopup.isPartidaProlungata();
+
+        nuovaPartida = parametersPuncteCastigatoarePopup.isNuovaPartida();
+
+        nuovoGioco = parametersPuncteCastigatoarePopup.isNuovoGioco();
+
+        obligatoProlungarePartida = parametersPuncteCastigatoarePopup.isObligatoProlungare();
+        if (partidaProlungata||obligatoProlungarePartida) {
+            popupViewPuncteCastigatoare = layoutInflater.inflate(R.layout.adauga_puncte_castigatoare_in_plus, null);
+            TextView t = popupViewPuncteCastigatoare.findViewById(R.id.x_jucatori_castigatori);
+            if (partidaProlungata)t.setText("" + parametersPuncteCastigatoarePopup.getInfoCineACistigat().getMappaVincitori().size() + " " + contesto.getResources().getString(R.string.winner_players));
+            else t.setText("Abbiomo 2 giocatori con lo stesso punteggio , sei obbligato di prolungare la partida");
+            maxPuncte = parametersPuncteCastigatoarePopup.getInfoCineACistigat().getMaxValuePunti();
+            spinnerPuncteCastigatoarePrecedente = popupViewPuncteCastigatoare.findViewById(R.id.spinner_puncte_castigatoare_precedente);
+            puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
+            puncteCastigatoareGlobalInserimanto.setVisibility(View.VISIBLE);
+            puncteCastigatoareGlobalInserimanto.requestFocus();
+
+            puncteCastigatoareGlobalInserimanto.setHint(puncteCastigatoareGlobalInserimanto.getHint().toString() + parametersPuncteCastigatoarePopup.getInfoCineACistigat().getMaxValuePunti());
+            textViewWinnerPoints = popupViewPuncteCastigatoare.findViewById(R.id.textview_winner_points);
+            switchButton = popupViewPuncteCastigatoare.findViewById(R.id.switch_button_active_puncte_castigatoare_global);
+            nomeGiocoFooterTableRow = popupViewPuncteCastigatoare.findViewById(R.id.nome_gioco_global_table_row);
 
 
-        switchButton = popupViewPuncteCastigatoare.findViewById(R.id.switch_button_active_puncte_castigatoare_global);
-
-        nomeGiocoFooterTableRow = popupViewPuncteCastigatoare.findViewById(R.id.nome_gioco_global_table_row);
-
-
-        if (isNomeGiocoMostrabile) {
+        } else if (nuovaPartida) {
+            popupViewPuncteCastigatoare = layoutInflater.inflate(R.layout.popup_puncte_castigatoare_global, null);
+            textViewWinnerPoints = popupViewPuncteCastigatoare.findViewById(R.id.textview_winner_points);
+            puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
+            puncteCastigatoareGlobalInserimanto.setVisibility(View.INVISIBLE);
+            switchButton = popupViewPuncteCastigatoare.findViewById(R.id.switch_button_active_puncte_castigatoare_global);
+            spinnerPuncteCastigatoarePrecedente = popupViewPuncteCastigatoare.findViewById(R.id.spinner_puncte_castigatoare_precedente);
+        } else if (nuovoGioco) {
+            popupViewPuncteCastigatoare = layoutInflater.inflate(R.layout.popup_puncte_castigatoare_global, null);
+            textViewWinnerPoints = popupViewPuncteCastigatoare.findViewById(R.id.textview_winner_points);
+            nomeGiocoFooterTableRow = popupViewPuncteCastigatoare.findViewById(R.id.nome_gioco_global_table_row);
             nomeGiocoFooterTableRow.setVisibility(View.VISIBLE);
-
-        } else if (!isNomeGiocoMostrabile) {
-            nomeGiocoFooterTableRow.setVisibility(View.INVISIBLE);
+            puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
+            puncteCastigatoareGlobalInserimanto.setVisibility(View.INVISIBLE);
+            spinnerPuncteCastigatoarePrecedente = popupViewPuncteCastigatoare.findViewById(R.id.spinner_puncte_castigatoare_precedente);
+            switchButton = popupViewPuncteCastigatoare.findViewById(R.id.switch_button_active_puncte_castigatoare_global);
         }
 
-        itemsMenuRecyclerView = (RecyclerView) mainWindow.findViewById(R.id.lista_jocuri_recycleview);
 
         db = AppDatabase.getPersistentDatabase(contesto);
 
-        popolaRecyclerViewPuncteCastigatoareGlobal();
+        setOkCancelButton();
 
-        setMostraONascondiInputPuncteCastigatoare();
-
-        setCancelAndOkButton();
+        configuraIlPopup();
 
 
         if (actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA) {
@@ -118,11 +140,56 @@ public class PopupPuncteCastigatoare {
 
     }
 
+    private void configuraIlPopup() {
+        if (!partidaProlungata&&!obligatoProlungarePartida) {
+            popolaRecyclerViewPuncteCastigatoareGlobal();
+            setMostraONascondiInputPuncteCastigatoare();
+        }
+        popupWindow = new PopupWindow(popupViewPuncteCastigatoare, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+    }
+
+    public Button getCancelButtonPopup() {
+        return cancelButtonPopup;
+    }
+
+    public void setCancelButtonPopup(Button cancelButtonPopup) {
+        this.cancelButtonPopup = cancelButtonPopup;
+    }
+
+    private void setOkCancelButton() {
+        okButtonPopup = popupViewPuncteCastigatoare.findViewById(R.id.ok_button_puncte_castigatoare_global_popup);
+        cancelButtonPopup = popupViewPuncteCastigatoare.findViewById(R.id.cancel_button_puncte_castigatoare_global_popup);
+        okButtonPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (nuovoGioco) {
+                    inserisciJocNou();
+                } else if (nuovaPartida) {
+                    inserisciPartidaNuova();
+                } else if (partidaProlungata||obligatoProlungarePartida) {
+                    inserisciAdausAllaPartida();
+                }
+            }
+        });
+        PopupPuncteCastigatoare thisPopup = this;
+        cancelButtonPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                thisPopup.popupWindow.dismiss();
+
+            }
+        });
+
+    }
+
+
 
     private void gestisci4GiocatoriInSquadra() {
         CampiInserimentoNuovoGiocoImpl campiInserimentoNuovoGioco = new CampiInserimentoNuovoGiocoImpl();
-        campiInserimentoNuovoGioco.popolaRigaCampiNuovoGioco4giocatoriInSquadra(nomeGiocoFooterTableRow);
-        mappaCampi = campiInserimentoNuovoGioco.getMappaCampi();
+        if (nuovoGioco) {
+            campiInserimentoNuovoGioco.popolaRigaCampiNuovoGioco4giocatoriInSquadra(nomeGiocoFooterTableRow);
+            mappaCampi = campiInserimentoNuovoGioco.getMappaCampi();
+        }
 
 
     }
@@ -134,35 +201,9 @@ public class PopupPuncteCastigatoare {
         adapterSpinner = new AdapterSpinner(contesto, R.layout.item_spinner_puncte_castigatoare, puncteCastigatoareGlobalList);
 
         spinnerPuncteCastigatoarePrecedente.setAdapter(adapterSpinner);
-
-        popupWindow = new PopupWindow(popupViewPuncteCastigatoare,
-                itemsMenuRecyclerView.getWidth(), itemsMenuRecyclerView.getHeight());
-
-    }
-
-    private void setCancelAndOkButton() {
-        okButtonPopup = popupViewPuncteCastigatoare.findViewById(R.id.ok_button_puncte_castigatoare_global_popup);
-
-
-        okButtonPopup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                inserisciJocNouSauPartidaNuova();
-            }
-        });
-
-        cancelButtonPopup = popupViewPuncteCastigatoare.findViewById(R.id.cancel_button_puncte_castigatoare_global_popup);
-
-        cancelButtonPopup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupWindow.dismiss();
-            }
-        });
     }
 
     private void setMostraONascondiInputPuncteCastigatoare() {
-        puncteCastigatoareGlobalInserimanto = popupViewPuncteCastigatoare.findViewById(R.id.puncte_castigatoare_global_inserimento);
 
         spinnerPuncteCastigatoarePrecedente.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -180,7 +221,7 @@ public class PopupPuncteCastigatoare {
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                TextView selectedView = (TextView)spinnerPuncteCastigatoarePrecedente.getSelectedView();
+                TextView selectedView = (TextView) spinnerPuncteCastigatoarePrecedente.getSelectedView();
                 if (isChecked) {
                     puncteCastigatoareGlobalInserimanto.setVisibility(View.VISIBLE);
                     puncteCastigatoareGlobalInserimanto.requestFocus();
@@ -196,7 +237,7 @@ public class PopupPuncteCastigatoare {
                     textViewWinnerPoints.setTextColor(Color.BLACK);
                     selectedView.setTextColor(Color.BLACK);
 
-                    InputMethodManager imm = (InputMethodManager)contesto.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) contesto.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(puncteCastigatoareGlobalInserimanto.getWindowToken(), 0);
 
 
@@ -208,42 +249,69 @@ public class PopupPuncteCastigatoare {
     public void showPopup() {
 
         popupWindow.setFocusable(true);
-        int[] location = new int[2];
-        itemsMenuRecyclerView.getLocationOnScreen(location);
-        popupWindow.showAtLocation(itemsMenuRecyclerView, Gravity.NO_GRAVITY,
-                location[0], location[1]);
+
+        popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
+
+
     }
 
-    public void inserisciJocNouSauPartidaNuova() {
+    public void inserisciJocNou() {
         if (actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA) {
             if (verificaIntegrita()) {
-                BorderedEditText nomeGioco = mappaCampi.get(ConstantiGlobal.ID_NOME_GIOCO);
 
                 InfoGiocoNuovo4GiocatoriInSquadra infoGiocoNuovo4GiocatoriInSquadra = new InfoGiocoNuovo4GiocatoriInSquadra(contesto);
 
-                infoGiocoNuovo4GiocatoriInSquadra.setIdGioco(idGioco);
-                infoGiocoNuovo4GiocatoriInSquadra.setNomeGioco(nomeGioco.getText().toString());
-                infoGiocoNuovo4GiocatoriInSquadra.setPuncteCastigatoare(puncteCastigatoare);
+                if (nuovoGioco) {
+                    BorderedEditText nomeGioco = mappaCampi.get(ConstantiGlobal.ID_NOME_GIOCO);
+                    infoGiocoNuovo4GiocatoriInSquadra.setNomeGioco(nomeGioco.getText().toString());
+                    infoGiocoNuovo4GiocatoriInSquadra.setPuncteCastigatoare(winnerPoints);
+                    infoGiocoNuovo4GiocatoriInSquadra.setIdGioco(idGioco);
 
 
-                BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
+                    BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
 
-                businessInserimento4GiocatoriInSquadra.inserisciPrimaVoltaNelDatabase(infoGiocoNuovo4GiocatoriInSquadra);
+                    businessInserimento4GiocatoriInSquadra.inserisciPrimaVoltaNelDatabase(infoGiocoNuovo4GiocatoriInSquadra);
 
-                idGioco = businessInserimento4GiocatoriInSquadra.getIdGioco();
-
+                    idGioco = businessInserimento4GiocatoriInSquadra.getIdGioco();
+                }
                 vaiNellaTabellaPunti();
             }
-
-
         }
+    }
 
+    public void inserisciPartidaNuova() {
+        if (actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA) {
+            if (verificaIntegrita()) {
+                if (nuovaPartida) {
+                    InfoNuovaPartida4GiocatoriInSquadra infoNuovaPartida4GiocatoriInSquadra = new InfoNuovaPartida4GiocatoriInSquadra();
+                    infoNuovaPartida4GiocatoriInSquadra.setIdGioco(idGioco);
+                    infoNuovaPartida4GiocatoriInSquadra.setWinnerPoints(winnerPoints);
+                    BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
+                    businessInserimento4GiocatoriInSquadra.inserisciNuovaPartidaNeDatabase(infoNuovaPartida4GiocatoriInSquadra);
+                }
+                vaiNellaTabellaPunti();
+            }
+        }
+    }
 
+    private void inserisciAdausAllaPartida() {
+        if (actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA) {
+            if (verificaIntegrita()) {
+                InfoWinnerPoints infoWinnerPoints = new InfoWinnerPoints();
+                infoWinnerPoints.setIdGioco(idGioco);
+                infoWinnerPoints.setWinnerPoints(winnerPoints);
+                BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
+
+                businessInserimento4GiocatoriInSquadra.inserisciAdausAllaPartida(infoWinnerPoints);
+            }
+        }
     }
 
     private boolean verificaIntegrita() {
 
-
+        if (maxPuncte != null || !nuovoGioco) {
+            return verificaPuncteCastigatoare();
+        }
         return verificaCampiFooter() && verificaPuncteCastigatoare();
     }
 
@@ -263,15 +331,17 @@ public class PopupPuncteCastigatoare {
 
 
     private boolean verificaPuncteCastigatoare() {
-        if (puncteCastigatoareGlobalInserimanto.getText() != null && IntegerUtils.isInteger(puncteCastigatoareGlobalInserimanto.getText().toString())) {
-            puncteCastigatoare = Integer.parseInt(puncteCastigatoareGlobalInserimanto.getText().toString());
+        if (maxPuncte != null && partidaProlungata) {
+            winnerPoints = Integer.parseInt(puncteCastigatoareGlobalInserimanto.getText().toString());
+            return winnerPoints > maxPuncte;
+        } else if (puncteCastigatoareGlobalInserimanto.getText() != null && IntegerUtils.isInteger(puncteCastigatoareGlobalInserimanto.getText().toString())) {
+            winnerPoints = Integer.parseInt(puncteCastigatoareGlobalInserimanto.getText().toString());
             return true;
-        }
-        if (spinnerPuncteCastigatoarePrecedente.isEnabled()) {
+        } else if (spinnerPuncteCastigatoarePrecedente.isEnabled()) {
 
             PuncteCastigatoareGlobalBean puncteCastigatoareGlobalBean = (PuncteCastigatoareGlobalBean) spinnerPuncteCastigatoarePrecedente.getSelectedItem();
 
-            puncteCastigatoare = puncteCastigatoareGlobalBean.getPuncteCastigatoare();
+            winnerPoints = puncteCastigatoareGlobalBean.getPuncteCastigatoare();
             return true;
         }
 
@@ -292,5 +362,4 @@ public class PopupPuncteCastigatoare {
 
 
     }
-
 }

@@ -6,7 +6,7 @@
     <string name="da">yes</string>
     <string name="inserisc_nome_gioco">insert game\'s name</string>
     <string name="introduc_manual_puncte_castigatoare">insert manually winner points</string>
-    <string name="puncte_castigatoare_precedente">winner points:</string>
+    <string name="winner_points">winner points:</string>
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
     <string name="app_name">Belote Note</string>
@@ -31,6 +31,7 @@
     <string name="nu_este_egal_cu">is not equal with</string>
     <string name="del">del</string>
     <string name="meno_10">-10</string>
+    <string name="bolt">B</string>
     <string name="done">done</string>
     <string name="astazi">Today</string>
     <string name="ieri">Yesterday</string>
@@ -49,4 +50,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="credits">Credits</string>
     <string name="about">About</string>
+    <string name="last_match_winner_points">last match winner points</string>
+    <string name="avem_cel_putin">We have at least</string>
+    <string name="winner_players">winner players</string>
+    <string name="greater_than">greater than</string>
+    <string name="games_name">Game\'s name</string>
+    <string name="games_info">Game\'s info</string>
+    <string name="match_finished">match finished!</string>
+    <string name="playing_match">playing match</string>
+    <string name="playing_prolonged_match">playing prolonged match</string>
+    <string name="insert_new_match">insert new match</string>
 </resources>

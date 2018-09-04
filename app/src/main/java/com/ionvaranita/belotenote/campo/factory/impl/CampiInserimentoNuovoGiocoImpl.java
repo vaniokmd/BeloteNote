@@ -52,13 +52,14 @@ public class CampiInserimentoNuovoGiocoImpl implements CampiInsermientoNuovoGioc
         if(campo.getId()== ConstantiGlobal.ID_NOME_GIOCO){
             filters[0] = new InputFilter.LengthFilter(LengthOfCharacters.INSERIMENTO_NOME_GIOCO_MAX_LENGTH);
             campo.setHint(R.string.inserisc_nome_gioco);
+            campo.setFilters(filters);
         }
         else{
             filters[0] = new InputFilter.LengthFilter(LengthOfCharacters.INSERIMENTO_PUNTI_MAX_LENGHT);
         }
 
          //Filter to 10 characters
-        campo.setFilters(filters);
+
         campo.setSingleLine();
 
         campo.setImeOptions(EditorInfo.IME_ACTION_DONE);

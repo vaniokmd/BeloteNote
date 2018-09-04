@@ -1,4 +1,4 @@
-package com.ionvaranita.belotenote.infogn;
+package com.ionvaranita.belotenote.info;
 
 import android.content.Context;
 

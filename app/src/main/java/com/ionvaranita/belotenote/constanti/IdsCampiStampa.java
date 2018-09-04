@@ -8,14 +8,15 @@ import java.util.List;
  */
 
 public class IdsCampiStampa {
-    public static final int ID_PUNTI_NOI_STAMPA =410;
-    public static final int ID_PUNTI_VOI_STAMPA = 411;
+    public static final Integer ID_PUNTI_NOI =410;
+    public static final Integer ID_PUNTI_GIOCO = 411;
+    public static final Integer ID_PUNTI_VOI = 412;
 
     public static List<Integer> getIdsStampa4GiocatoriInSquadra(){
         List<Integer> listaIds = new ArrayList<>();
-        listaIds.add(ID_PUNTI_NOI_STAMPA);
-        listaIds.add(ConstantiGlobal.PUNTI_GIOCO_STAMPA);
-        listaIds.add(ID_PUNTI_VOI_STAMPA);
+        listaIds.add(ID_PUNTI_NOI);
+        listaIds.add(ID_PUNTI_GIOCO);
+        listaIds.add(ID_PUNTI_VOI);
         return listaIds;
     }
 }
