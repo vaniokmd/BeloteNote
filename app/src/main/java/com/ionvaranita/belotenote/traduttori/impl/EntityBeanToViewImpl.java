@@ -33,6 +33,7 @@ public class EntityBeanToViewImpl implements EntityBeanToViewFactory {
         Punti4GiocatoriInSquadraView punti4GiocatoriInSquadraView = new Punti4GiocatoriInSquadraView();
 
         punti4GiocatoriInSquadraView.setPuntiGioco(fixNullIntegerValue(punti4GiocatoriInSquadraEntityBean.getPuntiGioco()));
+        punti4GiocatoriInSquadraView.setIdPartida(punti4GiocatoriInSquadraEntityBean.getIdPartida());
         fixNoiVoi(punti4GiocatoriInSquadraView,punti4GiocatoriInSquadraEntityBean);
 
         return punti4GiocatoriInSquadraView;

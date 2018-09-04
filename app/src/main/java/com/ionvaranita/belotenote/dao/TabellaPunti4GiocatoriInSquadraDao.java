@@ -4,6 +4,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.database.Cursor;
 
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 
@@ -28,5 +29,4 @@ public interface TabellaPunti4GiocatoriInSquadraDao {
 
     @Query("select  * from Punti4GiocatoriInSquadraEntityBean where idGioco=:idGioco")
     List<Punti4GiocatoriInSquadraEntityBean> selectAllPunti4GiocatoriInSquadraByIdGioco(Integer idGioco);
-
 }

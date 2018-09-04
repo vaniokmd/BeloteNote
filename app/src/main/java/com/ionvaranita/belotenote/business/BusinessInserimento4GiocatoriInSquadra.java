@@ -132,9 +132,7 @@ public class BusinessInserimento4GiocatoriInSquadra {
     public void inserisciNuovaPartidaNeDatabase(InfoNuovaPartida4GiocatoriInSquadra infoNuovaPartida4GiocatoriInSquadra) {
         idGioco = infoNuovaPartida4GiocatoriInSquadra.getIdGioco();
         lastBean = db.tabellaPunti4GiocatoriInSquadraDao().getLastRecordPunti4GiocatoriInSquadraByIdGioco(idGioco);
-
         idPartida = lastBean.getIdPartida() + ConstantiGlobal.INTERVALLO_GIOCO_PARTIDA;
-
         PuncteCastigatoare4JucatoriInEchipaBean puncteCastigatoare = new PuncteCastigatoare4JucatoriInEchipaBean();
         puncteCastigatoare.setIdGioco(idGioco);
         puncteCastigatoare.setIdPartida(idPartida);
@@ -250,7 +248,7 @@ public class BusinessInserimento4GiocatoriInSquadra {
             infoRigaVuota4GiocatoriInSquadra.setWinnerPoints(puncteCastigatoare4JucatoriInEchipaBean.getPuncteCastigatoare());
             infoRigaVuota4GiocatoriInSquadra.setInfoCineACistigat(infoCineACistigat);
 
-            finisciPartida(infoRigaVuota4GiocatoriInSquadra);
+            //finisciPartida(infoRigaVuota4GiocatoriInSquadra);
             PopupCineACistigat popupCineACistigat = new PopupCineACistigat(parametersPuncteCastigatoarePopupLocal, bean);
             popupCineACistigat.showPopup();
 

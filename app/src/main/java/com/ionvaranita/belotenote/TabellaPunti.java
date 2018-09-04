@@ -111,6 +111,8 @@ public class TabellaPunti extends AppCompatActivity {
         statusGiocoImageView = this.findViewById(R.id.status_gioco);
 
         db = AppDatabase.getPersistentDatabase(getApplicationContext());
+
+
         actionCode = getIntent().getIntExtra(ConstantiGlobal.ACTION_CODE, -1);
 
         if (actionCode == -1) {
@@ -122,6 +124,9 @@ public class TabellaPunti extends AppCompatActivity {
         campiStampaTableRow = this.findViewById(R.id.campi_stampa_table_row);
         popupView = getLayoutInflater().inflate(R.layout.popup_window_inserisci_puncte_4_jucatori_in_echipa, null);
         idGioco = getIntent().getIntExtra(Turnul4GiocatoriInSquadraEnum.ID_JOC.getDescrizione(), -1);
+
+
+
 
         if (actionCode == ActionCode.GIOCATORI_4_IN_SQUADRA) {
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);

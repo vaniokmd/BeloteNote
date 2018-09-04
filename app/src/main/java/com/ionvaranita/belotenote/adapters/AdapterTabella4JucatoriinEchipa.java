@@ -15,9 +15,12 @@ import com.ionvaranita.belotenote.entity.VisualizzazioneBoltEntityBean;
 import com.ionvaranita.belotenote.traduttori.impl.EntityBeanToViewImpl;
 import com.ionvaranita.belotenote.view.Punti4GiocatoriInSquadraView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 /**
@@ -30,10 +33,12 @@ import java.util.Map;
 public class AdapterTabella4JucatoriinEchipa extends
         RecyclerView.Adapter<AdapterTabella4JucatoriinEchipa.ViewHolder> {
 
+    private static final Logger LOG = Logger.getLogger(AdapterTabella4JucatoriinEchipa.class.getName()) ;
     private AppDatabase db;
     private List<VisualizzazioneBoltEntityBean> listaBeanBolt;
     private Map<Integer,VisualizzazioneBoltEntityBean> mappaIdRigaBean = new HashMap<>();
     private Integer idGioco;
+    private List<List<Punti4GiocatoriInSquadraView>> listaPuntiRaggrupatiByIdPartida;
 
 
 
@@ -55,6 +60,31 @@ public class AdapterTabella4JucatoriinEchipa extends
         listaBeanBolt = visualizzazioneBoltDao.getListaBoltByIdGioco(this.idGioco);
         EntityBeanToViewImpl entityBeanToView = new EntityBeanToViewImpl(listaBeanBolt);
         punti4GiocatoriInSquadraViewList = entityBeanToView.listPunti4GiocatoriInSquadraEntityBeanToListView(listaTabella4JucatoriInEchipa);
+        listaPuntiRaggrupatiByIdPartida = ragruppaPunti4GiocatoriByIdPartida(punti4GiocatoriInSquadraViewList);
+        LOG.info("atenzione: "+listaPuntiRaggrupatiByIdPartida);
+
+
+        Map<Integer,List<Punti4GiocatoriInSquadraView>> integerListMap =  punti4GiocatoriInSquadraViewList.stream().collect(Collectors.groupingBy(Punti4GiocatoriInSquadraView::getIdPartida));
+
+        LOG.info("mappaIdPartidaBean!: "+integerListMap);
+
+    }
+    private List<List<Punti4GiocatoriInSquadraView>> ragruppaPunti4GiocatoriByIdPartida(List<Punti4GiocatoriInSquadraView> listaTabella4JucatoriInEchipa){
+        List<List<Punti4GiocatoriInSquadraView>> result = new ArrayList<>();
+        Integer idPartida = null;
+        List<Punti4GiocatoriInSquadraView> listaPuntiByIdPartida= null;
+        for (Punti4GiocatoriInSquadraView punti4GiocatoriInSquadraEntityBean:
+                listaTabella4JucatoriInEchipa) {
+            if(punti4GiocatoriInSquadraEntityBean.getIdPartida()!=idPartida){
+                listaPuntiByIdPartida = new ArrayList<>();
+                result.add(listaPuntiByIdPartida);
+                idPartida = punti4GiocatoriInSquadraEntityBean.getIdPartida();
+            }
+            listaPuntiByIdPartida.add(punti4GiocatoriInSquadraEntityBean);
+
+
+        }
+        return result;
     }
     // Easy access to the context object in the recyclerview
     private Context getContext() {
