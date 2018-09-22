@@ -22,15 +22,8 @@ public class Punti4GiocatoriInSquadraEntityBean {
     private Integer puntiGioco;
 
     private Integer idPartida;
-    private String finePartida;
 
-    public String getFinePartida() {
-        return finePartida;
-    }
 
-    public void setFinePartida(String finePartida) {
-        this.finePartida = finePartida;
-    }
 
     public Integer getPuntiNoi() {
         return puntiNoi;

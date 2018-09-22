@@ -175,14 +175,13 @@ public class PopupPuncteCastigatoare {
         cancelButtonPopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 thisPopup.popupWindow.dismiss();
 
             }
         });
 
     }
-
-
 
     private void gestisci4GiocatoriInSquadra() {
         CampiInserimentoNuovoGiocoImpl campiInserimentoNuovoGioco = new CampiInserimentoNuovoGiocoImpl();
@@ -268,7 +267,7 @@ public class PopupPuncteCastigatoare {
                     infoGiocoNuovo4GiocatoriInSquadra.setIdGioco(idGioco);
 
 
-                    BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
+                    BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto,null);
 
                     businessInserimento4GiocatoriInSquadra.inserisciPrimaVoltaNelDatabase(infoGiocoNuovo4GiocatoriInSquadra);
 
@@ -286,7 +285,7 @@ public class PopupPuncteCastigatoare {
                     InfoNuovaPartida4GiocatoriInSquadra infoNuovaPartida4GiocatoriInSquadra = new InfoNuovaPartida4GiocatoriInSquadra();
                     infoNuovaPartida4GiocatoriInSquadra.setIdGioco(idGioco);
                     infoNuovaPartida4GiocatoriInSquadra.setWinnerPoints(winnerPoints);
-                    BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
+                    BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto,idGioco);
                     businessInserimento4GiocatoriInSquadra.inserisciNuovaPartidaNeDatabase(infoNuovaPartida4GiocatoriInSquadra);
                 }
                 vaiNellaTabellaPunti();
@@ -300,7 +299,7 @@ public class PopupPuncteCastigatoare {
                 InfoWinnerPoints infoWinnerPoints = new InfoWinnerPoints();
                 infoWinnerPoints.setIdGioco(idGioco);
                 infoWinnerPoints.setWinnerPoints(winnerPoints);
-                BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
+                BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto,idGioco);
 
                 businessInserimento4GiocatoriInSquadra.inserisciAdausAllaPartida(infoWinnerPoints);
             }

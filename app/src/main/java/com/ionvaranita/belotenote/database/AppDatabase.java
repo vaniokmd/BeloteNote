@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.ionvaranita.belotenote.dao.BoltDao;
+import com.ionvaranita.belotenote.dao.GiochiUltimaPartidDao;
 import com.ionvaranita.belotenote.dao.Joc4JucatoriInEchipaDao;
 import com.ionvaranita.belotenote.dao.PuncteCastigatoareGlobalDao;
 import com.ionvaranita.belotenote.dao.TabellaPunti4GiocatoriInSquadraDao;
@@ -16,6 +17,7 @@ import com.ionvaranita.belotenote.dao.TurnManagement4GiocatoriInSquadraDao;
 import com.ionvaranita.belotenote.dao.VisualizzazioneBoltDao;
 import com.ionvaranita.belotenote.dao.WhoPlayDao;
 import com.ionvaranita.belotenote.entity.BoltEntityBean;
+import com.ionvaranita.belotenote.entity.GiochiUltimaPartidaBean;
 import com.ionvaranita.belotenote.entity.Gioco4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.entity.PuncteCastigatoareGlobalBean;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
@@ -28,8 +30,8 @@ import com.ionvaranita.belotenote.entity.WhoPlayEntityBean;
 /**
  * Created by ionvaranita on 20/11/17.
  */
-@Database(entities = {WhoPlayEntityBean.class,VisualizzazioneBoltEntityBean.class,BoltEntityBean.class,TurnManagement4GiocatoriInSquadra.class
-        ,Punti4GiocatoriInSquadraEntityBean.class, PuncteCastigatoareGlobalBean.class, Scor4JucatoriInEchipaEntityBean.class, PuncteCastigatoare4JucatoriInEchipaBean.class,Gioco4GiocatoriInSquadra.class}, version = 17)
+@Database(entities = {GiochiUltimaPartidaBean.class,WhoPlayEntityBean.class,VisualizzazioneBoltEntityBean.class,BoltEntityBean.class,TurnManagement4GiocatoriInSquadra.class
+        ,Punti4GiocatoriInSquadraEntityBean.class, PuncteCastigatoareGlobalBean.class, Scor4JucatoriInEchipaEntityBean.class, PuncteCastigatoare4JucatoriInEchipaBean.class,Gioco4GiocatoriInSquadra.class}, version = 19)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "BeloteNoteDatabase";
 
@@ -53,6 +55,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract VisualizzazioneBoltDao visualizzazioneBoltDao();
 
     public abstract WhoPlayDao whoPlayedDao();
+
+    public abstract GiochiUltimaPartidDao giochiUltimaPartidDao();
 
   /*  public abstract UserDao userModel();
 

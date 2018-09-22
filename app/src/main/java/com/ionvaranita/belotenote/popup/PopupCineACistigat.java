@@ -114,7 +114,7 @@ public class PopupCineACistigat {
                     infoRigaVuota4GiocatoriInSquadra.setIdPartida(idPartida);
                     infoRigaVuota4GiocatoriInSquadra.setInfoCineACistigat(infoCineACistigat);
 
-                    BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto);
+                    BusinessInserimento4GiocatoriInSquadra businessInserimento4GiocatoriInSquadra = new BusinessInserimento4GiocatoriInSquadra(contesto,idGioco);
                     businessInserimento4GiocatoriInSquadra.finisciPartida(infoRigaVuota4GiocatoriInSquadra);
                 }
                 vaiNellaTabellaPunti();

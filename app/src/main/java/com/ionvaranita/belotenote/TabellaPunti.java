@@ -73,12 +73,11 @@ public class TabellaPunti extends AppCompatActivity {
     private static final Logger LOG = Logger.getLogger(TabellaPunti.class.getCanonicalName());
     private AppDatabase db;
     private AdapterTabella4JucatoriinEchipa adapterTabella4JucatoriinEchipa;
-    private String tipoFinePartida;
 
     private RecyclerView paginaPatruJucatoriInEchipaRecycleView;
 
     private Integer idGioco;
-    private String statusGioco;
+    private Integer statusGioco;
 
     private int actionCode;
 
@@ -175,7 +174,6 @@ public class TabellaPunti extends AppCompatActivity {
         if (listaRecordsTabella4JucatoriInEchipa.size() > 1) {
             listaRecordsTabella4JucatoriInEchipa.remove(0);
             Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean = listaRecordsTabella4JucatoriInEchipa.get(listaRecordsTabella4JucatoriInEchipa.size() - 1);
-            tipoFinePartida = punti4GiocatoriInSquadraEntityBean.getFinePartida();
         }
         paginaPatruJucatoriInEchipaRecycleView = (RecyclerView) findViewById(com.ionvaranita.belotenote.R.id.recycler_view_items_tabella_4_jucatori_in_echipa);
         adapterTabella4JucatoriinEchipa = new AdapterTabella4JucatoriinEchipa(this, listaRecordsTabella4JucatoriInEchipa,idGioco);
@@ -195,15 +193,15 @@ public class TabellaPunti extends AppCompatActivity {
         anim.setRepeatMode(Animation.REVERSE);
         anim.setRepeatCount(Animation.INFINITE);
 
-        if(statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaNonFinita())){
+        if(statusGioco==StatusGioco4GiocatoriInSquadra.CODICE_PARTIDA_NON_FINITA){
             statusGiocoImageView.setImageResource(R.mipmap.ic_playing_status);
             statusGiocoImageView.startAnimation(anim);
         }
-        else if(statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaNonFinitaProlungata())){
+        else if(statusGioco==StatusGioco4GiocatoriInSquadra.CODICE_PARTIDA_NON_FINITA_PROLUNGATA){
             statusGiocoImageView.setImageResource(R.mipmap.ic_prolonged_status);
             statusGiocoImageView.startAnimation(anim);
         }
-        else if(statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaFinita())){
+        else if(statusGioco==StatusGioco4GiocatoriInSquadra.CODICE_PARTIDA_FINITA){
             statusGiocoImageView.setImageResource(R.mipmap.ic_stop_status);
         }
 
