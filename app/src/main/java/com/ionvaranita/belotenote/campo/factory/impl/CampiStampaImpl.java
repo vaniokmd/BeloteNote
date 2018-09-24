@@ -74,9 +74,9 @@ public class CampiStampaImpl implements CampiStampaFactory {
         campo.setLayoutParams(layoutParams);
         campo.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         campo.setMaxLines(1);
-        if (campo.getId() == IdsCampiStampa.ID_PUNTI_NOI)
+        if (campo.getId() == IdsCampiStampa.ID_NOI)
             campo.setTextColor(context.getResources().getColor(R.color.color_noi));
-        if (campo.getId() == IdsCampiStampa.ID_PUNTI_VOI)
+        if (campo.getId() == IdsCampiStampa.ID_VOI)
             campo.setTextColor(context.getResources().getColor(R.color.color_voi));
         campo.setTypeface(Typeface.DEFAULT_BOLD);
         if (Build.VERSION.SDK_INT > 17) campo.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);

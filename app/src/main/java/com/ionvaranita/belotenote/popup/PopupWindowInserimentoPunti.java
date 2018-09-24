@@ -324,10 +324,10 @@ public class PopupWindowInserimentoPunti extends PopupWindow {
             String puntiGiocoString = mappaCampiInseriti.get(IdsCampiStampa.ID_PUNTI_GIOCO).getText().toString();
             Integer puntiGioco = Integer.parseInt(puntiGiocoString);
 
-            String puntiNoiString = mappaCampiInseriti.get(IdsCampiStampa.ID_PUNTI_NOI).getText().toString();
+            String puntiNoiString = mappaCampiInseriti.get(IdsCampiStampa.ID_NOI).getText().toString();
             Integer puntiNoi = Integer.parseInt(fixBoltOrMeno10(puntiNoiString));
 
-            String puntiVoiString = mappaCampiInseriti.get(IdsCampiStampa.ID_PUNTI_VOI).getText().toString();
+            String puntiVoiString = mappaCampiInseriti.get(IdsCampiStampa.ID_VOI).getText().toString();
             Integer puntiVoi = Integer.parseInt(fixBoltOrMeno10(puntiVoiString));
 
 

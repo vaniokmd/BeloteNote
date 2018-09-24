@@ -48,7 +48,6 @@ import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 import com.ionvaranita.belotenote.entity.Scor4JucatoriInEchipaEntityBean;
 import com.ionvaranita.belotenote.entity.TurnManagement4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.entity.WhoPlayEntityBean;
-import com.ionvaranita.belotenote.info.InfoCineACistigat;
 import com.ionvaranita.belotenote.info.ParametersPopupWindowInserimentoPunti;
 import com.ionvaranita.belotenote.popup.ParametersPuncteCastigatoarePopup;
 import com.ionvaranita.belotenote.popup.PopupPuncteCastigatoare;
@@ -147,11 +146,11 @@ public class TabellaPunti extends AppCompatActivity {
 
     private void setDenominazioneInserisciButton() {
 
-        partidaFinita = statusGioco4GiocatoriInSquadra.getPartidaFinita().equals(statusGioco);
+        partidaFinita = statusGioco4GiocatoriInSquadra.CODICE_PARTIDA_FINITA.equals(statusGioco);
 
-        partidaNonFinitaConAggiuntaPunti = statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaNonFinitaProlungata());
+        partidaNonFinitaConAggiuntaPunti = statusGioco.equals(statusGioco4GiocatoriInSquadra.CODICE_PARTIDA_NON_FINITA_PROLUNGATA);
 
-        partidaNonFinita = statusGioco.equals(statusGioco4GiocatoriInSquadra.getPartidaNonFinita());
+        partidaNonFinita = statusGioco.equals(statusGioco4GiocatoriInSquadra.CODICE_PARTIDA_NON_FINITA);
 
         if(partidaFinita){
             inserisciButton.setText(R.string.insert_new_match);
@@ -173,7 +172,6 @@ public class TabellaPunti extends AppCompatActivity {
         listaRecordsTabella4JucatoriInEchipa = db.tabellaPunti4GiocatoriInSquadraDao().selectAllPunti4GiocatoriInSquadraByIdGioco(idGioco);
         if (listaRecordsTabella4JucatoriInEchipa.size() > 1) {
             listaRecordsTabella4JucatoriInEchipa.remove(0);
-            Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean = listaRecordsTabella4JucatoriInEchipa.get(listaRecordsTabella4JucatoriInEchipa.size() - 1);
         }
         paginaPatruJucatoriInEchipaRecycleView = (RecyclerView) findViewById(com.ionvaranita.belotenote.R.id.recycler_view_items_tabella_4_jucatori_in_echipa);
         adapterTabella4JucatoriinEchipa = new AdapterTabella4JucatoriinEchipa(this, listaRecordsTabella4JucatoriInEchipa,idGioco);
@@ -305,8 +303,8 @@ public class TabellaPunti extends AppCompatActivity {
             Map<Integer, TextView> mappaCampiStampa = campiStampaImpl.getMappaCampi();
             configuraCampiStampaWhoPlay(mappaCampiStampa);
 
-            TextView noiStampa = mappaCampiStampa.get(IdsCampiStampa.ID_PUNTI_NOI);
-            TextView voiStampa = mappaCampiStampa.get(IdsCampiStampa.ID_PUNTI_VOI);
+            TextView noiStampa = mappaCampiStampa.get(IdsCampiStampa.ID_NOI);
+            TextView voiStampa = mappaCampiStampa.get(IdsCampiStampa.ID_VOI);
 
             TurnManagement4GiocatoriInSquadra turulBean = db.turnManagement4GiocatoriInSquadraDao().selectTurn4JucatoriInEchipaByIdJoc(idGioco);
 
@@ -337,12 +335,6 @@ public class TabellaPunti extends AppCompatActivity {
             parametersPuncteCastigatoarePopup.setContext(context);
             parametersPuncteCastigatoarePopup.setIdGioco(idGioco);
 
-            InfoCineACistigat infoCineACistigat = new InfoCineACistigat();
-            infoCineACistigat.setCineACistigat(tipoFinePartida);
-
-
-            parametersPuncteCastigatoarePopup.setInfoCineACistigat(infoCineACistigat);
-
             if (partidaFinita) {
                 parametersPuncteCastigatoarePopup.setNuovaPartida(true);
                 PopupPuncteCastigatoare popupPuncteCastigatoare = new PopupPuncteCastigatoare(parametersPuncteCastigatoarePopup);
@@ -351,8 +343,7 @@ public class TabellaPunti extends AppCompatActivity {
             } else if (partidaNonFinita || partidaNonFinitaConAggiuntaPunti) {
                 View footer = this.findViewById(R.id.recycler_view_items_tabella_4_jucatori_in_echipa);
                 final TableRow inserisciTableRow = this.findViewById(R.id.inserisci_table_row_4_jucatori_in_echipa);
-
-               ParametersPopupWindowInserimentoPunti parametersPopupWindowInserimentoPunti = new ParametersPopupWindowInserimentoPunti();
+                ParametersPopupWindowInserimentoPunti parametersPopupWindowInserimentoPunti = new ParametersPopupWindowInserimentoPunti();
                 parametersPopupWindowInserimentoPunti.setIdGioco(idGioco);
                 parametersPopupWindowInserimentoPunti.setActionCode(actionCode);
                 parametersPopupWindowInserimentoPunti.setFragmentManager(getSupportFragmentManager());
@@ -360,8 +351,6 @@ public class TabellaPunti extends AppCompatActivity {
                 parametersPopupWindowInserimentoPunti.setHeight(footer.getHeight() + inserisciTableRow.getHeight());
                 parametersPopupWindowInserimentoPunti.setWidth(footer.getWidth());
                 parametersPopupWindowInserimentoPunti.setPopupLayout(popupView);
-
-
                 popupWindowInserimentoPunti = new PopupWindowInserimentoPunti(parametersPopupWindowInserimentoPunti);
                 popupWindowInserimentoPunti.setFocusable(true);
                 //popupWindowInserimentoPunti.setBackgroundDrawable(new BitmapDrawable());

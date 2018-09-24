@@ -2,8 +2,7 @@ package com.ionvaranita.belotenote.info;
 
 import android.content.Context;
 
-import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
-import com.ionvaranita.belotenote.constanti.MappaIdCampoStringCineACistigat;
+import com.ionvaranita.belotenote.constanti.StatusGioco4GiocatoriInSquadra;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,15 +12,15 @@ import java.util.Map;
 import java.util.Set;
 
 public class InfoCineACistigat {
-    public String getCineACistigat() {
+    public Integer getCineACistigat() {
         return cineACistigat;
     }
 
-    public void setCineACistigat(String cineACistigat) {
+    public void setCineACistigat(Integer cineACistigat) {
         this.cineACistigat = cineACistigat;
     }
 
-    private String cineACistigat;
+    private Integer cineACistigat;
     public static final String WINNER_IS_WE = "A CISTIGAT NOI";
     public static final String WINNER_IS_YOU = "A CISTIGAT VOI";
     private Context context;
@@ -68,25 +67,22 @@ public class InfoCineACistigat {
 
     }
 
-    public String aflaCineACistigat() {
+    public Integer aflaCineACistigat() {
 
         if (mappaVincitori.values().size() == 1) {
-            Map<Integer, String> mappaIdCampoNomeTesto = new MappaIdCampoStringCineACistigat().getMappaIdsCampoValoreTesto4giocatoriInSquadra();
-            cineACistigat = mappaIdCampoNomeTesto.get(mappaVincitori.keySet().iterator().next());
+            cineACistigat = mappaVincitori.keySet().iterator().next();
         } else if (abbiamo2OpiuGiocatoriVincitori) {
-            Map<Integer, String> mappaIdCampoNomeTesto = new MappaIdCampoStringCineACistigat().getMappaIdsCampoValoreTesto4giocatoriInSquadra();
             List<Integer> listaVincitoriMax = getIdMaxPunti();
             if (unVincitore&&listaVincitoriMax.size() == 1) {
-                cineACistigat =mappaIdCampoNomeTesto.get(listaVincitoriMax.get(0));
+                cineACistigat = listaVincitoriMax.get(0);
             } else if (unVincitore&&listaVincitoriMax.size() > 1) {
-                cineACistigat = ConstantiGlobal.OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI;
+                cineACistigat = StatusGioco4GiocatoriInSquadra.CODICE_OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI;
             }
             else{
-
-                cineACistigat = ConstantiGlobal.CONTINUA_CON_AGGIUNTA_PUNTI;
+                cineACistigat = StatusGioco4GiocatoriInSquadra.CODICE_PARTIDA_NON_FINITA_PROLUNGATA;
             }
         } else {
-            cineACistigat = ConstantiGlobal.CONTINUA;
+            cineACistigat = StatusGioco4GiocatoriInSquadra.CODICE_PARTIDA_NON_FINITA;
         }
 
 

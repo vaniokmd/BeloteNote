@@ -59,6 +59,7 @@ public class AdapterTabella4JucatoriinEchipa extends
         VisualizzazioneBoltDao visualizzazioneBoltDao = db.visualizzazioneBoltDao();
         listaBeanBolt = visualizzazioneBoltDao.getListaBoltByIdGioco(this.idGioco);
         EntityBeanToViewImpl entityBeanToView = new EntityBeanToViewImpl(listaBeanBolt);
+
         punti4GiocatoriInSquadraViewList = entityBeanToView.listPunti4GiocatoriInSquadraEntityBeanToListView(listaTabella4JucatoriInEchipa);
         listaPuntiRaggrupatiByIdPartida = ragruppaPunti4GiocatoriByIdPartida(punti4GiocatoriInSquadraViewList);
         LOG.info("atenzione: "+listaPuntiRaggrupatiByIdPartida);

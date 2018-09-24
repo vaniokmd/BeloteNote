@@ -57,14 +57,14 @@ public class EntityBeanToViewImpl implements EntityBeanToViewFactory {
             VisualizzazioneBoltEntityBean visualizzazioneBoltEntityBean = mappaIdRigaBoltBean.get(idRigaBean);
             Integer idPersona = visualizzazioneBoltEntityBean.getIdPersona();
 
-            if(idPersona.equals(IdsCampiStampa.ID_PUNTI_NOI)){
+            if(idPersona.equals(IdsCampiStampa.ID_NOI)){
                 punti4GiocatoriInSquadraView.setPuntiNoi(ConstantiGlobal.STRING_BOLT);
             }
             else{
                 punti4GiocatoriInSquadraView.setPuntiNoi(fixNullIntegerValue(puntiNoiBean));
 
             }
-            if(idPersona.equals(IdsCampiStampa.ID_PUNTI_VOI)){
+            if(idPersona.equals(IdsCampiStampa.ID_VOI)){
                 punti4GiocatoriInSquadraView.setPuntiVoi(ConstantiGlobal.STRING_BOLT);
             }
             else{

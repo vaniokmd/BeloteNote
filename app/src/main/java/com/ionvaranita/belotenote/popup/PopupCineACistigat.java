@@ -20,6 +20,7 @@ import com.ionvaranita.belotenote.R;
 import com.ionvaranita.belotenote.TabellaPunti;
 import com.ionvaranita.belotenote.business.BusinessInserimento4GiocatoriInSquadra;
 import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
+import com.ionvaranita.belotenote.constanti.IdsCampiStampa;
 import com.ionvaranita.belotenote.constanti.Turnul4GiocatoriInSquadraEnum;
 import com.ionvaranita.belotenote.database.AppDatabase;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
@@ -175,8 +176,9 @@ public class PopupCineACistigat {
 
         puncteNoiTextView.setText(punti4GiocatoriInSquadraEntityBean.getPuntiNoi().toString());
         puncteVoiTextView.setText(punti4GiocatoriInSquadraEntityBean.getPuntiVoi().toString());
-        String cineACistigat = infoCineACistigat.aflaCineACistigat();
-        if(cineACistigat.equals(InfoCineACistigat.WINNER_IS_WE)){
+        Integer cineACistigat = infoCineACistigat.aflaCineACistigat();
+        //TODO Cambiamento vincitore
+        if(cineACistigat.equals(IdsCampiStampa.ID_NOI)){
             noiTexView.setTypeface(null, Typeface.BOLD_ITALIC);
             puncteNoiTextView.setTypeface(null, Typeface.BOLD_ITALIC);
 
@@ -193,7 +195,7 @@ public class PopupCineACistigat {
             testoACastigat.setText(spannableString);
 
         }
-        else if(cineACistigat.equals(InfoCineACistigat.WINNER_IS_YOU)){
+        else if(cineACistigat.equals(IdsCampiStampa.ID_VOI)){
             puncteVoiTextView.setTypeface(null, Typeface.BOLD_ITALIC);
 
             voiTexView.setTypeface(null,Typeface.BOLD_ITALIC);

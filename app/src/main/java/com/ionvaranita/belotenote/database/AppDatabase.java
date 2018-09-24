@@ -14,6 +14,7 @@ import com.ionvaranita.belotenote.dao.TabellaPunti4GiocatoriInSquadraDao;
 import com.ionvaranita.belotenote.dao.PuncteCastigatoare4JucatoriInEchipaDao;
 import com.ionvaranita.belotenote.dao.Scor4JucatoriInEchipaDao;
 import com.ionvaranita.belotenote.dao.TurnManagement4GiocatoriInSquadraDao;
+import com.ionvaranita.belotenote.dao.VincitoreDao;
 import com.ionvaranita.belotenote.dao.VisualizzazioneBoltDao;
 import com.ionvaranita.belotenote.dao.WhoPlayDao;
 import com.ionvaranita.belotenote.entity.BoltEntityBean;
@@ -24,14 +25,15 @@ import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
 import com.ionvaranita.belotenote.entity.PuncteCastigatoare4JucatoriInEchipaBean;
 import com.ionvaranita.belotenote.entity.Scor4JucatoriInEchipaEntityBean;
 import com.ionvaranita.belotenote.entity.TurnManagement4GiocatoriInSquadra;
+import com.ionvaranita.belotenote.entity.VincitoreBean;
 import com.ionvaranita.belotenote.entity.VisualizzazioneBoltEntityBean;
 import com.ionvaranita.belotenote.entity.WhoPlayEntityBean;
 
 /**
  * Created by ionvaranita on 20/11/17.
  */
-@Database(entities = {GiochiUltimaPartidaBean.class,WhoPlayEntityBean.class,VisualizzazioneBoltEntityBean.class,BoltEntityBean.class,TurnManagement4GiocatoriInSquadra.class
-        ,Punti4GiocatoriInSquadraEntityBean.class, PuncteCastigatoareGlobalBean.class, Scor4JucatoriInEchipaEntityBean.class, PuncteCastigatoare4JucatoriInEchipaBean.class,Gioco4GiocatoriInSquadra.class}, version = 19)
+@Database(entities = {VincitoreBean.class, GiochiUltimaPartidaBean.class, WhoPlayEntityBean.class, VisualizzazioneBoltEntityBean.class, BoltEntityBean.class, TurnManagement4GiocatoriInSquadra.class
+        , Punti4GiocatoriInSquadraEntityBean.class, PuncteCastigatoareGlobalBean.class, Scor4JucatoriInEchipaEntityBean.class, PuncteCastigatoare4JucatoriInEchipaBean.class, Gioco4GiocatoriInSquadra.class}, version = 21)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "BeloteNoteDatabase";
 
@@ -58,6 +60,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract GiochiUltimaPartidDao giochiUltimaPartidDao();
 
+    public abstract VincitoreDao vincitoreDao();
+
   /*  public abstract UserDao userModel();
 
     public abstract BookDao bookModel();
@@ -75,30 +79,27 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
-    public static AppDatabase getPersistentDatabase(Context context){
-        if(PERSISTENT_DATABASE==null){
-            boolean condizione = true;
 
-            while (condizione){
-                try {
-                    Log.d(DATABASE_NAME,"First creation of database");
-                    PERSISTENT_DATABASE = Room.databaseBuilder(context,AppDatabase.class,DATABASE_NAME).fallbackToDestructiveMigration().allowMainThreadQueries().build();
+    public static AppDatabase getPersistentDatabase(Context context) {
+        if (PERSISTENT_DATABASE == null) {
+            try {
+                Log.d(DATABASE_NAME, "First creation of database");
+                PERSISTENT_DATABASE = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().allowMainThreadQueries().build();
 
-                    PuncteCastigatoareGlobalBean puncteCastigatoareGlobalBean1 = new PuncteCastigatoareGlobalBean();
-                    PuncteCastigatoareGlobalBean puncteCastigatoareGlobalBean2 = new PuncteCastigatoareGlobalBean();
+                PuncteCastigatoareGlobalBean puncteCastigatoareGlobalBean1 = new PuncteCastigatoareGlobalBean();
+                PuncteCastigatoareGlobalBean puncteCastigatoareGlobalBean2 = new PuncteCastigatoareGlobalBean();
 
-                    puncteCastigatoareGlobalBean1.setPuncteCastigatoare(101);
-                    puncteCastigatoareGlobalBean2.setPuncteCastigatoare(51);
+                puncteCastigatoareGlobalBean1.setPuncteCastigatoare(101);
+                puncteCastigatoareGlobalBean2.setPuncteCastigatoare(51);
 
 
-                    PERSISTENT_DATABASE.puncteCastigatoareGlobalDao().insertPuncteCastigatoareGlobal(puncteCastigatoareGlobalBean1);
-                    PERSISTENT_DATABASE.puncteCastigatoareGlobalDao().insertPuncteCastigatoareGlobal(puncteCastigatoareGlobalBean2);
-                    condizione = false;
-                }catch (Exception e){
-                    Log.d("database error!",e.getMessage());
-                    Room.databaseBuilder(context,AppDatabase.class,DATABASE_NAME).fallbackToDestructiveMigration();
-                }
+                PERSISTENT_DATABASE.puncteCastigatoareGlobalDao().insertPuncteCastigatoareGlobal(puncteCastigatoareGlobalBean1);
+                PERSISTENT_DATABASE.puncteCastigatoareGlobalDao().insertPuncteCastigatoareGlobal(puncteCastigatoareGlobalBean2);
+            } catch (Exception e) {
+                Log.d("dbCreationERROR:", e.getMessage());
+                Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration();
             }
+
         }
         return PERSISTENT_DATABASE;
     }

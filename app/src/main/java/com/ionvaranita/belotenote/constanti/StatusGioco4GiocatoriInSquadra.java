@@ -7,11 +7,12 @@ import com.ionvaranita.belotenote.R;
 public class StatusGioco4GiocatoriInSquadra {
     private Context context;
 
-    public static final int CODICE_PARTIDA_FINITA = 1;
-    public static final int CODICE_PARTIDA_NON_FINITA = 2;
-    public static final int CODICE_PARTIDA_NON_FINITA_PROLUNGATA = 3;
+    public static final Integer CODICE_PARTIDA_FINITA = 1;
+    public static final Integer CODICE_PARTIDA_NON_FINITA = 2;
+    public static final Integer CODICE_PARTIDA_NON_FINITA_PROLUNGATA = 3;
+    public static final Integer CODICE_OBBLIGATO_CONTINUA_CON_AGGIUNTA_PUNTI = 4;
 
-    public String getStatusByCodiceStatus(int status){
+    public String getStatusByCodiceStatus(Integer status){
         if(status==CODICE_PARTIDA_FINITA){
             return getPartidaFinita();
         }
@@ -37,26 +38,16 @@ public class StatusGioco4GiocatoriInSquadra {
         return partidaFinita;
     }
 
-    public void setPartidaFinita(String partidaFinita) {
-        this.partidaFinita = partidaFinita;
-    }
-
     private String getPartidaNonFinita() {
         partidaNonFinita = context.getResources().getString(R.string.playing_match);
         return partidaNonFinita;
     }
 
-    public void setPartidaNonFinita(String partidaNonFinita) {
-
-        this.partidaNonFinita = partidaNonFinita;
-    }
 
     private String getPartidaNonFinitaProlungata() {
         partidaNonFinitaProlungata = context.getResources().getString(R.string.playing_prolonged_match);
         return partidaNonFinitaProlungata;
     }
 
-    public void setPartidaNonFinitaProlungata(String partidaNonFinitaProlungata) {
-        this.partidaNonFinitaProlungata = partidaNonFinitaProlungata;
-    }
+
 }
