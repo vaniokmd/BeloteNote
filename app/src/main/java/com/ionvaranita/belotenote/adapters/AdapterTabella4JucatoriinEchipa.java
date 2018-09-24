@@ -65,9 +65,9 @@ public class AdapterTabella4JucatoriinEchipa extends
         LOG.info("atenzione: "+listaPuntiRaggrupatiByIdPartida);
 
 
-        Map<Integer,List<Punti4GiocatoriInSquadraView>> integerListMap =  punti4GiocatoriInSquadraViewList.stream().collect(Collectors.groupingBy(Punti4GiocatoriInSquadraView::getIdPartida));
-
-        LOG.info("mappaIdPartidaBean!: "+integerListMap);
+//        Map<Integer,List<Punti4GiocatoriInSquadraView>> integerListMap =  punti4GiocatoriInSquadraViewList.stream().collect(Collectors.groupingBy(Punti4GiocatoriInSquadraView::getIdPartida));
+//
+//        LOG.info("mappaIdPartidaBean!: "+integerListMap);
 
     }
     private List<List<Punti4GiocatoriInSquadraView>> ragruppaPunti4GiocatoriByIdPartida(List<Punti4GiocatoriInSquadraView> listaTabella4JucatoriInEchipa){

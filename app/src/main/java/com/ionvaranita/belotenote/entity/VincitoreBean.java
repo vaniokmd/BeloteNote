@@ -5,9 +5,9 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity(indices = {@Index(value = {"idGioco", "idPartida"}, unique = true)})
+@Entity(primaryKeys = {"idGioco","idPartida"})
 public class VincitoreBean {
-    @PrimaryKey
+    @NonNull
     private Integer idGioco;
     @NonNull
     private Integer idPartida;

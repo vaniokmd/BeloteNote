@@ -80,36 +80,36 @@ public class MainActivity extends AppCompatActivity {
             butonulApasat = savedInstanceState.getInt(MainActivityButtonChooser.BUTONUL_APASAT, MainActivityButtonChooser.NONE);
         }
 
-        if (butonulApasat == MainActivityButtonChooser.NONE) {
-            setContentView(R.layout.startup_sponsorised_by);
-            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-
-            getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
-            TextView titoloActioBar =getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title);
-            titoloActioBar.setText(R.string.app_name);
-
-            new CountDownTimer(5000, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-
-                }
-
-                @Override
-                public void onFinish() {
-                    setContentView(com.ionvaranita.belotenote.R.layout.activity_main);
-                    getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-                    getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
-                    TextView titoloActioBar =getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title);
-                    titoloActioBar.setText(R.string.main_menu_title);
-                }
-            }.start();
-        } else if (butonulApasat != MainActivityButtonChooser.NONE) {
+//        if (butonulApasat == MainActivityButtonChooser.NONE) {
+//            setContentView(R.layout.startup_sponsorised_by);
+//            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//
+//            getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
+//            TextView titoloActioBar =getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title);
+//            titoloActioBar.setText(R.string.app_name);
+//
+//            new CountDownTimer(5000, 1000) {
+//                @Override
+//                public void onTick(long millisUntilFinished) {
+//
+//                }
+//
+//                @Override
+//                public void onFinish() {
+//                    setContentView(com.ionvaranita.belotenote.R.layout.activity_main);
+//                    getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//                    getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
+//                    TextView titoloActioBar =getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title);
+//                    titoloActioBar.setText(R.string.main_menu_title);
+//                }
+//            }.start();
+//        } else if (butonulApasat != MainActivityButtonChooser.NONE) {
             setContentView(com.ionvaranita.belotenote.R.layout.activity_main);
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
             TextView titoloActioBar =getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title);
             titoloActioBar.setText(R.string.main_menu_title);
-        }
+//        }
 
 
         //  getActionBar().setDisplayHomeAsUpEnabled(true);

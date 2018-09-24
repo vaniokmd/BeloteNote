@@ -33,7 +33,7 @@ import com.ionvaranita.belotenote.entity.WhoPlayEntityBean;
  * Created by ionvaranita on 20/11/17.
  */
 @Database(entities = {VincitoreBean.class, GiochiUltimaPartidaBean.class, WhoPlayEntityBean.class, VisualizzazioneBoltEntityBean.class, BoltEntityBean.class, TurnManagement4GiocatoriInSquadra.class
-        , Punti4GiocatoriInSquadraEntityBean.class, PuncteCastigatoareGlobalBean.class, Scor4JucatoriInEchipaEntityBean.class, PuncteCastigatoare4JucatoriInEchipaBean.class, Gioco4GiocatoriInSquadra.class}, version = 21)
+        , Punti4GiocatoriInSquadraEntityBean.class, PuncteCastigatoareGlobalBean.class, Scor4JucatoriInEchipaEntityBean.class, PuncteCastigatoare4JucatoriInEchipaBean.class, Gioco4GiocatoriInSquadra.class}, version = 22)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "BeloteNoteDatabase";
 

@@ -24,7 +24,7 @@ public interface TabellaPunti4GiocatoriInSquadraDao {
     @Query("select * from Punti4GiocatoriInSquadraEntityBean where id = (select max(id) from Punti4GiocatoriInSquadraEntityBean where Punti4GiocatoriInSquadraEntityBean.idGioco = :idGioco)")
     Punti4GiocatoriInSquadraEntityBean getLastRecordPunti4GiocatoriInSquadraByIdGioco(Integer idGioco);
 
-    @Query("select * from Punti4GiocatoriInSquadraEntityBean where turno =(select max(turno) from Punti4GiocatoriInSquadraEntityBean where idGioco = :idGioco and idPartida = :idPartida)")
+    @Query("select * from Punti4GiocatoriInSquadraEntityBean where id =(select max(id) from Punti4GiocatoriInSquadraEntityBean where idGioco = :idGioco and idPartida = :idPartida)")
     Punti4GiocatoriInSquadraEntityBean getLastRecord4GiocatoriInSquadraByIdGiocoIdPartida(Integer idGioco, Integer idPartida);
 
     @Query("select  * from Punti4GiocatoriInSquadraEntityBean where idGioco=:idGioco")

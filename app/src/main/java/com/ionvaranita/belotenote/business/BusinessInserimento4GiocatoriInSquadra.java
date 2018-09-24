@@ -268,7 +268,6 @@ public class BusinessInserimento4GiocatoriInSquadra {
         parametersPuncteCastigatoarePopupLocal.setIdGioco(idGioco);
         parametersPuncteCastigatoarePopupLocal.setIdPartida(idPartida);
         parametersPuncteCastigatoarePopupLocal.setInfoCineACistigat(infoCineACistigat);
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         InfoRigaVuota4GiocatoriInSquadra infoRigaVuota4GiocatoriInSquadra = new InfoRigaVuota4GiocatoriInSquadra();
         infoRigaVuota4GiocatoriInSquadra.setIdPartida(idPartida);
@@ -324,7 +323,6 @@ public class BusinessInserimento4GiocatoriInSquadra {
     }
 
     public void finisciPartida(InfoRigaVuota4GiocatoriInSquadra infoRigaVuota4GiocatoriInSquadra) {
-        final StatusGioco4GiocatoriInSquadra statusGioco4GiocatoriInSquadra = new StatusGioco4GiocatoriInSquadra(context);
         idGioco = infoRigaVuota4GiocatoriInSquadra.getIdGioco();
         if (infoCineACistigat == null) {
             infoCineACistigat = infoRigaVuota4GiocatoriInSquadra.getInfoCineACistigat();
@@ -332,6 +330,7 @@ public class BusinessInserimento4GiocatoriInSquadra {
         //inserisciRigaVuota(infoRigaVuota4GiocatoriInSquadra);
         updateStatusAndDeltaNrPartideGioco4GiocatoriInSquadra(StatusGioco4GiocatoriInSquadra.CODICE_PARTIDA_FINITA, 1);
         aggiornaScor4GiocatoriInSquadra(infoCineACistigat.aflaCineACistigat());
+
 
     }
 
