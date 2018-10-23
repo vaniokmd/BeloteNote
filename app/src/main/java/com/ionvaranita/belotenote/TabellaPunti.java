@@ -12,6 +12,7 @@ import android.os.Bundle;
 
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -179,6 +180,10 @@ public class TabellaPunti extends AppCompatActivity {
 
         paginaPatruJucatoriInEchipaRecycleView.setLayoutManager(linearLayoutManager);
         paginaPatruJucatoriInEchipaRecycleView.getLayoutManager().scrollToPosition(listaRecordsTabella4JucatoriInEchipa.size() - 1);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(paginaPatruJucatoriInEchipaRecycleView.getContext(),
+                linearLayoutManager.getOrientation());
+        paginaPatruJucatoriInEchipaRecycleView.addItemDecoration(dividerItemDecoration);
 
 
     }

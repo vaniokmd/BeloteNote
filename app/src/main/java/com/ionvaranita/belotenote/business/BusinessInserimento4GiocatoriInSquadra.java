@@ -42,6 +42,7 @@ import com.ionvaranita.belotenote.utils.IntegerUtils;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -81,6 +82,12 @@ public class BusinessInserimento4GiocatoriInSquadra {
 
 
 
+    }
+
+    public List<VisualizzazioneBoltEntityBean> getListaBoltByIdGioco(){
+        VisualizzazioneBoltDao visualizzazioneBoltDao = db.visualizzazioneBoltDao();
+        List<VisualizzazioneBoltEntityBean> listaBeanBolt = visualizzazioneBoltDao.getListaBoltByIdGioco(this.idGioco);
+        return listaBeanBolt;
     }
 
     public void inserisciOAggiornaWhoPlayed(WhoPlayEntityBean whoPlayEntityBean) {

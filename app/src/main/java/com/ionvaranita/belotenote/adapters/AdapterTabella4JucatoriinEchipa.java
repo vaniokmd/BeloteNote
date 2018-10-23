@@ -16,7 +16,6 @@ import com.ionvaranita.belotenote.traduttori.impl.EntityBeanToViewImpl;
 import com.ionvaranita.belotenote.view.Punti4GiocatoriInSquadraView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -32,16 +31,13 @@ import java.util.stream.Collectors;
 // Note that we specify the custom ViewHolder which gives us access to our views
 public class AdapterTabella4JucatoriinEchipa extends
         RecyclerView.Adapter<AdapterTabella4JucatoriinEchipa.ViewHolder> {
-
-    private static final Logger LOG = Logger.getLogger(AdapterTabella4JucatoriinEchipa.class.getName()) ;
+    private static final int NESSUNA_PARTIDA=-1;
+    private static final Logger LOG = Logger.getLogger(AdapterTabella4JucatoriinEchipa.class.getName());
     private AppDatabase db;
     private List<VisualizzazioneBoltEntityBean> listaBeanBolt;
-    private Map<Integer,VisualizzazioneBoltEntityBean> mappaIdRigaBean = new HashMap<>();
     private Integer idGioco;
-    private List<List<Punti4GiocatoriInSquadraView>> listaPuntiRaggrupatiByIdPartida;
-
-
-
+    private int idPartidaSelector = -1;
+    private int nrPartide;
 
 
     private List<Punti4GiocatoriInSquadraView> punti4GiocatoriInSquadraViewList;
@@ -53,48 +49,34 @@ public class AdapterTabella4JucatoriinEchipa extends
 
     // Pass in the contact array into the constructor
     public AdapterTabella4JucatoriinEchipa(Context context, List<Punti4GiocatoriInSquadraEntityBean> listaTabella4JucatoriInEchipa, Integer idGioco) {
+
         this.idGioco = idGioco;
         mContext = context;
         db = AppDatabase.getPersistentDatabase(mContext);
         VisualizzazioneBoltDao visualizzazioneBoltDao = db.visualizzazioneBoltDao();
         listaBeanBolt = visualizzazioneBoltDao.getListaBoltByIdGioco(this.idGioco);
-        EntityBeanToViewImpl entityBeanToView = new EntityBeanToViewImpl(listaBeanBolt);
-
-        punti4GiocatoriInSquadraViewList = entityBeanToView.listPunti4GiocatoriInSquadraEntityBeanToListView(listaTabella4JucatoriInEchipa);
-        listaPuntiRaggrupatiByIdPartida = ragruppaPunti4GiocatoriByIdPartida(punti4GiocatoriInSquadraViewList);
-        LOG.info("atenzione: "+listaPuntiRaggrupatiByIdPartida);
+        EntityBeanToViewImpl entityBeanToView = new EntityBeanToViewImpl();
 
 
-//        Map<Integer,List<Punti4GiocatoriInSquadraView>> integerListMap =  punti4GiocatoriInSquadraViewList.stream().collect(Collectors.groupingBy(Punti4GiocatoriInSquadraView::getIdPartida));
-//
-//        LOG.info("mappaIdPartidaBean!: "+integerListMap);
+        punti4GiocatoriInSquadraViewList = entityBeanToView.getAllPunti4GiocatoriInSquadraView(listaTabella4JucatoriInEchipa, listaBeanBolt);
+        this.nrPartide = entityBeanToView.getNrPartide();
 
     }
-    private List<List<Punti4GiocatoriInSquadraView>> ragruppaPunti4GiocatoriByIdPartida(List<Punti4GiocatoriInSquadraView> listaTabella4JucatoriInEchipa){
-        List<List<Punti4GiocatoriInSquadraView>> result = new ArrayList<>();
-        Integer idPartida = null;
-        List<Punti4GiocatoriInSquadraView> listaPuntiByIdPartida= null;
-        for (Punti4GiocatoriInSquadraView punti4GiocatoriInSquadraEntityBean:
-                listaTabella4JucatoriInEchipa) {
-            if(punti4GiocatoriInSquadraEntityBean.getIdPartida()!=idPartida){
-                listaPuntiByIdPartida = new ArrayList<>();
-                result.add(listaPuntiByIdPartida);
-                idPartida = punti4GiocatoriInSquadraEntityBean.getIdPartida();
-            }
-            listaPuntiByIdPartida.add(punti4GiocatoriInSquadraEntityBean);
 
-
-        }
-        return result;
-    }
     // Easy access to the context object in the recyclerview
     private Context getContext() {
         return mContext;
     }
 
     // Usually involves inflating a layout from XML and returning the holder
+
+    private ViewHolder viewHolder = null;
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+
+
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -102,7 +84,11 @@ public class AdapterTabella4JucatoriinEchipa extends
         View itemsPatruJucatoriInEchipaView = inflater.inflate(R.layout.items_tabella_4_jucatori_in_echipa, parent, false);
 
         // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(itemsPatruJucatoriInEchipaView);
+        if ((viewType != this.idPartidaSelector)) {
+            idPartidaSelector = viewType;
+            return new ViewHolder(itemsPatruJucatoriInEchipaView);
+        }
+
         return viewHolder;
     }
 
@@ -123,7 +109,18 @@ public class AdapterTabella4JucatoriinEchipa extends
 
     @Override
     public int getItemCount() {
-        return punti4GiocatoriInSquadraViewList.size();
+        return nrPartide;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        Punti4GiocatoriInSquadraView punti4GiocatoriInSquadraView = punti4GiocatoriInSquadraViewList.get(position);
+        if (punti4GiocatoriInSquadraView != null && punti4GiocatoriInSquadraView.getIdPartida() != null) {
+            return punti4GiocatoriInSquadraView.getIdPartida();
+        }
+        return NESSUNA_PARTIDA;
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
