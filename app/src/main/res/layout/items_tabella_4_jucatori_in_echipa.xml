@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/items_patru_jucatori_in_echipa_container"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="@dimen/spazio_tra_celle">
 
     <TableRow
-        android:id="@+id/items_patru_jucatori_in_echipa"
+        android:id="@+id/items_patru_jucatori_in_echipa_tw"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">

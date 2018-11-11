@@ -39,5 +39,7 @@
         android:layout_marginTop="@dimen/padding_of_16"
         android:layout_weight="4"
         android:background="@drawable/row"
-        android:paddingTop="@dimen/padding_of_16" />
+        android:paddingTop="@dimen/padding_of_16" >
+
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

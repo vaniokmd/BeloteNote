@@ -1,10 +1,13 @@
 package com.ionvaranita.belotenote.traduttori.impl;
 
+import android.content.Context;
 import android.os.Build;
 
 import com.ionvaranita.belotenote.constanti.ConstantiGlobal;
 import com.ionvaranita.belotenote.constanti.IdsCampiStampa;
+import com.ionvaranita.belotenote.constanti.MappaIdCampoValoreTestoCampiStampa;
 import com.ionvaranita.belotenote.entity.Punti4GiocatoriInSquadraEntityBean;
+import com.ionvaranita.belotenote.entity.VincitoreBean;
 import com.ionvaranita.belotenote.entity.VisualizzazioneBoltEntityBean;
 import com.ionvaranita.belotenote.traduttori.EntityBeanToViewFactory;
 import com.ionvaranita.belotenote.view.Punti4GiocatoriInSquadraView;
@@ -71,17 +74,12 @@ public class EntityBeanToViewImpl implements EntityBeanToViewFactory {
     public List<Punti4GiocatoriInSquadraView> getAllPunti4GiocatoriInSquadraView(List<Punti4GiocatoriInSquadraEntityBean> punti4GiocatoriInSquadraEntityBeans, List<VisualizzazioneBoltEntityBean> listaBolt) {
         inizializzaListaBolt(listaBolt);
         List<Punti4GiocatoriInSquadraView> risultato = new ArrayList<>();
-        Integer nrPartide = 0;
-        Integer idPartida = null;
+
         for (Punti4GiocatoriInSquadraEntityBean punti4GiocatoriInSquadraEntityBean:
                 punti4GiocatoriInSquadraEntityBeans) {
-            if(idPartida!=punti4GiocatoriInSquadraEntityBean.getIdPartida()){
-                idPartida = punti4GiocatoriInSquadraEntityBean.getIdPartida();
-                nrPartide++;
-            }
             risultato.add(punti4GiocatoriInSquadraEntityBeanToView(punti4GiocatoriInSquadraEntityBean));
+
         }
-        this.nrPartide=nrPartide;
         return risultato;
      }
 
@@ -137,5 +135,15 @@ public class EntityBeanToViewImpl implements EntityBeanToViewFactory {
             return "-";
         }
         return value.toString();
+    }
+    public Map<Integer,String> getMappaVicitori(Context context, List<VincitoreBean> vincitoreBeans){
+        Map<Integer,String> integerVincitoreMap = new HashMap<>();
+        Map<Integer,String> mappaIdCampoValoreTestoCampiStampa = new MappaIdCampoValoreTestoCampiStampa(context).getMappaIdsCampoValoreTesto4giocatoriInSquadra();
+        for (VincitoreBean vincitoreBean:vincitoreBeans
+             ) {
+            integerVincitoreMap.put(vincitoreBean.getIdPartida(),mappaIdCampoValoreTestoCampiStampa.get(vincitoreBean.getVincitore()));
+        }
+        return integerVincitoreMap;
+
     }
 }

@@ -1,6 +1,8 @@
 package com.ionvaranita.belotenote.view;
 
 public class Punti4GiocatoriInSquadraView {
+
+    private boolean finePartida;
     private Integer id=null;
 
     private Integer idGioco;
@@ -14,7 +16,6 @@ public class Punti4GiocatoriInSquadraView {
     private String puntiGioco;
 
     private Integer idPartida;
-    private Integer finePartida;
 
     public Integer getId() {
         return id;
@@ -72,11 +73,11 @@ public class Punti4GiocatoriInSquadraView {
         this.idPartida = idPartida;
     }
 
-    public Integer getFinePartida() {
+    public boolean getFinePartida() {
         return finePartida;
     }
 
-    public void setFinePartida(Integer finePartida) {
+    public void setFinePartida(boolean finePartida) {
         this.finePartida = finePartida;
     }
 }
